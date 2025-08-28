@@ -27,6 +27,8 @@ This web app allows users to send messages to each other similar to Discord or W
 - icon/button to create new message
 - profile info
 
+
+
 ## Data models
 
 #### Users
@@ -52,10 +54,10 @@ message body
 read
 
 ## Routers
-### Message Router `/messages/`
-`/chats/`: displays all user message conversations (chats)
-`/chats/:id`: displays individual conversation
-`/:id`: individual message
+### Message Router `/chat/`
+`/`:  all user message conversations (chats)
+`/:id`:  individual conversation
+`/message/:id`: individual message
 
 ### User Router `/user/`
 `/profile`: user info
@@ -65,10 +67,12 @@ read
 `/add`: add contact based on info/name
 `/favorites`: starred contacts
 
-
-
 ## UX Flow
+user:
+logs in -> selects contact from list -> starts chat -> sends message to recipient.
+        -> views conversations in list -> opens chat -> recieved message marked as read -> able to reply to sender
 
+## UI
 - User creates account/logs in
 - redirects to dashboard displaying chats, contacts and profile info and logout.
 

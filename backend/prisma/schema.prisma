@@ -21,12 +21,14 @@ model User {
   profile   Profile[]
   sender    Message[] @relation("SentMessage")
   recipient Message[] @relation("RecievedMessage")
+  chat      Chat?     @relation(fields: [chat_id], references: [id])
+  chat_id   String?   @unique @db.Uuid
 }
 
 model Profile {
   id      String    @unique @default(uuid()) @db.Uuid
-  user    User      @relation(fields: [user_id], references: [id]) 
-  user_id String    @db.Uuid @unique
+  user    User      @relation(fields: [user_id], references: [id])
+  user_id String    @unique @db.Uuid
   name    String
   bio     String    @db.VarChar(256)
   dob     DateTime?
@@ -40,5 +42,14 @@ model Message {
   recipient_id String   @db.Uuid
   recipient    User     @relation("RecievedMessage", fields: [recipient_id], references: [id])
   body         String
+  read         Boolean @default(false)
   sent_at      DateTime @default(now())
+  Chat         Chat?    @relation(fields: [chatId], references: [id])
+  chatId       String?  @db.Uuid
+}
+
+model Chat {
+  id      String    @unique @default(uuid()) @db.Uuid
+  message Message[]
+  user    User[]
 }

@@ -1,15 +1,12 @@
 const express = require('express')
 const messageRouter = express.Router();
-const prisma = require("../app")
+const messageController = require("../controllers/messageController")
 
-messageRouter.get("/chats", async (req, res) => {
+messageRouter.get("/", messageController.getAllConversations)
 
-})
-messageRouter.get("/chats/:id", async (req, res) => {
+messageRouter.post("/:id", messageController.newConversation)
+messageRouter.delete("/:id", messageController.deleteConversation)
 
-})
-messageRouter.get("/:id", async (req, res) => {
-
-})
+messageRouter.post("/message/:id", messageController.newMessage)
 
 module.exports = messageRouter;

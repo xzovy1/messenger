@@ -1,10 +1,12 @@
 const { Router } = require('express')
 const userRouter = Router();
-const prisma = require("../prisma/client.js")
+const userController = require('../controllers/userController')
 
-userRouter.get("/profile", async (req, res) => {
-    const user = await prisma.user.findMany();
-    res.send(user)
-})
+
+userRouter.get("/profile", userController.getUser);
+
+userRouter.post("/", userController.createUser);
+userRouter.delete("/", userController.deleteUser);
+userRouter.put("/", userController.updateUser);
 
 module.exports = userRouter;
