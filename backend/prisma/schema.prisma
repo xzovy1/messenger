@@ -16,7 +16,7 @@ datasource db {
 
 model User {
   id        String    @unique @default(uuid()) @db.Uuid
-  username  String
+  username  String    @unique
   password  String
   profile   Profile[]
   sender    Message[] @relation("SentMessage")

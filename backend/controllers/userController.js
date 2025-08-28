@@ -1,31 +1,6 @@
 const prisma = require("../prisma/client.js");
 const bcrypt = require("bcryptjs")
 
-
-passport.use(
-    new LocalStrategy(async (username, password, done) => {
-        try {
-            const user = await prisma.user.findUnique({
-                where: {
-                    username
-                }
-            })
-
-            if (!user) {
-                return done(null, false, { message: "Incorrect username" });
-            }
-            const hashedPassword = await bcrypt.hash(password, 10)
-            if (user.password !== hashedPassword) {
-                return done(null, false, { message: "Incorrect password" });
-            }
-            return done(null, user);
-        } catch (err) {
-            return done(err);
-        }
-    })
-);
-
-
 exports.getUser = async (req, res) => {
     const user = await prisma.user.findMany();
     return res.json(user)
