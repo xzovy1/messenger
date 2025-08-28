@@ -36,7 +36,8 @@ password
 contacts
 messages
 
-#### User_Info
+#### Profile
+id
 name
 DOB
 profile pic?
@@ -48,6 +49,22 @@ sender id
 recipient id(s)
 date/time
 message body
+read
+
+## Routers
+### Message Router `/messages/`
+`/chats/`: displays all user message conversations (chats)
+`/chats/:id`: displays individual conversation
+`/:id`: individual message
+
+### User Router `/user/`
+`/profile`: user info
+
+### Contact Router `/contacts/`
+`/`: all known user contacts
+`/add`: add contact based on info/name
+`/favorites`: starred contacts
+
 
 
 ## UX Flow
@@ -84,3 +101,6 @@ message body
 - instead of going to a new page for each nav bar button, do component hotswaps
   - left side is contact list and message list
   - right side is profile info and displayed message
+- read receipts
+
+

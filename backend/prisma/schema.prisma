@@ -13,3 +13,32 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id        String    @unique @default(uuid()) @db.Uuid
+  username  String
+  password  String
+  profile   Profile[]
+  sender    Message[] @relation("SentMessage")
+  recipient Message[] @relation("RecievedMessage")
+}
+
+model Profile {
+  id      String    @unique @default(uuid()) @db.Uuid
+  user    User      @relation(fields: [user_id], references: [id]) 
+  user_id String    @db.Uuid @unique
+  name    String
+  bio     String    @db.VarChar(256)
+  dob     DateTime?
+  image   String?
+}
+
+model Message {
+  id           String   @unique @default(uuid()) @db.Uuid
+  sender_id    String   @db.Uuid
+  sender       User     @relation("SentMessage", fields: [sender_id], references: [id])
+  recipient_id String   @db.Uuid
+  recipient    User     @relation("RecievedMessage", fields: [recipient_id], references: [id])
+  body         String
+  sent_at      DateTime @default(now())
+}
