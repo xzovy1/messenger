@@ -1,12 +1,14 @@
-const express = require('express')
+const express = require("express");
 const messageRouter = express.Router();
-const messageController = require("../controllers/messageController")
+const messageController = require("../controllers/messageController");
 
-messageRouter.get("/", messageController.getAllConversations)
+messageRouter.get("/", messageController.getAllConversations);
 
-messageRouter.post("/:id", messageController.newConversation)
-messageRouter.delete("/:id", messageController.deleteConversation)
+messageRouter
+  .route("/:id")
+  .post(messageController.newConversation)
+  .delete(messageController.deleteConversation);
 
-messageRouter.post("/message/:id", messageController.newMessage)
+messageRouter.post("/message/:id", messageController.newMessage);
 
 module.exports = messageRouter;
