@@ -1,8 +1,9 @@
-const express = require('express')
+const express = require("express");
 const contactsRouter = express.Router();
-const contactsController = require("../controllers/contactsController")
+const contactsController = require("../controllers/contactsController");
 
-contactsRouter.get("/", contactsController.getAllContacts)
+// '/contacts'
+contactsRouter.get("/", contactsController.getAllContacts);
 // contactsRouter.get("/favorites")
 // contactsRouter.post("/favorites")
 // contactsRouter.get("/add")

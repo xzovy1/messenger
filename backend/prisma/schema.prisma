@@ -5,8 +5,9 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  provider        = "prisma-client-js"
+  output          = "../generated/prisma"
+  previewFeatures = ["relationJoins"]
 }
 
 datasource db {
@@ -15,24 +16,24 @@ datasource db {
 }
 
 model User {
-  id        String    @unique @default(uuid()) @db.Uuid
+  id        String    @id @unique @default(uuid()) @db.Uuid
   username  String    @unique
   password  String
-  profile   Profile[]
+  profile   Profile?
   sender    Message[] @relation("SentMessage")
   recipient Message[] @relation("RecievedMessage")
-  chat      Chat?     @relation(fields: [chat_id], references: [id])
-  chat_id   String?   @unique @db.Uuid
+  chats     Chat[]
 }
 
 model Profile {
-  id      String    @unique @default(uuid()) @db.Uuid
-  user    User      @relation(fields: [user_id], references: [id])
-  user_id String    @unique @db.Uuid
-  name    String
-  bio     String    @db.VarChar(256)
-  dob     DateTime?
-  image   String?
+  id        String    @unique @default(uuid()) @db.Uuid
+  user      User      @relation(fields: [user_id], references: [id])
+  user_id   String    @unique @db.Uuid
+  firstname String
+  lastname  String
+  bio       String?   @db.VarChar(256)
+  dob       DateTime?
+  image     String?
 }
 
 model Message {
@@ -42,14 +43,14 @@ model Message {
   recipient_id String   @db.Uuid
   recipient    User     @relation("RecievedMessage", fields: [recipient_id], references: [id])
   body         String
-  read         Boolean @default(false)
+  read         Boolean  @default(false)
   sent_at      DateTime @default(now())
-  Chat         Chat?    @relation(fields: [chatId], references: [id])
-  chatId       String?  @db.Uuid
+  chat         Chat?    @relation(fields: [chat_id], references: [id])
+  chat_id      String?  @db.Uuid
 }
 
 model Chat {
-  id      String    @unique @default(uuid()) @db.Uuid
+  id      String    @id @unique @default(uuid()) @db.Uuid
   message Message[]
-  user    User[]
+  users   User[]
 }

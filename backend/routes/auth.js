@@ -3,7 +3,9 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const { Router } = require("express");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const router = Router();
+
 router.use(passport.session());
 passport.use(
   new LocalStrategy(async (username, password, done) => {
@@ -45,6 +47,17 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
+router.use((req, res, next) => {
+  if (req.user) {
+    const user = req.user;
+    jwt.sign({ user }, "secretkey", (err, token) => {
+      {
+        res.j;
+      }
+    });
+  }
+  next();
+});
 router.post(
   "/log-in",
   passport.authenticate("local", {
@@ -52,9 +65,15 @@ router.post(
     failureRedirect: "/",
   })
 );
-
 router.get("/", (req, res) => {
-  res.json(req.user);
+  if (req.user) {
+    const user = req.user;
+    jwt.sign({ user }, "secretkey", (err, token) => {
+      {
+        res.json({ token });
+      }
+    });
+  }
 });
 
 router.get("/log-out", (req, res, next) => {

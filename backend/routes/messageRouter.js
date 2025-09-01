@@ -2,13 +2,16 @@ const express = require("express");
 const messageRouter = express.Router();
 const messageController = require("../controllers/messageController");
 
-messageRouter.get("/", messageController.getAllConversations);
+// '/chat'
+messageRouter
+  .route("/")
+  .get(messageController.getAllConversations)
+  .post(messageController.newConversation);
 
 messageRouter
   .route("/:id")
-  .post(messageController.newConversation)
-  .delete(messageController.deleteConversation);
-
-messageRouter.post("/message/:id", messageController.newMessage);
+  .delete(messageController.deleteConversation)
+  .get(messageController.getChatMessages)
+  .post(messageController.newMessage);
 
 module.exports = messageRouter;
