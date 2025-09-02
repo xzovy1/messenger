@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const router = Router();
 
+router.use(passport.initialize())
 router.use(passport.session());
 passport.use(
   new LocalStrategy(async (username, password, done) => {
@@ -16,12 +17,15 @@ passport.use(
         },
       });
       if (!user) {
+        console.log("incorrect username")
         return done(null, false, { message: "Incorrect username" });
       }
       const matched = await bcrypt.compare(password, user.password);
       if (!matched) {
+        console.log("incorrect password")
         return done(null, false, { message: "Incorrect password" });
       }
+
       return done(null, user);
     } catch (err) {
       return done(err);
@@ -43,26 +47,29 @@ passport.deserializeUser(async (id, done) => {
 
     done(null, user);
   } catch (err) {
+    console.log(err)
     done(err);
   }
 });
 
-router.use((req, res, next) => {
-  if (req.user) {
-    const user = req.user;
-    jwt.sign({ user }, "secretkey", (err, token) => {
-      {
-        res.j;
-      }
-    });
-  }
-  next();
-});
+// router.use((req, res, next) => {
+//   // console.log(req.user)
+//   if (req.user) {
+//     const user = req.user;
+//     jwt.sign({ user }, "secretkey", (err, token) => {
+//       {
+//         res.j;
+//       }
+//     });
+//   }
+//   next();
+// });
+// router.use(passport.authenticate('session'))
 router.post(
   "/log-in",
   passport.authenticate("local", {
     successRedirect: "/",
-    failureRedirect: "/",
+    failureRedirect: "/log-in",
   })
 );
 
@@ -80,6 +87,7 @@ router.post("/sign-up", async (req, res) => {
 })
 
 router.get("/", (req, res) => {
+  console.log(req.session)
   if (req.user) {
     const user = req.user;
     jwt.sign({ user }, "secretkey", (err, token) => {

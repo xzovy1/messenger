@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   const testPass = await bcrypt.hash("admin", 10);
-  const users = await prisma.chat.findMany();
+  const users = await prisma.user.findMany();
   // data: [
   //   {
   //     username: "user1",
