@@ -1,32 +1,20 @@
 const express = require("express");
 require("dotenv").config();
-
+const cors = require("cors");
 const app = express();
-app.use(express.urlencoded({ extended: true }));
-
-// const session = require("express-session");
-
-// app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
-
-// const authRouter = require("./routes/auth");
-// app.use("/", authRouter);
-
-const verifyToken = (req, res, next) => {
-  //get auth header value
-  const bearerHeader = req.headers["authorization"];
-  console.log(req.headers, bearerHeader);
-  if (typeof bearerHeader !== "undefined") {
-    const bearer = bearerHeader.split(" ");
-    const token = bearer[1];
-    //store the token in the request.
-    req.token = token;
-  } else {
-    //forbidden
-    res.sendStatus(403);
-  }
-  next();
-};
 const prisma = require("./prisma/client.js");
+
+app.use(cors());
+app.use(express.urlencoded({ extended: false }));
+
+app.use(express.json())// ensure Content-Type of header is 'application/json'
+
+const session = require("express-session");
+app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
+
+const authRouter = require("./routes/auth");
+app.use("/", authRouter);
+
 app.use(async (req, res, next) => {
   const user = await prisma.user.findUnique({
     where: {

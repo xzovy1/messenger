@@ -65,6 +65,20 @@ router.post(
     failureRedirect: "/",
   })
 );
+
+router.post("/sign-up", async (req, res) => {
+  const { username, password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = await prisma.user.create({
+    data: {
+      username,
+      password: hashedPassword
+    }
+  })
+  res.json({ user })
+
+})
+
 router.get("/", (req, res) => {
   if (req.user) {
     const user = req.user;
