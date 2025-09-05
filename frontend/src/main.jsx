@@ -7,15 +7,16 @@ import Signup from './Signup.jsx'
 import Login from './Login.jsx'
 import AuthLayout from './AuthLayout.jsx'
 import HomeLayout from './HomeLayout.jsx'
+import ErrorPage from './Error.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route element={<AuthLayout />}>
-          <Route index path='log-in' element={<Login />} />
+      <Routes >
+        <Route element={<AuthLayout />} >
+          <Route index path='log-in' element={<Login />} errorElement={<ErrorPage />} />
           <Route path='sign-up' element={<Signup />} />
         </Route>
-        <Route element={<HomeLayout />} path='/'>
+        <Route element={<HomeLayout />} path='/' errorElement={<ErrorPage />}>
         </Route>
       </Routes>
     </BrowserRouter>

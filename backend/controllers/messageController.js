@@ -21,19 +21,20 @@ exports.deleteConversation = async (req, res) => {
 };
 
 exports.getAllConversations = async (req, res) => {
-  let chats = [];
-  if (req.user) {
-    const id = req.user.id;
-    chats = await prisma.chat.findMany({
-      where: {
-        id,
-      },
-    });
-    return res.json(chats);
+  if (!req.app.user) {
+    return res.sendStatus(401);
   }
+  let chats = [];
+  const id = req.app.user.id;
+  chats = await prisma.chat.findMany({
+    where: {
+      id,
+    },
+  });
+  return res.json(chats);
 };
 //testconvo:
-const testChat = "a5efd84f-65a7-4d9f-84b4-3d910f77d4e1";
+// const testChat = "a5efd84f-65a7-4d9f-84b4-3d910f77d4e1";
 //
 
 exports.newMessage = async (req, res) => {
@@ -66,6 +67,9 @@ exports.newMessage = async (req, res) => {
 
 exports.getChatMessages = async (req, res) => {
   // const {chat} = req.param
+  if (!req.user) {
+    return res.sendStatus(401);
+  }
   const messages = await prisma.message.findMany({
     where: {
       chat_id: testChat, // update

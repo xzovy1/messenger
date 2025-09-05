@@ -1,20 +1,44 @@
 import { useState } from "react"
-import useFetch from "./useFetch";
 import { useNavigate } from "react-router";
 const Login = () => {
     const navigate = useNavigate();
-    const [url, setUrl] = useState(null)
-    const [formBody, setFormBody] = useState(null);
-    const { fetchData, error, loading } = useFetch(url, "post", formBody);
-
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false)
     async function login(formData) {
         const username = formData.get("username");
         const password = formData.get("password");
-        setFormBody({ username, password });
-        setUrl('/log-in');
-        // if (fetchData) {
-        // navigate('/')
-        // }
+        const formBody = { username, password }
+        let authenticated = false;
+        setLoading(true);
+        await fetch(`${import.meta.env.VITE_BACKEND}/log-in`, {
+            method: "post",
+            mode: "cors",
+            body: JSON.stringify(formBody),
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            }
+        })
+            .then(response => {
+                console.log(response)
+                if (!response.ok) {
+                    return setError(response.status)
+                }
+                authenticated = true;
+                return response.json();
+
+            })
+            .then(data => {
+                localStorage.setItem("jwt", data.token);
+            })
+            .catch(error => setError(error))
+            .finally(() => {
+                setLoading(false);
+                if (authenticated) {
+                    navigate('/')
+                }
+            });
+
     }
     if (loading) {
         return (
@@ -23,16 +47,10 @@ const Login = () => {
             </>
         )
     }
-    if (fetchData) {
-        console.log(fetchData)
-        return (
-            <div>{fetchData}</div>
-        )
-    }
 
     return (
         <>
-            {error ? <div className="error">An error occured</div> : null}
+            {error ? <div className="error">An error occured {error.statusText}</div> : null}
             <form action={login}>
                 <label htmlFor="username">Username: </label>
                 <input type="text" name="username" id="username" />

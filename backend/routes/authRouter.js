@@ -6,8 +6,10 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const router = Router();
 
-router.use(passport.initialize())
-router.use(passport.session());
+router.use(async (req, res, next) => {
+  console.log(req.session)
+  next();
+});
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
@@ -44,7 +46,6 @@ passport.deserializeUser(async (id, done) => {
         id,
       },
     });
-
     done(null, user);
   } catch (err) {
     console.log(err)
@@ -52,26 +53,28 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-// router.use((req, res, next) => {
-//   // console.log(req.user)
-//   if (req.user) {
-//     const user = req.user;
-//     jwt.sign({ user }, "secretkey", (err, token) => {
-//       {
-//         res.j;
-//       }
-//     });
-//   }
-//   next();
-// });
-// router.use(passport.authenticate('session'))
+
 router.post(
-  "/log-in",
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/log-in",
-  })
-);
+  "/log-in", (req, res, next) => {
+    passport.authenticate("local", function (err, user, info, status) {
+
+      if (err) { return next(err) };
+      if (!user) { return res.redirect('/log-in') };
+      req.app.user = user;
+      jwt.sign(
+        { user },
+        process.env.JWT_KEY,
+        { expiresIn: "1d" },
+        (err, token) => {
+          if (err) { next(err) };
+          res.json({
+            token,
+          });
+        }
+      );
+      res.redirect('/')
+    })(req, res, next)
+  });
 
 router.post("/sign-up", async (req, res) => {
   const { username, password } = req.body;
@@ -87,14 +90,15 @@ router.post("/sign-up", async (req, res) => {
 })
 
 router.get("/", (req, res) => {
-  console.log(req.session)
-  if (req.user) {
-    const user = req.user;
+  if (req.app.user) {
+    const user = req.app.user;
     jwt.sign({ user }, "secretkey", (err, token) => {
       {
         res.json({ token });
       }
     });
+  } else {
+    res.sendStatus(401);
   }
 });
 
@@ -106,5 +110,6 @@ router.get("/log-out", (req, res, next) => {
     res.redirect("/");
   });
 });
+
 
 module.exports = router;
