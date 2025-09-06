@@ -6,18 +6,22 @@ const prisma = require("./prisma/client.js");
 const passport = require("passport");
 
 app.use(cors());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
-app.use(express.json())// ensure Content-Type of header is application/json
+// app.use(express.json()); // ensure Content-Type of header is application/json
 
 const session = require("express-session");
 app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
 app.use(passport.session());
+app.use(passport.authenticate("session"));
 
+app.use((req, res, next) => {
+  console.log("body", req.session);
+  next();
+});
 
 const authRouter = require("./routes/authRouter");
 app.use("/", authRouter);
-
 
 const contactsRouter = require("./routes/contactsRouter");
 app.use("/api/contacts", contactsRouter);
@@ -30,8 +34,8 @@ app.use("/api/user", userRouter);
 
 app.use((err, req, res, next) => {
   console.error(err);
-  res.status(500).send(err)
-})
+  res.status(500).send(err);
+});
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {

@@ -7,17 +7,17 @@ const Login = () => {
     async function login(formData) {
         const username = formData.get("username");
         const password = formData.get("password");
-        const formBody = { username, password }
+        const formBody = { username, password };
+        console.log(formBody)
         let authenticated = false;
         setLoading(true);
         await fetch(`${import.meta.env.VITE_BACKEND}/log-in`, {
-            method: "post",
-            mode: "cors",
-            body: JSON.stringify(formBody),
             headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-            }
+                'content-type': 'application/x-www-form-urlencoded'
+            },
+            method: 'POST',
+            mode: "cors",
+            body: new URLSearchParams(formData)
         })
             .then(response => {
                 console.log(response)
@@ -29,13 +29,16 @@ const Login = () => {
 
             })
             .then(data => {
+                console.log(data)
                 localStorage.setItem("jwt", data.token);
             })
-            .catch(error => setError(error))
+            .catch(error => {
+                console.log(error);
+                setError(error)})
             .finally(() => {
                 setLoading(false);
                 if (authenticated) {
-                    navigate('/')
+                    // navigate('/')
                 }
             });
 

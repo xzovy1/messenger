@@ -6,10 +6,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const router = Router();
 
-router.use(async (req, res, next) => {
-  console.log(req.session)
-  next();
-});
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
@@ -19,15 +15,14 @@ passport.use(
         },
       });
       if (!user) {
-        console.log("incorrect username")
+        console.log("incorrect username");
         return done(null, false, { message: "Incorrect username" });
       }
       const matched = await bcrypt.compare(password, user.password);
       if (!matched) {
-        console.log("incorrect password")
+        console.log("incorrect password");
         return done(null, false, { message: "Incorrect password" });
       }
-
       return done(null, user);
     } catch (err) {
       return done(err);
@@ -46,35 +41,26 @@ passport.deserializeUser(async (id, done) => {
         id,
       },
     });
+    // console.log(user);
     done(null, user);
   } catch (err) {
-    console.log(err)
+    console.log(err);
     done(err);
   }
 });
 
-
 router.post(
-  "/log-in", (req, res, next) => {
-    passport.authenticate("local", function (err, user, info, status) {
-
-      if (err) { return next(err) };
-      if (!user) { return res.redirect('/log-in') };
-      req.app.user = user;
-      jwt.sign(
-        { user },
-        process.env.JWT_KEY,
-        { expiresIn: "1d" },
-        (err, token) => {
-          if (err) { next(err) };
-          res.json({
-            token,
-          });
-        }
-      );
-      res.redirect('/')
-    })(req, res, next)
-  });
+  "/log-in",
+  passport.authenticate("local", {
+    // successRedirect: "/",
+    failureRedirect: "/log-in",
+  }),
+  function (req, res) {
+    console.log("after auth", req.user);
+    const user = req.user;
+    res.json({ user });
+  }
+);
 
 router.post("/sign-up", async (req, res) => {
   const { username, password } = req.body;
@@ -82,24 +68,16 @@ router.post("/sign-up", async (req, res) => {
   const user = await prisma.user.create({
     data: {
       username,
-      password: hashedPassword
-    }
-  })
-  res.json({ user })
-
-})
+      password: hashedPassword,
+    },
+  });
+  res.json({ user });
+});
 
 router.get("/", (req, res) => {
-  if (req.app.user) {
-    const user = req.app.user;
-    jwt.sign({ user }, "secretkey", (err, token) => {
-      {
-        res.json({ token });
-      }
-    });
-  } else {
-    res.sendStatus(401);
-  }
+  console.log("user", req.session);
+  const user = req.user;
+  res.json("OK");
 });
 
 router.get("/log-out", (req, res, next) => {
@@ -110,6 +88,5 @@ router.get("/log-out", (req, res, next) => {
     res.redirect("/");
   });
 });
-
 
 module.exports = router;

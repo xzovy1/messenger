@@ -5,7 +5,13 @@ const prisma = new PrismaClient();
 
 async function main() {
   const testPass = await bcrypt.hash("admin", 10);
-  const users = await prisma.user.findMany();
+  // const users = await prisma.user.findMany();
+  const users = await prisma.user.create({
+    data: {
+      username: "a",
+      password: await bcrypt.hash("a", 10),
+    },
+  });
   // data: [
   //   {
   //     username: "user1",

@@ -22,8 +22,6 @@ const Signup = () => {
             navigate('/')
         }
     }
-    console.log(error)
-
     if (loading) {
         return <h1>Loading...</h1>
     }

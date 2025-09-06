@@ -26,6 +26,7 @@ exports.createUser = async (req, res) => {
       image: image || "backend/images/default_image.jpg",
     },
   });
+  console.log(username, password);
   res.json({ user, profile });
 };
 
