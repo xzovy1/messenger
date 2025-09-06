@@ -16,17 +16,18 @@ exports.createUser = async (req, res) => {
       password: hashedPassword,
     },
   });
+
   const profile = await prisma.profile.create({
     data: {
       user_id: user.id,
       firstname,
       lastname,
-      dob,
+      dob: new Date(dob), //convert from "YYYY-MM-DD" to time
       bio,
       image: image || "backend/images/default_image.jpg",
     },
   });
-  console.log(username, password);
+  console.log(username, profile);
   res.json({ user, profile });
 };
 

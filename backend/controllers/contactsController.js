@@ -17,9 +17,12 @@ exports.getAllFavorites = async (req, res) => {
     res.json(contact)
 }
 exports.getAllContacts = async (req, res) => {
-    const contacts = await prisma.user.findMany({
+    const contacts = await prisma.profile.findMany({
         where: {
 
+        },
+        include: {
+            user: true
         }
     })
     res.json(contacts)

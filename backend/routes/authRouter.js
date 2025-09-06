@@ -69,22 +69,10 @@ router.post(
   }
 );
 
-router.post("/sign-up", async (req, res) => {
-  const { username, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const user = await prisma.user.create({
-    data: {
-      username,
-      password: hashedPassword,
-    },
-  });
-  res.json({ user });
-});
-
 router.get("/", (req, res) => {
   // console.log("user", req.session);
   const user = req.user;
-  res.json("logged out");
+  res.json("");
 });
 
 router.get("/log-out", (req, res, next) => {
