@@ -12,17 +12,15 @@ const addTokenToHeader = (req, res, next) => {
     next();
 };
 const verifyToken = (req, res, next) => {
-
     jwt.verify(req.token, process.env.JWT_KEY, (err, authData) => {
         if (err) {
-            // console.log(err)
+            console.log(err)
             return res.sendStatus(403);
-        }
-        else {
+        } else {
+            req.user = authData
             next();
         }
     })
-
 };
 
 module.exports = { addTokenToHeader, verifyToken };

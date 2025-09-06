@@ -56,9 +56,16 @@ router.post(
     failureRedirect: "/log-in",
   }),
   function (req, res) {
-    console.log("after auth", req.user);
+    // console.log("after auth", req.user);
     const user = req.user;
-    res.json({ user });
+    jwt.sign(
+      { user },
+      process.env.JWT_KEY,
+      { expiresIn: "1d" },
+      (err, token) => {
+        res.json({ token }).redirect('/');
+      }
+    );
   }
 );
 
@@ -75,9 +82,9 @@ router.post("/sign-up", async (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  console.log("user", req.session);
+  // console.log("user", req.session);
   const user = req.user;
-  res.json("OK");
+  res.json("OK GET /");
 });
 
 router.get("/log-out", (req, res, next) => {

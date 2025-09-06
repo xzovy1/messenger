@@ -21,11 +21,8 @@ exports.deleteConversation = async (req, res) => {
 };
 
 exports.getAllConversations = async (req, res) => {
-  if (!req.app.user) {
-    return res.sendStatus(401);
-  }
   let chats = [];
-  const id = req.app.user.id;
+  const id = req.user.id;
   chats = await prisma.chat.findMany({
     where: {
       id,
