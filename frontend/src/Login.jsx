@@ -1,9 +1,11 @@
 import { useState } from "react"
 import { useNavigate } from "react-router";
+import { fetchDataPost } from "./helpers/fetchData";
 const Login = () => {
     const navigate = useNavigate();
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false)
+
     async function login(formData) {
         const username = formData.get("username");
         const password = formData.get("password");
@@ -11,35 +13,19 @@ const Login = () => {
         console.log(formBody)
         let authenticated = false;
         setLoading(true);
-        await fetch(`${import.meta.env.VITE_BACKEND}/log-in`, {
-            headers: {
-                'content-type': 'application/x-www-form-urlencoded'
-            },
-            method: 'POST',
-            mode: "cors",
-            body: new URLSearchParams(formData)
-        })
-            .then(response => {
-                console.log(response)
-                if (!response.ok) {
-                    return setError(response.status)
-                }
-                authenticated = true;
-                return response.json();
-
-            })
+        const url = `${import.meta.env.VITE_BACKEND}/log-in`;
+        await fetchDataPost(url, formData)
             .then(data => {
                 console.log(data)
                 localStorage.setItem("jwt", data.token);
+                navigate('/')
             })
             .catch(error => {
                 console.log(error);
-                setError(error)})
+                setError(error)
+            })
             .finally(() => {
                 setLoading(false);
-                if (authenticated) {
-                    // navigate('/')
-                }
             });
 
     }

@@ -1,5 +1,4 @@
-import useFetch from "./useFetch"
-const Component = ({ children, title, path, method, body }) => {
+const Component = ({ children, title }) => {
     return (
         <>
             <h2>{title}</h2>

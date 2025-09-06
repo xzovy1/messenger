@@ -1,18 +1,24 @@
-import useFetch from "./useFetch"
 import { useState } from "react"
 import { useNavigate } from "react-router"
-
+import { fetchDataGet } from './helpers/fetchData'
 const Logout = () => {
-    const [data, setData] = useState(null);
-    const navigate = useNavigate();
-    const [url, setUrl] = useState(null)
-    const { fetchData } = useFetch(url, "get")
-    const logout = () => {
-        setUrl('/log-out');
-        setData(fetchData);
-        console.log(data);
-        localStorage.clear();
-        navigate('/log-in')
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const nav = useNavigate();
+    const logout = async () => {
+        const url = `${import.meta.env.VITE_BACKEND}/log-out`;
+        try {
+            await fetchDataGet(url)
+            nav('/log-in');
+            setError(null);
+            localStorage.clear();
+        } catch (err) {
+            setError(err.message);
+            throw new Error(err)
+        } finally {
+            setLoading(false);
+        }
     }
     return <button onClick={logout}>Logout</button>
 }

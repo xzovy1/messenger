@@ -1,12 +1,10 @@
 import { useState } from "react";
-import useFetch from "./useFetch";
 import { useNavigate } from "react-router";
 const Signup = () => {
     const navigate = useNavigate();
     const [passwordError, setPasswordError] = useState(false)
     const [url, setUrl] = useState(null)
     const [formBody, setFormBody] = useState(null);
-    const { fetchData, error, loading } = useFetch(url, "post", formBody);
 
     async function signup(formData) {
         const username = formData.get("username");

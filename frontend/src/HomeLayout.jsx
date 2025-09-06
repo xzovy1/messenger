@@ -12,8 +12,9 @@ const HomeLayout = () => {
             <h1>Welcome</h1>
             <Component title="Messages">
                 <MessagesList />
+
             </Component>
-            <Component title="Conversation">
+            <Component title="Current Conversation">
                 <Conversation />
             </Component>
         </>

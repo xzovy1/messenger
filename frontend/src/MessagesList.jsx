@@ -1,43 +1,44 @@
-import { Link } from "react-router"
 import { useState, useEffect } from "react"
-import useFetch from "./useFetch"
+import { fetchDataGet } from './helpers/fetchData.js'
+
 const MessagesList = () => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const url = `${import.meta.env.VITE_BACKEND}/api/chat`
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACKEND}/api/chat`,
-            {
-                mode: "cors",
-                headers: {
-                    "authorization": `bearer ${localStorage.jwt}`
-                }
-            })
-            .then(response => {
-                if (response.status >= 400) {
-                    console.log(response.statusText)
-                    setError({ text: response.statusText, code: response.status })
-                }
-                response.json()
-            })
-            .then(data => setData(data))
-            .catch(error => { setError(error); console.log(error.statusText) })
-            .finally(setLoading(false))
+        const fetchMessages = async () => {
+            try {
+                setLoading(true);
+                const messagesData = await fetchDataGet(url);
+                setData(messagesData);
+                setError(null);
+            } catch (err) {
+                setError(err.message);
+                setData(null)
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchMessages();
     }, [])
 
     if (error) {
-        return <p className="error">an error occurred: {error.code}</p>
+        return <p className="error">an error occurred</p>
     }
     if (loading) {
-        return <p>Loading...</p>
+        return <p>Loading messages...</p>
     }
     return (
-        <ul>
-            {data ?
-                data.map(chat => <li key={chat.id}>{chat.recipient}</li>)
-                : <div>No messages</div>
-            }
-        </ul>
+        <>
+            <ul>
+                {data && data.length > 0 ?
+                    data.map(chat => <li key={chat.id}>{chat.recipient}</li>)
+                    : <div>No messages</div>
+                }
+            </ul>
+            <button>Start a Conversation</button>
+        </>
     )
 
 }
