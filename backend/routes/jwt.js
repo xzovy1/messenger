@@ -17,7 +17,9 @@ const verifyToken = (req, res, next) => {
             console.log(err)
             return res.sendStatus(403);
         } else {
-            req.user = authData
+            const { user } = authData
+            req.app.user = user
+            req.user = user
             next();
         }
     })

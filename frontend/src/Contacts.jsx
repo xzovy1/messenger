@@ -36,9 +36,9 @@ const Contacts = () => {
             <ul>
                 {data.map(contact => {
                     return <li key={contact.id}>
-                        <img src={contact.image} />
-                        <p>{contact.firstname} {contact.lastname}</p>
-                        <p>@{contact.user.username}</p>
+                        <img src={contact.profile.image} />
+                        <p>{contact.profile.firstname} {contact.profile.lastname}</p>
+                        <p>@{contact.username}</p>
                         <button>Message</button>
                     </li>
                 })}

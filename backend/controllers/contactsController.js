@@ -17,10 +17,17 @@ exports.getAllFavorites = async (req, res) => {
     res.json(contact)
 }
 exports.getAllContacts = async (req, res) => {
-    const contacts = await prisma.profile.findMany({
-
+    const contacts = await prisma.user.findMany({
+        where: {
+            NOT: {
+                id: req.app.user.id
+            }
+        },
+        omit: {
+            password: true
+        },
         include: {
-            user: true
+            profile: true
         },
     })
     res.json(contacts)
