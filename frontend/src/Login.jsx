@@ -7,16 +7,11 @@ const Login = () => {
     const [loading, setLoading] = useState(false)
 
     async function login(formData) {
-        const username = formData.get("username");
-        const password = formData.get("password");
-        const formBody = { username, password };
-        console.log(formBody)
-        let authenticated = false;
+
         setLoading(true);
         const url = `${import.meta.env.VITE_BACKEND}/log-in`;
         await fetchDataPost(url, formData)
             .then(data => {
-                console.log(data)
                 localStorage.setItem("jwt", data.token);
                 navigate('/')
             })
@@ -27,7 +22,6 @@ const Login = () => {
             .finally(() => {
                 setLoading(false);
             });
-
     }
     if (loading) {
         return (

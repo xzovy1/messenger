@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { fetchDataGet } from './helpers/fetchData.js'
 
 const MessagesList = () => {
-    const [data, setData] = useState(null);
+    const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const url = `${import.meta.env.VITE_BACKEND}/api/chat`
@@ -31,6 +31,7 @@ const MessagesList = () => {
     }
     return (
         <>
+            <h2>Messages</h2>
             <ul>
                 {data && data.length > 0 ?
                     data.map(chat => <li key={chat.id}>{chat.recipient}</li>)
