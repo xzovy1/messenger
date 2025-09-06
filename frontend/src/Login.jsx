@@ -17,7 +17,7 @@ const Login = () => {
             })
             .catch(error => {
                 console.log(error);
-                setError(error)
+                setError(error.message)
             })
             .finally(() => {
                 setLoading(false);
@@ -33,7 +33,7 @@ const Login = () => {
 
     return (
         <>
-            {error ? <div className="error">An error occured {error.statusText}</div> : null}
+            {error ? <div className="error">An error occured {error.message}</div> : null}
             <form action={login}>
                 <label htmlFor="username">Username: </label>
                 <input type="text" name="username" id="username" />

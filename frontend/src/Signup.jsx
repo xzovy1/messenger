@@ -20,7 +20,7 @@ const Signup = () => {
                 console.log(data)
             })
             .catch(error => {
-                setError(error)
+                setError(error.message)
                 throw new Error(error)
             })
             .finally(() => {
@@ -35,7 +35,7 @@ const Signup = () => {
         <>
             <h4>Create Account</h4>
             {passwordError ? <div className="error">Passwords do not match</div> : null}
-            {error ? <div className="error">an error occured</div> : null}
+            {error ? <p className="error">an error occurred: {error} </p> : null}
             <form action={signup}>
 
                 <label htmlFor="username">Username: </label>

@@ -18,12 +18,10 @@ exports.getAllFavorites = async (req, res) => {
 }
 exports.getAllContacts = async (req, res) => {
     const contacts = await prisma.profile.findMany({
-        where: {
 
-        },
         include: {
             user: true
-        }
+        },
     })
     res.json(contacts)
 }
