@@ -1,10 +1,12 @@
 const mode = 'cors'
+const contentType = JSON.stringify({ 'content-type': 'application/json' })
 
 const fetchDataGet = async (url) => {
     const response = await fetch(url, {
         mode,
         headers: {
-            "authorization": `bearer ${localStorage.jwt}`
+            "authorization": `bearer ${localStorage.jwt}`,
+            'content-type': 'application/json'
         }
     })
     if (!response.ok) {
@@ -17,7 +19,8 @@ const fetchDataPost = async (url, formData) => {
     const response = await fetch(url, {
         mode,
         headers: {
-            "authorization": `bearer ${localStorage.jwt}`
+            "authorization": `bearer ${localStorage.jwt}`,
+            'content-type': 'application/json'
         },
         method: 'post',
         body: new URLSearchParams(formData)

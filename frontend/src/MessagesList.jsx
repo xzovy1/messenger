@@ -3,13 +3,12 @@ import { fetchDataGet } from './helpers/fetchData.js'
 
 const MessagesList = () => {
     const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const url = `${import.meta.env.VITE_BACKEND}/api/chat`
     useEffect(() => {
         const fetchMessages = async () => {
             try {
-                setLoading(true);
                 const messagesData = await fetchDataGet(url);
                 setData(messagesData);
                 setError(null);
@@ -38,7 +37,7 @@ const MessagesList = () => {
                     : <div>No messages</div>
                 }
             </ul>
-            <button>Start a Conversation</button>
+            <button>Start a Conversation</button>{/* toggle contacts open. only visible if contacts tab is closed*/}
         </>
     )
 

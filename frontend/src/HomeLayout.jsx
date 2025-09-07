@@ -7,19 +7,27 @@ import Contacts from "./Contacts"
 import Logout from "./Logout"
 import Profile from "./Profile"
 const HomeLayout = () => {
-    const [toggleMessages, setMessages] = useState(true)
-    const [toggleConversation, setConversation] = useState(false)
+    const [toggleLeft, setLeft] = useState(true)
+    const [toggleRight, setRight] = useState(false);
 
     return (
         <>
             <Logout />
             <h1>Welcome</h1>
-            <Component>
-                {toggleMessages ? <MessagesList /> : <Profile />}
-            </Component>
-            <Component>
-                {toggleConversation ? <Conversation /> : <Contacts />}
-            </Component>
+            <div id="body">
+                <div id="leftTab">
+                    <Component >
+                        <button onClick={() => { setLeft(!toggleLeft) }}>{toggleLeft ? "View Contacts" : "View Profile"}</button>
+                        {toggleLeft ? <Profile /> : <Contacts />}
+                    </Component>
+                </div>
+                <div id="rightTab">
+                    <Component >
+                        <button onClick={() => { setRight(!toggleRight) }}>{toggleRight ? "View Conversation" : "View Messages"}</button>
+                        {toggleRight ? <MessagesList /> : <Conversation />}
+                    </Component>
+                </div>
+            </div>
         </>
     )
 }

@@ -25,10 +25,10 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
+  /* display: flex;
   place-items: center;
   min-width: 320px;
-  min-height: 100vh;
+  min-height: 100vh; */
 }
 
 h1 {
@@ -59,6 +59,14 @@ button:focus-visible {
 
 .error {
   color: red;
+}
+
+#body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  min-width: 320px;
+  min-height: 100vh;
 }
 
 @media (prefers-color-scheme: light) {

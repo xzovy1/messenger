@@ -3,13 +3,12 @@ import { useEffect, useState } from "react";
 
 const Contacts = () => {
     const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     useEffect(() => {
         const url = `${import.meta.env.VITE_BACKEND}/api/contacts`
         const fetchContacts = async () => {
             try {
-                setLoading(true);
                 const contacts = await fetchDataGet(url);
                 console.log(contacts)
                 setData(contacts);
@@ -17,6 +16,7 @@ const Contacts = () => {
             } catch (err) {
                 setError(err.message);
                 setData(null)
+                console.log(err)
                 throw new Error(error)
             } finally {
                 setLoading(false);
@@ -24,6 +24,10 @@ const Contacts = () => {
         }
         fetchContacts();
     }, [])
+
+    async function message() { }
+
+
     if (loading) {
         return <p>Loading Contacts...</p>
     }
@@ -39,7 +43,7 @@ const Contacts = () => {
                         <img src={contact.profile.image} />
                         <p>{contact.profile.firstname} {contact.profile.lastname}</p>
                         <p>@{contact.username}</p>
-                        <button>Message</button>
+                        <button onClick={message}>Message</button>
                     </li>
                 })}
             </ul>

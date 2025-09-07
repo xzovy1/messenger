@@ -5,6 +5,22 @@ exports.getUser = async (req, res) => {
   const user = await prisma.user.findMany();
   return res.json(user);
 };
+exports.getUser = async (req, res) => {
+  const id = req.app.user.id
+  const user = await prisma.user.findUnique({
+    where: {
+      id
+    },
+    omit: {
+      password:
+        true
+    },
+    include: {
+      profile: true
+    }
+  });
+  return res.json(user);
+};
 
 exports.createUser = async (req, res) => {
   const { username, password, firstname, lastname, dob, bio, image } = req.body;
@@ -30,6 +46,7 @@ exports.createUser = async (req, res) => {
   console.log(username, profile);
   res.json({ user, profile });
 };
+
 
 exports.updateUser = async (req, res) => {
   try {

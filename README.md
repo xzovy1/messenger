@@ -69,8 +69,18 @@ read
 
 ## UX Flow
 user:
-logs in -> selects contact from list -> starts chat -> sends message to recipient.
-        -> views conversations in list -> opens chat -> recieved message marked as read -> able to reply to sender
+logs in 
+-> : Create Conversation/Chat
+  - contacts and messages tabs both visible 
+  - user clicks message for specified contact
+  - conversation tab opens
+  - user sends message to recipient.
+-> : Open and respond in Chat
+  - views conversations in list, unread messages in bold.
+  - opened messages marked as read
+  - user response to sender
+
+
 
 ## UI
 - User creates account/logs in
