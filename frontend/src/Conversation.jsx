@@ -1,16 +1,27 @@
-import { fetchDataGet } from "./helpers/fetchData";
+import { fetchDataGet, fetchDataPost } from "./helpers/fetchData";
 import { useState, useEffect } from "react";
-const Conversation = () => {
-    const [data, setData] = useState([]);
+
+const Conversation = ({ chatIdRef }) => {
+    const [data, setData] = useState("");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const url = `${import.meta.env.VITE_BACKEND}/api/chat`
     useEffect(() => {
+        let url = `${import.meta.env.VITE_BACKEND}/api/chat/${chatIdRef.current}`
+        // conversationId ? url = url + `${conversationId}` : url;  
         const fetchConversation = async () => {
             try {
-                const messagesData = await fetchDataGet(url);
+                console.log("fetched", url)
+                const messagesData = await fetch(url, {
+                    mode: "cors",
+                    headers: {
+                        'content-type': 'application/json', // ??????
+                        'authorization': `bearer ${localStorage.jwt}`
+                    }
+                })
+                console.log(messagesData)
                 setData(messagesData);
                 setError(null);
+
             } catch (err) {
                 setError(err.message);
                 setData(null)
@@ -19,7 +30,7 @@ const Conversation = () => {
             }
         }
         fetchConversation();
-    }, [])
+    }, [chatIdRef.current])
 
     if (error) {
         return <p className="error">an error occurred: {error} </p>

@@ -20,7 +20,7 @@ const fetchDataPost = async (url, formData) => {
         mode,
         headers: {
             "authorization": `bearer ${localStorage.jwt}`,
-            'content-type': 'application/json'
+            // 'content-type': 'application/json'
         },
         method: 'post',
         body: new URLSearchParams(formData)

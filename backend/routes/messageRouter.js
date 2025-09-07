@@ -15,7 +15,7 @@ messageRouter
 messageRouter
   .route("/:id")
   .delete(messageController.deleteConversation)
-  .get(messageController.getChatMessages)
+  .get(messageController.getConversation)
   .post(messageController.newMessage);
 
 module.exports = messageRouter;

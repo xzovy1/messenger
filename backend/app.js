@@ -8,7 +8,7 @@ const passport = require("passport");
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
-// app.use(express.json()); // ensure Content-Type of header is application/json
+app.use(express.json()); // ensure Content-Type of header is application/json
 
 const session = require("express-session");
 app.use(session({ secret: process.env.SECRET, resave: false, saveUninitialized: false }));

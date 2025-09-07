@@ -1,7 +1,7 @@
-import { fetchDataGet } from "./helpers/fetchData";
+import { fetchDataGet, fetchDataPost } from "./helpers/fetchData";
 import { useEffect, useState } from "react";
 
-const Contacts = () => {
+const Contacts = ({ setRight, chatIdRef }) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -25,7 +25,30 @@ const Contacts = () => {
         fetchContacts();
     }, [])
 
-    async function message() { }
+    async function createChat(id) {
+        let url = `${import.meta.env.VITE_BACKEND}/api/chat/`
+        try {
+
+            const response = await fetch(url,
+                {
+                    method: 'post',
+                    mode: 'cors',
+                    headers: {
+                        "authorization": `bearer ${localStorage.jwt}`,
+                        "content-type": "application/json"
+                    },
+                    body: JSON.stringify({ to: id })
+                })
+                .then(response => response.json())
+                .then(data => data.conversation.id)
+            chatIdRef.current = response
+            setRight(false); //display conversation tab
+
+
+        } catch (error) { setError(error.message) }
+
+
+    }
 
 
     if (loading) {
@@ -43,7 +66,7 @@ const Contacts = () => {
                         <img src={contact.profile.image} />
                         <p>{contact.profile.firstname} {contact.profile.lastname}</p>
                         <p>@{contact.username}</p>
-                        <button onClick={message}>Message</button>
+                        <button onClick={() => createChat(contact.id)}>Message</button>
                     </li>
                 })}
             </ul>

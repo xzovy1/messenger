@@ -14,10 +14,31 @@ exports.newConversation = async (req, res) => {
       users: true,
     },
   });
+
+  req.chat = conversation;
+  console.log(req.chat)
   return res.json({ conversation });
 };
 exports.deleteConversation = async (req, res) => {
   //only deletes conversation for user
+};
+exports.getConversation = async (req, res) => {
+  console.log('req', req.params)
+  const { id } = req.params
+  if (!req.user) {
+    return res.sendStatus(401);
+  }
+  const messages = await prisma.message.findMany({
+    where: {
+      chat_id: id,
+    },
+    orderBy: {
+      sent_at: "desc",
+    },
+
+  });
+  console.log("mess", messages)
+  return res.json(messages);
 };
 
 exports.getAllConversations = async (req, res) => {
@@ -35,6 +56,8 @@ exports.getAllConversations = async (req, res) => {
 //
 
 exports.newMessage = async (req, res) => {
+
+  console.log(req.body)
   const { message, to } = req.body;
   const senderId = req.user.id;
   const recipientId = to;
@@ -53,7 +76,7 @@ exports.newMessage = async (req, res) => {
       },
       chat: {
         connect: {
-          id: testChat, // update
+          id: "", // update
         },
       },
     },
@@ -62,21 +85,7 @@ exports.newMessage = async (req, res) => {
   return res.json(prismaMessage);
 };
 
-exports.getChatMessages = async (req, res) => {
-  // const {chat} = req.param
-  if (!req.user) {
-    return res.sendStatus(401);
-  }
-  const messages = await prisma.message.findMany({
-    where: {
-      chat_id: testChat, // update
-    },
-    orderBy: {
-      sent_at: "desc",
-    },
-  });
-  res.json({ messages });
-};
+
 
 exports.deleteMessage = async (req, res) => {
   //only able to delete when recipient has not read it

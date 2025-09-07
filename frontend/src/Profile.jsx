@@ -39,8 +39,8 @@ const Profile = () => {
                 <p>First Name: </p><p> {profile.firstname}</p>
                 <p>Last Name: </p><p> {profile.lastname}</p>
                 <p>Date of birth: </p><p> {new Date(profile.dob).toDateString()}</p>
-                <p>About: <div>{profile.bio}</div></p>
-            </div>
+                <p>About: </p><p>{profile.bio}</p>
+            </div >
         </>
     )
 
