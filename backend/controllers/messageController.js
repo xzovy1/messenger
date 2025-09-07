@@ -1,7 +1,7 @@
 const prisma = require("../prisma/client.js");
 
 exports.newConversation = async (req, res) => {
-  const { message, to } = req.body;
+  const { to } = req.body;
   const senderId = req.user.id;
   const recipientId = to;
   const conversation = await prisma.chat.create({

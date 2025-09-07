@@ -16,13 +16,20 @@ datasource db {
 }
 
 model User {
-  id        String    @id @unique @default(uuid()) @db.Uuid
-  username  String    @unique
-  password  String
-  profile   Profile?
-  sender    Message[] @relation("SentMessage")
-  recipient Message[] @relation("RecievedMessage")
-  chats     Chat[]
+  id          String    @id @unique @default(uuid()) @db.Uuid
+  username    String    @unique
+  profile     Profile?
+  sender      Message[] @relation("SentMessage")
+  recipient   Message[] @relation("RecievedMessage")
+  chats       Chat[]
+  password    PW        @relation(fields: [password_id], references: [id])
+  password_id String    @unique @default(uuid()) @db.Uuid
+}
+
+model PW {
+  id       String @id @unique @default(uuid()) @db.Uuid
+  password String
+  User     User[]
 }
 
 model Profile {

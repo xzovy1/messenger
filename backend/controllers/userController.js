@@ -11,10 +11,6 @@ exports.getUser = async (req, res) => {
     where: {
       id
     },
-    omit: {
-      password:
-        true
-    },
     include: {
       profile: true
     }
@@ -29,22 +25,24 @@ exports.createUser = async (req, res) => {
   const user = await prisma.user.create({
     data: {
       username,
-      password: hashedPassword,
+      password: {
+        create: {
+          password: hashedPassword
+        }
+      },
+      profile: {
+        create: {
+          firstname,
+          lastname,
+          dob: new Date(dob), //convert from "YYYY-MM-DD" to time
+          bio,
+          image: image || "backend/images/default_image.jpg",
+        },
+      }
     },
-  });
 
-  const profile = await prisma.profile.create({
-    data: {
-      user_id: user.id,
-      firstname,
-      lastname,
-      dob: new Date(dob), //convert from "YYYY-MM-DD" to time
-      bio,
-      image: image || "backend/images/default_image.jpg",
-    },
   });
-  console.log(username, profile);
-  res.json({ user, profile });
+  res.json({ user });
 };
 
 
