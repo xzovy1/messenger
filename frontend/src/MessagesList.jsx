@@ -53,7 +53,7 @@ const MessagesList = ({ setConversation, setRight }) => {
   return (
     <>
       <h2>Messages</h2>
-      <div className="conversationList">
+      <div className="scroll">
         {data && data.length > 0 ? (
           data.map((chat) => (
             <div key={chat.id} className="conversation">
@@ -64,7 +64,7 @@ const MessagesList = ({ setConversation, setRight }) => {
                   onClick={() => {
                     setConversation({
                       id: chat.id,
-                      recipient: chat.users[0].id,
+                      recipient: chat.users[0],
                     });
                     setRight(true);
                   }}

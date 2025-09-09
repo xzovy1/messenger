@@ -1,25 +1,22 @@
 import { fetchDataGet, fetchDataPost } from "./helpers/fetchData";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
-const Conversation = ({ conversation }) => {
+const Conversation = ({ conversation, user }) => {
+  const [messageTrigger, setMessageTrigger] = useState(0);
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   let url = `${import.meta.env.VITE_BACKEND}/api/chat/${conversation.id}`;
-  console.log(conversation);
   useEffect(() => {
-    // conversationId ? url = url + `${conversationId}` : url;
     const fetchConversation = async () => {
       try {
-        console.log("fetched", url);
         const messagesData = await fetch(url, {
           mode: "cors",
           headers: {
-            "content-type": "application/json", // ??????
+            "content-type": "application/json",
             authorization: `bearer ${localStorage.jwt}`,
           },
         }).then((response) => response.json());
-        console.log(messagesData);
         setData(messagesData);
         setError(null);
       } catch (err) {
@@ -30,11 +27,10 @@ const Conversation = ({ conversation }) => {
       }
     };
     fetchConversation();
-  }, [conversation]);
+  }, [conversation, messageTrigger]);
 
   async function sendMessage(formData) {
-    console.log(conversation);
-    formData.set("recipient", conversation.recipient);
+    formData.set("recipient", conversation.recipient.id);
     await fetch(url, {
       mode: "cors",
       headers: {
@@ -43,8 +39,10 @@ const Conversation = ({ conversation }) => {
       method: "post",
       body: new URLSearchParams(formData),
     })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+      .then((response) => {
+        setMessageTrigger(Math.random()) //used to trigger use effect
+        return response.json()
+      })
   }
 
   if (error) {
@@ -55,24 +53,23 @@ const Conversation = ({ conversation }) => {
   }
   return (
     <>
-      <h2>Conversation</h2>
+      <h2>Conversation with {conversation.recipient.username}</h2>
       <div>
-        <ul>
+        <div className="scroll chatWindow">
           {data && data.length > 0 ? (
-            data.map((message) => (
-              <li key={message.id}>
-                <div className="message">
-                  <div>{message.body}</div>
-                  <div>{message.sender.username}</div>
-                </div>
-              </li>
-            ))
+            data.map((message) => {
+              if(user == message.sender.username){
+                return (<div key={message.id} className="sent">{message.body}</div>)
+              }else{
+                return (<div key={message.id} className="received">{message.body}</div>)
+              }
+              })
           ) : (
             <div>No messages yet. Start the conversation!</div>
           )}
-        </ul>
+        </div>
         <form action={sendMessage}>
-          <input type="text" name="message" id="message" />
+          <input type="text" name="message" id="message" autoComplete="off"/>
           <button type="submit">Send</button>
         </form>
       </div>

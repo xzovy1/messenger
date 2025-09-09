@@ -58,20 +58,20 @@ const Contacts = ({ setRight, setConversation }) => {
   return (
     <>
       <h3>Contacts</h3>
-      <ul>
+      <div>
         {data.map((contact) => {
           return (
-            <li key={contact.id}>
+            <div key={contact.id}>
               <img src={contact.profile.image} />
               <p>
                 {contact.profile.firstname} {contact.profile.lastname}
               </p>
               <p>@{contact.username}</p>
               <button onClick={() => createChat(contact.id)}>Message</button>
-            </li>
+            </div>
           );
         })}
-      </ul>
+      </div>
     </>
   );
 };

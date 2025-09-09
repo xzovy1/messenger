@@ -1,7 +1,6 @@
 const prisma = require("../prisma/client.js");
 
 exports.newConversation = async (req, res) => {
-  console.log(req);
   const { to } = req.body;
   const senderId = req.user.id;
   const recipientId = to;
@@ -17,24 +16,20 @@ exports.newConversation = async (req, res) => {
   });
 
   req.chat = conversation;
-  console.log(req.chat);
   return res.json({ conversation });
 };
 exports.deleteConversation = async (req, res) => {
   //only deletes conversation for user
     const {id} = req.params;
-  console.log(id)
   const chat = await prisma.chat.delete({
     where: {
       id
     }
   })
-  console.log(chat)
   res.json(chat)
 };
 
 exports.getConversation = async (req, res) => {
-  console.log("req", req.params);
   const { id } = req.params;
   if (!req.user) {
     return res.sendStatus(401);
@@ -44,14 +39,13 @@ exports.getConversation = async (req, res) => {
       chat_id: id,
     },
     orderBy: {
-      sent_at: "desc",
+      sent_at: "asc",
     },
     include: {
       sender: true,
       recipient: true
     }
   });
-  console.log("mess", messages);
   return res.json(messages);
 };
 
@@ -74,6 +68,9 @@ exports.getAllConversations = async (req, res) => {
         },
       },
       message: {
+        orderBy: {
+          sent_at: 'desc'
+        },
         select: {
           body: true,
         },
@@ -81,20 +78,16 @@ exports.getAllConversations = async (req, res) => {
       },
     },
   });
-  console.log(chats);
   return res.json(chats);
 };
-//testconvo:
-// const testChat = "a5efd84f-65a7-4d9f-84b4-3d910f77d4e1";
-//
 
 exports.sendMessage = async (req, res) => {
-  console.log(req.params);
-  console.log(req.body);
 
-  const { id } = req.params;
+  const { id } = req.params; //chat id
   const { message, recipient } = req.body;
   const senderId = req.user.id;
+
+  console.log(id, message, recipient, senderId)
   const prismaMessage = await prisma.message.create({
     data: {
       body: message,

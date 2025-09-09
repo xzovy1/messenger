@@ -75,8 +75,8 @@ button:focus-visible {
   max-height: 99vh;
 }
 
-.conversationList {
-  max-height: 40%;
+.scroll {
+  height: 60vh;
   overflow-y: scroll;
 }
 .conversation {
@@ -87,6 +87,25 @@ button:focus-visible {
   padding: 1em;
   margin: 0.5em;
 }
+.chatWindow {
+  display: flex;
+  flex-direction: column;
+}
+.sent, .received {
+  margin: 0.5em;
+  padding: 0.5em;
+  border-radius: 5px;
+}
+
+.sent{
+  align-self: end;
+  background-color: #848484;
+}
+.received{
+  align-self: start;
+  background-color: green;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

@@ -7,8 +7,9 @@ import Contacts from "./Contacts";
 import Logout from "./Logout";
 import Profile from "./Profile";
 const HomeLayout = () => {
-  const [toggleLeft, setLeft] = useState(false);
+  const [toggleLeft, setLeft] = useState(true);
   const [toggleRight, setRight] = useState(false);
+  const [user, setUser] = useState("");
   // const chatIdRef = useRef("")
   const [conversation, setConversation] = useState({});
   return (
@@ -26,7 +27,7 @@ const HomeLayout = () => {
               {toggleLeft ? "View Contacts" : "View Profile"}
             </button>
             {toggleLeft ? (
-              <Profile />
+              <Profile setUser={setUser}/>
             ) : (
               <Contacts
                 setRight={setRight}
@@ -46,7 +47,7 @@ const HomeLayout = () => {
               View{toggleRight ? " Messages" : " Conversation"}
             </button>
             {toggleRight ? (
-              <Conversation conversation={conversation} />
+              <Conversation conversation={conversation} user={user}/>
             ) : (
               <MessagesList setConversation={setConversation} setRight={setRight}/>
             )}
