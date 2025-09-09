@@ -6,14 +6,14 @@ exports.getUser = async (req, res) => {
   return res.json(user);
 };
 exports.getUser = async (req, res) => {
-  const id = req.app.user.id
+  const id = req.app.user.id;
   const user = await prisma.user.findUnique({
     where: {
-      id
+      id,
     },
     include: {
-      profile: true
-    }
+      profile: true,
+    },
   });
   return res.json(user);
 };
@@ -27,8 +27,8 @@ exports.createUser = async (req, res) => {
       username,
       password: {
         create: {
-          password: hashedPassword
-        }
+          password: hashedPassword,
+        },
       },
       profile: {
         create: {
@@ -38,13 +38,11 @@ exports.createUser = async (req, res) => {
           bio,
           image: image || "backend/images/default_image.jpg",
         },
-      }
+      },
     },
-
   });
   res.json({ user });
 };
-
 
 exports.updateUser = async (req, res) => {
   try {

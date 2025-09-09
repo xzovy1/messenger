@@ -1,0 +1,24 @@
+{
+  "name": "messenger",
+  "version": "1.0.0",
+  "description": "This web app allows users to send messages to each other similar to Discord or Whatsapp.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xzovy1/messenger.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/xzovy1/messenger/issues"
+  },
+  "homepage": "https://github.com/xzovy1/messenger#readme",
+  "devDependencies": {
+    "prettier": "3.6.2"
+  }
+}

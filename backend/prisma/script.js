@@ -1,5 +1,6 @@
 const { PrismaClient, Prisma } = require("../generated/prisma/index");
 const bcrypt = require("bcryptjs");
+const { user } = require("./client");
 
 const prisma = new PrismaClient();
 
@@ -15,14 +16,18 @@ async function main() {
   //   deleteUsers,
   //   deleteChats,
   // ]);
-  const data = await prisma.user.findUnique({
-    where: {
-      username: 'adam'
-    },
+  const data = await prisma.chat.findMany({
     include: {
-      password: true
-    }
-  })
+      users: true,
+    },
+    where: {
+      users: {
+        some: {
+          id: "c30eb052-258b-4137-92ff-ee07af7b70b2",
+        },
+      },
+    },
+  });
   // data: [
   //   {
   //     username: "user1",

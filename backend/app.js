@@ -11,7 +11,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // ensure Content-Type of header is application/json
 
 const session = require("express-session");
-app.use(session({ secret: process.env.SECRET, resave: false, saveUninitialized: false }));
+app.use(
+  session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false,
+  }),
+);
 app.use(passport.session());
 
 // app.use((req, res, next) => {

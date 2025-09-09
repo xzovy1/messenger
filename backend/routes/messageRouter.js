@@ -1,10 +1,10 @@
 const express = require("express");
 const messageRouter = express.Router();
 const messageController = require("../controllers/messageController");
-const { addTokenToHeader, verifyToken } = require("./jwt.js")
+const { addTokenToHeader, verifyToken } = require("./jwt.js");
 
 messageRouter.use(addTokenToHeader);
-messageRouter.use(verifyToken)
+messageRouter.use(verifyToken);
 
 // '/chat'
 messageRouter
@@ -16,6 +16,6 @@ messageRouter
   .route("/:id")
   .delete(messageController.deleteConversation)
   .get(messageController.getConversation)
-  .post(messageController.newMessage);
+  .post(messageController.sendMessage);
 
 module.exports = messageRouter;

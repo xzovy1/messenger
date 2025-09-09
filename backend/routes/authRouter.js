@@ -14,10 +14,10 @@ passport.use(
           username,
         },
         include: {
-          password: true
-        }
+          password: true,
+        },
       });
-      const pass = user.password
+      const pass = user.password;
       const hashedPassword = pass.password;
       if (!user) {
         console.log("incorrect username");
@@ -32,7 +32,7 @@ passport.use(
     } catch (err) {
       return done(err);
     }
-  })
+  }),
 );
 
 passport.serializeUser((user, done) => {
@@ -68,10 +68,10 @@ router.post(
       process.env.JWT_KEY,
       { expiresIn: "1d" },
       (err, token) => {
-        res.json({ token }).redirect('/');
-      }
+        res.json({ token }).redirect("/");
+      },
     );
-  }
+  },
 );
 
 router.get("/", (req, res) => {
@@ -86,7 +86,7 @@ router.get("/log-out", (req, res, next) => {
       return next(err);
     }
   });
-  res.json('logged out')
+  res.json("logged out");
 });
 
 module.exports = router;

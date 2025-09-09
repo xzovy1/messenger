@@ -1,77 +1,79 @@
 import { fetchDataGet, fetchDataPost } from "./helpers/fetchData";
 import { useEffect, useState } from "react";
 
-const Contacts = ({ setRight, chatIdRef }) => {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    useEffect(() => {
-        const url = `${import.meta.env.VITE_BACKEND}/api/contacts`
-        const fetchContacts = async () => {
-            try {
-                const contacts = await fetchDataGet(url);
-                console.log(contacts)
-                setData(contacts);
-                setError(null);
-            } catch (err) {
-                setError(err.message);
-                setData(null)
-                console.log(err)
-                throw new Error(error)
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchContacts();
-    }, [])
+const Contacts = ({ setRight, setConversation }) => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    const url = `${import.meta.env.VITE_BACKEND}/api/contacts`;
+    const fetchContacts = async () => {
+      try {
+        const contacts = await fetchDataGet(url);
+        console.log(contacts);
+        setData(contacts);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+        setData(null);
+        console.log(err);
+        throw new Error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchContacts();
+  }, []);
 
-    async function createChat(id) {
-        let url = `${import.meta.env.VITE_BACKEND}/api/chat/`
-        try {
-
-            const response = await fetch(url,
-                {
-                    method: 'post',
-                    mode: 'cors',
-                    headers: {
-                        "authorization": `bearer ${localStorage.jwt}`,
-                        "content-type": "application/json"
-                    },
-                    body: JSON.stringify({ to: id })
-                })
-                .then(response => response.json())
-                .then(data => data.conversation.id)
-            chatIdRef.current = response
-            setRight(false); //display conversation tab
-
-
-        } catch (error) { setError(error.message) }
-
-
+  async function createChat(id) {
+    let url = `${import.meta.env.VITE_BACKEND}/api/chat/`;
+    try {
+      const response = await fetch(url, {
+        method: "post",
+        mode: "cors",
+        headers: {
+          authorization: `bearer ${localStorage.jwt}`,
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ to: id }),
+      })
+        .then((response) => response.json())
+        .then((data) => data.conversation.id);
+      setConversation({
+        id: response,
+        recipient: id,
+      });
+      setRight(false); //display conversation tab
+    } catch (error) {
+      setError(error.message);
     }
+  }
 
-
-    if (loading) {
-        return <p>Loading Contacts...</p>
-    }
-    if (error) {
-        return <p className="error">An Error has occured: {error}</p>
-    }
-    return (
-        <>
-            <h3>Contacts</h3>
-            <ul>
-                {data.map(contact => {
-                    return <li key={contact.id}>
-                        <img src={contact.profile.image} />
-                        <p>{contact.profile.firstname} {contact.profile.lastname}</p>
-                        <p>@{contact.username}</p>
-                        <button onClick={() => createChat(contact.id)}>Message</button>
-                    </li>
-                })}
-            </ul>
-        </>
-    )
-}
+  if (loading) {
+    return <p>Loading Contacts...</p>;
+  }
+  if (error) {
+    return <p className="error">An Error has occured: {error}</p>;
+  }
+  return (
+    <>
+      <h3>Contacts</h3>
+      <ul>
+        {data.map((contact) => {
+          return (
+            <li key={contact.id}>
+              <img src={contact.profile.image} />
+              <p>
+                {contact.profile.firstname} {contact.profile.lastname}
+              </p>
+              <p>@{contact.username}</p>
+              <button onClick={() => createChat(contact.id)}>Message</button>
+            </li>
+          );
+        })}
+      </ul>
+    </>
+  );
+};
 
 export default Contacts;

@@ -1,10 +1,5 @@
 const Component = ({ children, title }) => {
-    return (
-        <>
-            <h2>{title}</h2>
-            {children}
-        </>
-    )
-}
+  return <>{children}</>;
+};
 
-export default Component
+export default Component;

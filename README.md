@@ -27,11 +27,10 @@ This web app allows users to send messages to each other similar to Discord or W
 - icon/button to create new message
 - profile info
 
-
-
 ## Data models
 
 #### Users
+
 id
 username
 password
@@ -39,6 +38,7 @@ contacts
 messages
 
 #### Profile
+
 id
 name
 DOB
@@ -46,6 +46,7 @@ profile pic?
 bio
 
 #### Messages
+
 id
 sender id
 recipient id(s)
@@ -54,39 +55,45 @@ message body
 read
 
 ## Routers
+
 ### Message Router `/chat/`
-`/`:  all user message conversations (chats)
-`/:id`:  individual conversation
+
+`/`: all user message conversations (chats)
+`/:id`: individual conversation
 `/message/:id`: individual message
 
 ### User Router `/user/`
+
 `/profile`: user info
 
 ### Contact Router `/contacts/`
+
 `/`: all known user contacts
 `/add`: add contact based on info/name
 `/favorites`: starred contacts
 
 ## UX Flow
+
 user:
-logs in 
+logs in
 -> : Create Conversation/Chat
-  - contacts and messages tabs both visible 
-  - user clicks message for specified contact
-  - conversation tab opens
-  - user sends message to recipient.
--> : Open and respond in Chat
-  - views conversations in list, unread messages in bold.
-  - opened messages marked as read
-  - user response to sender
 
-
+- contacts and messages tabs both visible
+- user clicks message for specified contact
+- conversation tab opens
+- user sends message to recipient.
+  -> : Open and respond in Chat
+- views conversations in list, unread messages in bold.
+- opened messages marked as read
+- user response to sender
 
 ## UI
+
 - User creates account/logs in
 - redirects to dashboard displaying chats, contacts and profile info and logout.
 
 #### Dashboard
+
 - Tiled dashboard with nav bar containing redirects for contacts and view/edit profile
   - left tile displays chats(if any)
     - shows username/profile picture & truncated last sent message
@@ -97,24 +104,24 @@ logs in
     - sender (user) messages on the right.
 
 #### Profile edit
-- similar to cv application app: 
+
+- similar to cv application app:
   - left side, populated form with current info
   - right side, displayed info which updates along with the form.
   - update and cancel buttons
 
 #### Contacts
-- list all users (accepted and requested or all?) 
 
+- list all users (accepted and requested or all?)
 
 #### Considerations
+
 - able to upload photos to chat.
-- delete user and replace all chats with "*user removed*"
+- delete user and replace all chats with "_user removed_"
 - user status (away, active, busy, etc...)
-- login with more than just passport-local 
+- login with more than just passport-local
 - send user contact requests (friend requests)
 - instead of going to a new page for each nav bar button, do component hotswaps
   - left side is contact list and message list
   - right side is profile info and displayed message
 - read receipts
-
-
