@@ -1,21 +1,19 @@
-import { Outlet } from "react-router";
-import { useEffect, useState, useRef } from "react";
+import { useState } from "react";
 import Component from "./Component";
 import Conversation from "./Conversation";
 import MessagesList from "./MessagesList";
 import Contacts from "./Contacts";
-import Logout from "./Logout";
 import Profile from "./Profile";
+import Navbar from "./Navbar";
 const HomeLayout = () => {
   const [toggleLeft, setLeft] = useState(true);
   const [toggleRight, setRight] = useState(false);
   const [user, setUser] = useState("");
-  // const chatIdRef = useRef("")
+  
   const [conversation, setConversation] = useState({});
   return (
     <>
-      <Logout />
-      <h1>Welcome</h1>
+      <Navbar user={user}/>
       <div id="body">
         <div id="leftTab">
           <Component>
@@ -31,6 +29,7 @@ const HomeLayout = () => {
             ) : (
               <Contacts
                 setRight={setRight}
+                setLeft={setLeft}
                 conversation={conversation}
                 setConversation={setConversation}
               />

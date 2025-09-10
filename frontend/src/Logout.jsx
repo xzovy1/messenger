@@ -20,7 +20,7 @@ const Logout = () => {
       setLoading(false);
     }
   };
-  return <button onClick={logout}>Logout</button>;
+  return <div><button onClick={logout}>Logout</button></div>;
 };
 
 export default Logout;

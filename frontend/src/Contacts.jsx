@@ -1,7 +1,7 @@
 import { fetchDataGet, fetchDataPost } from "./helpers/fetchData";
 import { useEffect, useState } from "react";
 
-const Contacts = ({ setRight, setConversation }) => {
+const Contacts = ({ setRight, setLeft, setConversation }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -25,7 +25,7 @@ const Contacts = ({ setRight, setConversation }) => {
     fetchContacts();
   }, []);
 
-  async function createChat(id) {
+  async function createChat(recipientId) {
     let url = `${import.meta.env.VITE_BACKEND}/api/chat/`;
     try {
       const response = await fetch(url, {
@@ -35,13 +35,13 @@ const Contacts = ({ setRight, setConversation }) => {
           authorization: `bearer ${localStorage.jwt}`,
           "content-type": "application/json",
         },
-        body: JSON.stringify({ to: id }),
+        body: JSON.stringify({ to: recipientId }),
       })
         .then((response) => response.json())
         .then((data) => data.conversation.id);
       setConversation({
         id: response,
-        recipient: id,
+        recipient: recipientId,
       });
       setRight(false); //display conversation tab
     } catch (error) {
@@ -67,7 +67,7 @@ const Contacts = ({ setRight, setConversation }) => {
                 {contact.profile.firstname} {contact.profile.lastname}
               </p>
               <p>@{contact.username}</p>
-              <button onClick={() => createChat(contact.id)}>Message</button>
+              <button onClick={() => {createChat(contact.id); setRight(true)}}>Message</button>
             </div>
           );
         })}
