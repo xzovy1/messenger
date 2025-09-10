@@ -10,14 +10,9 @@ const Conversation = ({ conversation, user }) => {
   useEffect(() => {
     const fetchConversation = async () => {
       try {
-        const messagesData = await fetch(url, {
-          mode: "cors",
-          headers: {
-            "content-type": "application/json",
-            authorization: `bearer ${localStorage.jwt}`,
-          },
-        }).then((response) => response.json());
-        setData(messagesData);
+        const conversationData = await fetchDataGet(url)
+        setData(conversationData);
+        console.log(conversation.id)
         setError(null);
       } catch (err) {
         setError(err.message);
@@ -31,17 +26,9 @@ const Conversation = ({ conversation, user }) => {
 
   async function sendMessage(formData) {
     formData.set("recipient", conversation.recipient.id);
-    await fetch(url, {
-      mode: "cors",
-      headers: {
-        authorization: `bearer ${localStorage.jwt}`,
-      },
-      method: "post",
-      body: new URLSearchParams(formData),
-    }).then((response) => {
-      setMessageTrigger(Math.random()); //used to trigger use effect
-      return response.json();
-    });
+    await fetchDataPost(url, 'post', new URLSearchParams(formData))
+    setMessageTrigger(Math.random()); //used to trigger use effect
+
   }
 
   if (error) {
@@ -52,7 +39,7 @@ const Conversation = ({ conversation, user }) => {
   }
   return (
     <>
-      <h2>Conversation {'with ' + conversation.recipient.username || ''}</h2>
+      <h2>Conversation with {conversation.recipient.username}</h2>
       <div>
         <div className="scroll chatWindow">
           {data && data.length > 0 ? (

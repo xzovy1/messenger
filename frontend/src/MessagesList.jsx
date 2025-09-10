@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { fetchDataGet } from "./helpers/fetchData.js";
+import { fetchDataGet, fetchDataPost } from "./helpers/fetchData.js";
 
 const MessagesList = ({ setConversation, setRight }) => {
+  const [messageTrigger, setMessageTrigger] = useState(0);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -9,17 +10,8 @@ const MessagesList = ({ setConversation, setRight }) => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        await fetch(url, {
-          mode: "cors",
-          headers: {
-            authorization: `bearer ${localStorage.jwt}`,
-          },
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log(data);
-            setData(data);
-          });
+        const messages = await fetchDataGet(url)
+        setData(messages)
         setError(null);
       } catch (err) {
         setError(err.message);
@@ -29,20 +21,10 @@ const MessagesList = ({ setConversation, setRight }) => {
       }
     };
     fetchMessages();
-  }, []);
+  }, [messageTrigger]);
   async function deleteMessage(id) {
-    console.log(id);
-    await fetch(url + `/${id}`, {
-      mode: "cors",
-      method: "delete",
-      headers: {
-        authorization: `bearer ${localStorage.jwt}`,
-        // "content-type": "application/json"
-      },
-      body: JSON.stringify({ id: id }),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+    await fetchDataPost(url + `/${id}`, "delete", JSON.stringify({ id: id }))
+    setMessageTrigger(Math.random());
   }
   if (error) {
     return <p className="error">an error occurred: {error} </p>;

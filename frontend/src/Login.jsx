@@ -9,7 +9,7 @@ const Login = () => {
   async function login(formData) {
     setLoading(true);
     const url = `${import.meta.env.VITE_BACKEND}/log-in`;
-    await fetchDataPost(url, formData)
+    await fetchDataPost(url, 'post', new URLSearchParams(formData))
       .then((data) => {
         localStorage.setItem("jwt", data.token);
         navigate("/");
