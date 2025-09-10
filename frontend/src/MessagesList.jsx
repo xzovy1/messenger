@@ -30,19 +30,19 @@ const MessagesList = ({ setConversation, setRight }) => {
     };
     fetchMessages();
   }, []);
-  async function deleteMessage(id){
-    console.log(id)
+  async function deleteMessage(id) {
+    console.log(id);
     await fetch(url + `/${id}`, {
-        mode: "cors", 
-        method: "delete",
-        headers: {
-            "authorization" : `bearer ${localStorage.jwt}`,
-            // "content-type": "application/json"
-        },
-        body: JSON.stringify({id: id})
+      mode: "cors",
+      method: "delete",
+      headers: {
+        authorization: `bearer ${localStorage.jwt}`,
+        // "content-type": "application/json"
+      },
+      body: JSON.stringify({ id: id }),
     })
-    .then(response => response.json())
-    .then(data => console.log(data));
+      .then((response) => response.json())
+      .then((data) => console.log(data));
   }
   if (error) {
     return <p className="error">an error occurred: {error} </p>;
@@ -71,7 +71,13 @@ const MessagesList = ({ setConversation, setRight }) => {
                 >
                   Open
                 </button>
-                <button onClick={()=>{deleteMessage(chat.id)}}>Delete</button>
+                <button
+                  onClick={() => {
+                    deleteMessage(chat.id);
+                  }}
+                >
+                  Delete
+                </button>
               </div>
             </div>
           ))

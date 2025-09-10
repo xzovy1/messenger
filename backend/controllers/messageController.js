@@ -20,13 +20,13 @@ exports.newConversation = async (req, res) => {
 };
 exports.deleteConversation = async (req, res) => {
   //only deletes conversation for user
-    const {id} = req.params;
+  const { id } = req.params;
   const chat = await prisma.chat.delete({
     where: {
-      id
-    }
-  })
-  res.json(chat)
+      id,
+    },
+  });
+  res.json(chat);
 };
 
 exports.getConversation = async (req, res) => {
@@ -43,8 +43,8 @@ exports.getConversation = async (req, res) => {
     },
     include: {
       sender: true,
-      recipient: true
-    }
+      recipient: true,
+    },
   });
   return res.json(messages);
 };
@@ -69,7 +69,7 @@ exports.getAllConversations = async (req, res) => {
       },
       message: {
         orderBy: {
-          sent_at: 'desc'
+          sent_at: "desc",
         },
         select: {
           body: true,
@@ -82,12 +82,11 @@ exports.getAllConversations = async (req, res) => {
 };
 
 exports.sendMessage = async (req, res) => {
-
   const { id } = req.params; //chat id
   const { message, recipient } = req.body;
   const senderId = req.user.id;
 
-  console.log(id, message, recipient, senderId)
+  console.log(id, message, recipient, senderId);
   const prismaMessage = await prisma.message.create({
     data: {
       body: message,
@@ -105,7 +104,7 @@ exports.sendMessage = async (req, res) => {
         connect: {
           id,
         },
-      }
+      },
     },
   });
 

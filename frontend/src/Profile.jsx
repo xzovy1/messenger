@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { fetchDataGet } from "./helpers/fetchData.js";
 
-const Profile = ({setUser}) => {
+const Profile = ({ setUser }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,7 +11,7 @@ const Profile = ({setUser}) => {
       try {
         const data = await fetchDataGet(url);
         setData(data);
-        setUser(data.username)
+        setUser(data.username);
         setError(null);
       } catch (err) {
         setError(err.message);
