@@ -5,7 +5,7 @@ const fetchDataGet = async (url) => {
     mode,
     headers: {
       authorization: `bearer ${localStorage.jwt}`,
-      "content-type": "application/json",
+      // "content-type": "application/json",
     },
   });
   if (!response.ok) {

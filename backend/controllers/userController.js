@@ -7,6 +7,9 @@ exports.getUser = async (req, res) => {
 };
 exports.getUser = async (req, res) => {
   const id = req.app.user.id;
+  if(!id){
+    res.status(404).json("User not found")
+  }
   const user = await prisma.user.findUnique({
     where: {
       id,

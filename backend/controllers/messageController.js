@@ -4,6 +4,14 @@ exports.newConversation = async (req, res) => {
   const { to } = req.body;
   const senderId = req.user.id;
   const recipientId = to;
+  if(!recipientId){
+    res.status(404).json({message: "Recipient not found"})
+    return;
+  }
+    if(!senderId){
+    res.status(404).json({message: "User not found"})
+    return;
+  }
   const conversation = await prisma.chat.create({
     data: {
       users: {
@@ -20,7 +28,11 @@ exports.newConversation = async (req, res) => {
 };
 exports.deleteConversation = async (req, res) => {
   //only deletes conversation for user
-    const {id} = req.params;
+  const {id} = req.params;
+  if(!id){
+    res.status(404).json({message: "Conversation not found"});
+    return;
+  }
   const chat = await prisma.chat.delete({
     where: {
       id
@@ -32,7 +44,12 @@ exports.deleteConversation = async (req, res) => {
 exports.getConversation = async (req, res) => {
   const { id } = req.params;
   if (!req.user) {
-    return res.sendStatus(401);
+    res.status(404).json({message: "User not found"});
+    return;
+  }
+  if(!id){
+    res.status(404).json({message: "Conversation not found"});
+    return;
   }
   const messages = await prisma.message.findMany({
     where: {
@@ -46,7 +63,7 @@ exports.getConversation = async (req, res) => {
       recipient: true
     }
   });
-  return res.json(messages);
+  res.json(messages);
 };
 
 exports.getAllConversations = async (req, res) => {
@@ -78,7 +95,7 @@ exports.getAllConversations = async (req, res) => {
       },
     },
   });
-  return res.json(chats);
+  res.json(chats);
 };
 
 exports.sendMessage = async (req, res) => {
@@ -109,7 +126,7 @@ exports.sendMessage = async (req, res) => {
     },
   });
 
-  return res.json(prismaMessage);
+  res.json(prismaMessage);
 };
 
 exports.deleteMessage = async (req, res) => {
