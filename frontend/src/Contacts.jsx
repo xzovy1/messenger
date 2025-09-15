@@ -10,7 +10,6 @@ const Contacts = ({ setRight, setLeft, setConversation }) => {
     const fetchContacts = async () => {
       try {
         const contacts = await fetchDataGet(url);
-        console.log(contacts);
         setData(contacts);
         setError(null);
       } catch (err) {
@@ -67,7 +66,14 @@ const Contacts = ({ setRight, setLeft, setConversation }) => {
                 {contact.profile.firstname} {contact.profile.lastname}
               </p>
               <p>@{contact.username}</p>
-              <button onClick={() => {createChat(contact.id); setRight(true)}}>Message</button>
+              <button
+                onClick={() => {
+                  createChat(contact.id);
+                  setRight(true);
+                }}
+              >
+                Message
+              </button>
             </div>
           );
         })}

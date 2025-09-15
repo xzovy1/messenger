@@ -14,15 +14,15 @@ const fetchDataGet = async (url) => {
   return response.json();
 };
 
-const fetchDataPost = async (url, formData) => {
+const fetchDataPost = async (url, method = 'post', body) => {
   const response = await fetch(url, {
     mode,
     headers: {
       authorization: `bearer ${localStorage.jwt}`,
       // 'content-type': 'application/json'
     },
-    method: "post",
-    body: new URLSearchParams(formData),
+    method,
+    body,
   });
   if (!response.ok) {
     throw new Error(`HTTP error: Status ${response.status}`);

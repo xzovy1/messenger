@@ -9,11 +9,11 @@ const HomeLayout = () => {
   const [toggleLeft, setLeft] = useState(true);
   const [toggleRight, setRight] = useState(false);
   const [user, setUser] = useState("");
-  
+
   const [conversation, setConversation] = useState({});
   return (
     <>
-      <Navbar user={user}/>
+      <Navbar user={user} />
       <div id="body">
         <div id="leftTab">
           <Component>
@@ -25,7 +25,7 @@ const HomeLayout = () => {
               {toggleLeft ? "View Contacts" : "View Profile"}
             </button>
             {toggleLeft ? (
-              <Profile setUser={setUser}/>
+              <Profile setUser={setUser} />
             ) : (
               <Contacts
                 setRight={setRight}
@@ -46,9 +46,12 @@ const HomeLayout = () => {
               View{toggleRight ? " Messages" : " Conversation"}
             </button>
             {toggleRight ? (
-              <Conversation conversation={conversation} user={user}/>
+              <Conversation conversation={conversation} user={user} />
             ) : (
-              <MessagesList setConversation={setConversation} setRight={setRight}/>
+              <MessagesList
+                setConversation={setConversation}
+                setRight={setRight}
+              />
             )}
           </Component>
         </div>
