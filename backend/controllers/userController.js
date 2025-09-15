@@ -6,9 +6,11 @@ exports.getUser = async (req, res) => {
   return res.json(user);
 };
 exports.getUser = async (req, res) => {
+  console.log(req.app.user)
   const id = req.app.user.id;
-  if(!id){
-    res.status(404).json("User not found")
+  if (!id) {
+    res.status(404).json("User not found");
+    return;
   }
   const user = await prisma.user.findUnique({
     where: {
@@ -18,10 +20,11 @@ exports.getUser = async (req, res) => {
       profile: true,
     },
   });
-  return res.json(user);
+  res.json(user);
 };
 
 exports.createUser = async (req, res) => {
+  console.log(req.body)
   const { username, password, firstname, lastname, dob, bio, image } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
 

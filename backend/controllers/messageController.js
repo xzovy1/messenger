@@ -4,12 +4,12 @@ exports.newConversation = async (req, res) => {
   const { to } = req.body;
   const senderId = req.user.id;
   const recipientId = to;
-  if(!recipientId){
-    res.status(404).json({message: "Recipient not found"})
+  if (!recipientId) {
+    res.status(404).json({ message: "Recipient not found" })
     return;
   }
-    if(!senderId){
-    res.status(404).json({message: "User not found"})
+  if (!senderId) {
+    res.status(404).json({ message: "User not found" })
     return;
   }
   const conversation = await prisma.chat.create({
@@ -28,9 +28,9 @@ exports.newConversation = async (req, res) => {
 };
 exports.deleteConversation = async (req, res) => {
   //only deletes conversation for user
-  const {id} = req.params;
-  if(!id){
-    res.status(404).json({message: "Conversation not found"});
+  const { id } = req.params;
+  if (!id) {
+    res.status(404).json({ message: "Conversation not found" });
     return;
   }
   const chat = await prisma.chat.delete({
@@ -44,11 +44,11 @@ exports.deleteConversation = async (req, res) => {
 exports.getConversation = async (req, res) => {
   const { id } = req.params;
   if (!req.user) {
-    res.status(404).json({message: "User not found"});
+    res.status(404).json({ message: "User not found" });
     return;
   }
-  if(!id){
-    res.status(404).json({message: "Conversation not found"});
+  if (!id) {
+    res.status(404).json({ message: "Conversation not found" });
     return;
   }
   const messages = await prisma.message.findMany({
@@ -68,6 +68,10 @@ exports.getConversation = async (req, res) => {
 
 exports.getAllConversations = async (req, res) => {
   const id = req.user.id;
+  if (!id) {
+    res.status(404).json({ message: "User not found" })
+    return;
+  }
   const chats = await prisma.chat.findMany({
     where: {
       users: {
@@ -103,7 +107,14 @@ exports.sendMessage = async (req, res) => {
   const { message, recipient } = req.body;
   const senderId = req.user.id;
 
-  console.log(id, message, recipient, senderId);
+  if (!id) {
+    res.status(404).json({ message: "Conversation not found" })
+    return;
+  }
+  if (!recipient) {
+    res.status(404).json({ message: "Recipient not found" })
+  }
+
   const prismaMessage = await prisma.message.create({
     data: {
       body: message,

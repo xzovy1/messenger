@@ -17,6 +17,7 @@ const Conversation = ({ conversation, user }) => {
       } catch (err) {
         setError(err.message);
         setData(null);
+        throw new Error(err)
       } finally {
         setLoading(false);
       }
@@ -26,7 +27,7 @@ const Conversation = ({ conversation, user }) => {
 
   async function sendMessage(formData) {
     formData.set("recipient", conversation.recipient.id);
-    await fetchDataPost(url, 'post', new URLSearchParams(formData))
+    await fetchDataPost(url, 'post', JSON.stringify(Object.fromEntries(formData))) //new URLSearchParams(formData)
     setMessageTrigger(Math.random()); //used to trigger use effect
 
   }
@@ -44,6 +45,7 @@ const Conversation = ({ conversation, user }) => {
         <div className="scroll chatWindow">
           {data && data.length > 0 ? (
             data.map((message) => {
+              console.log(message.sender.username)
               if (user == message.sender.username) {
                 return (
                   <div key={message.id} className="sent">

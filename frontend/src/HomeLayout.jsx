@@ -5,12 +5,16 @@ import MessagesList from "./MessagesList";
 import Contacts from "./Contacts";
 import Profile from "./Profile";
 import Navbar from "./Navbar";
+import Error from './Error'
 const HomeLayout = () => {
-  const [toggleLeft, setLeft] = useState(true);
+  const [toggleLeft, setLeft] = useState(false);
   const [toggleRight, setRight] = useState(false);
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState(null);
 
   const [conversation, setConversation] = useState({});
+  // if (!user) {
+  //   return <Error />
+  // }
   return (
     <>
       <Navbar user={user} />

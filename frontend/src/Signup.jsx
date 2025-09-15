@@ -14,18 +14,21 @@ const Signup = () => {
       return setPasswordError(true);
     }
     const url = `${import.meta.env.VITE_BACKEND}/api/user`;
+
     // setLoading(true);
-    await fetchDataPost(url, formData)
+    await fetchDataPost(url, "post", JSON.stringify(Object.fromEntries(formData)))
       .then((data) => {
         console.log(data);
       })
       .catch((error) => {
         setError(error.message);
-        throw new Error(error);
+        // throw new Error(error);
       })
       .finally(() => {
         setLoading(false);
-        navigate("/log-in");
+        if (!error) {
+          // navigate("/log-in");
+        }
       });
   }
   if (loading) {

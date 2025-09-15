@@ -17,12 +17,13 @@ passport.use(
           password: true,
         },
       });
-      const pass = user.password;
-      const hashedPassword = pass.password;
+
       if (!user) {
         console.log("incorrect username");
         return done(null, false, { message: "Incorrect username" });
       }
+      const pass = user.password;
+      const hashedPassword = pass.password;
       const matched = await bcrypt.compare(password, hashedPassword);
       if (!matched) {
         console.log("incorrect password");

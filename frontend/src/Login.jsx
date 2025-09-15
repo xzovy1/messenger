@@ -8,8 +8,9 @@ const Login = () => {
 
   async function login(formData) {
     setLoading(true);
+    JSON.stringify(Object.fromEntries(formData))
     const url = `${import.meta.env.VITE_BACKEND}/log-in`;
-    await fetchDataPost(url, 'post', new URLSearchParams(formData))
+    await fetchDataPost(url, 'post', JSON.stringify(Object.fromEntries(formData)))
       .then((data) => {
         localStorage.setItem("jwt", data.token);
         navigate("/");
@@ -17,6 +18,7 @@ const Login = () => {
       .catch((error) => {
         console.log(error);
         setError(error.message);
+        throw new Error(error)
       })
       .finally(() => {
         setLoading(false);
@@ -29,6 +31,7 @@ const Login = () => {
       </>
     );
   }
+
 
   return (
     <>

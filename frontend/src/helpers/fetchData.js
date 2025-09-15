@@ -19,7 +19,7 @@ const fetchDataPost = async (url, method = 'post', body) => {
     mode,
     headers: {
       authorization: `bearer ${localStorage.jwt}`,
-      // 'content-type': 'application/json'
+      'content-type': 'application/json'
     },
     method,
     body,
