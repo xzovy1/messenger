@@ -12,7 +12,6 @@ const Conversation = ({ conversation, user, messagesCount }) => {
       try {
         const conversationData = await fetchDataGet(url)
         setData(conversationData);
-        console.log(conversation.id)
         setError(null);
       } catch (err) {
         setError(err.message);
@@ -22,7 +21,9 @@ const Conversation = ({ conversation, user, messagesCount }) => {
         setLoading(false);
       }
     };
-    fetchConversation();
+    if (conversation.id) {
+      fetchConversation();
+    }
   }, [conversation, messageTrigger]);
 
   async function sendMessage(formData) {
@@ -33,7 +34,6 @@ const Conversation = ({ conversation, user, messagesCount }) => {
   }
   if (!conversation.id || messagesCount == 0) {
     return <p>No Conversation found</p>;
-
   }
   if (error) {
     return <p className="error">an error occurred: {error} </p>;
@@ -49,7 +49,6 @@ const Conversation = ({ conversation, user, messagesCount }) => {
           <div className="scroll chatWindow">
             {data && data.length > 0 ? (
               data.map((message) => {
-                console.log(message.sender.username)
                 if (user == message.sender.username) {
                   return (
                     <div key={message.id} className="sent">
@@ -75,11 +74,6 @@ const Conversation = ({ conversation, user, messagesCount }) => {
         </div>
       </>
     );
-  } else {
-    return (
-      <div>No messages</div>
-
-    )
   }
 };
 

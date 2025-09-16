@@ -5,7 +5,15 @@ const { user } = require("./client");
 const prisma = new PrismaClient();
 
 async function main() {
-  const deleteMessages = await prisma.message.delete();
+  const data = await prisma.chat.findFirst({
+    include: {
+      message: {
+        select: {
+          read: true
+        }
+      }
+    }
+  });
 
   console.log(data);
 }

@@ -12,6 +12,7 @@ const MessagesList = ({ setConversation, setRight, messagesCount, setMessagesCou
       try {
         const messages = await fetchDataGet(url)
         setData(messages)
+        console.log(messages)
         setMessagesCount(messages.length)
         setError(null);
       } catch (err) {
@@ -40,8 +41,12 @@ const MessagesList = ({ setConversation, setRight, messagesCount, setMessagesCou
         {data && data.length > 0 ? (
           data.map((chat) => (
             <div key={chat.id} className="conversation">
-              <div>{chat.users[0].username}</div>
-              {chat.message[0] ? <div>{chat.message[0].body}</div> : null}
+              <div>{chat.users[0].username} </div>
+              {
+                chat.message[0].read
+                  ? <div>{chat.message[0].body}</div>
+                  : <div><i>{chat.message[0].body}</i></div>
+              }
               <div>
                 <button
                   onClick={() => {

@@ -61,6 +61,7 @@ exports.getAllConversations = async (id) => {
                 },
                 select: {
                     body: true,
+                    read: true,
                 },
                 take: 1,
             },

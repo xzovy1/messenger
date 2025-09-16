@@ -39,6 +39,7 @@ exports.getConversation = async (req, res) => {
     return;
   }
   const messages = await getConversation(id)
+  console.log(messages[messages.length - 1])
   res.json(messages);
 };
 
