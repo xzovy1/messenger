@@ -1,4 +1,5 @@
 const prisma = require("../prisma/client.js");
+const { getContacts } = require('../db/contactQueries.js')
 
 exports.addToFavorite = async (req, res) => {
   const contact = await prisma.contacts.update({
@@ -17,18 +18,6 @@ exports.getAllContacts = async (req, res) => {
   if (!id) {
     res.status(404).json({ message: "User not found" })
   }
-  const contacts = await prisma.user.findMany({
-    where: {
-      NOT: {
-        id,
-      },
-    },
-    omit: {
-      password: true,
-    },
-    include: {
-      profile: true,
-    },
-  });
+  const contacts = await getContacts();
   res.json(contacts);
 };
