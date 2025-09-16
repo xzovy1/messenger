@@ -5,16 +5,14 @@ import MessagesList from "./MessagesList";
 import Contacts from "./Contacts";
 import Profile from "./Profile";
 import Navbar from "./Navbar";
-import Error from './Error'
 const HomeLayout = () => {
-  const [toggleLeft, setLeft] = useState(false);
+  const [toggleLeft, setLeft] = useState(true);
   const [toggleRight, setRight] = useState(false);
-  const [user, setUser] = useState(null);
 
+  const [user, setUser] = useState(null);
   const [conversation, setConversation] = useState({});
-  // if (!user) {
-  //   return <Error />
-  // }
+  const [messagesCount, setMessagesCount] = useState(0);
+
   return (
     <>
       <Navbar user={user} />
@@ -50,11 +48,13 @@ const HomeLayout = () => {
               View{toggleRight ? " Messages" : " Conversation"}
             </button>
             {toggleRight ? (
-              <Conversation conversation={conversation} user={user} />
+              <Conversation conversation={conversation} user={user} messagesCount={messagesCount} />
             ) : (
               <MessagesList
                 setConversation={setConversation}
                 setRight={setRight}
+                setMessagesCount={setMessagesCount}
+                messagesCount={messagesCount}
               />
             )}
           </Component>

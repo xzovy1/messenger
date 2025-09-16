@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { fetchDataPost } from "./helpers/fetchData";
+import { Link } from "react-router";
 const Login = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
@@ -13,12 +14,13 @@ const Login = () => {
     await fetchDataPost(url, 'post', JSON.stringify(Object.fromEntries(formData)))
       .then((data) => {
         localStorage.setItem("jwt", data.token);
-        navigate("/");
+        if (!error) {
+          navigate("/");
+        }
       })
       .catch((error) => {
         console.log(error);
         setError(error.message);
-        throw new Error(error)
       })
       .finally(() => {
         setLoading(false);
@@ -32,11 +34,10 @@ const Login = () => {
     );
   }
 
-
   return (
     <>
       {error ? (
-        <div className="error">An error occured {error.message}</div>
+        <div className="error">An error occured {error}</div>
       ) : null}
       <form action={login}>
         <label htmlFor="username">Username: </label>

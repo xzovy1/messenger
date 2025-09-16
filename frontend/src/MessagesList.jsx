@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { fetchDataGet, fetchDataPost } from "./helpers/fetchData.js";
 
-const MessagesList = ({ setConversation, setRight }) => {
+const MessagesList = ({ setConversation, setRight, messagesCount, setMessagesCount }) => {
   const [messageTrigger, setMessageTrigger] = useState(0);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,6 +12,7 @@ const MessagesList = ({ setConversation, setRight }) => {
       try {
         const messages = await fetchDataGet(url)
         setData(messages)
+        setMessagesCount(messages.length)
         setError(null);
       } catch (err) {
         setError(err.message);
@@ -56,6 +57,7 @@ const MessagesList = ({ setConversation, setRight }) => {
                 <button
                   onClick={() => {
                     deleteMessage(chat.id);
+                    setMessagesCount(messagesCount--);
                   }}
                 >
                   Delete
@@ -65,8 +67,8 @@ const MessagesList = ({ setConversation, setRight }) => {
           ))
         ) : (
           <>
-            <div>No messages</div>
-            <button>Start a Conversation</button>
+            <div><b>No messages</b></div>
+            <div>To start a conversation, go to contacts and click <i>message</i></div>
           </>
         )}
       </div>
