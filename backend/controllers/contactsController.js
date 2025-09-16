@@ -18,6 +18,6 @@ exports.getAllContacts = async (req, res) => {
   if (!id) {
     res.status(404).json({ message: "User not found" })
   }
-  const contacts = await getContacts();
+  const contacts = await getContacts(id);
   res.json(contacts);
 };
