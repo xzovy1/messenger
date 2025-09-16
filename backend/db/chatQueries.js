@@ -20,7 +20,6 @@ exports.deleteConversation = async (id) => {
             id,
         },
     });
-
 }
 
 exports.getConversation = async (id) => {
@@ -38,7 +37,7 @@ exports.getConversation = async (id) => {
     });
 }
 
-exports.getAllConversations = async () => {
+exports.getAllConversations = async (id) => {
     return await prisma.chat.findMany({
         where: {
             users: {

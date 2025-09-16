@@ -5,39 +5,8 @@ const { user } = require("./client");
 const prisma = new PrismaClient();
 
 async function main() {
-  // const deleteMessages = prisma.message.deleteMany();
-  // const deleteUsers = prisma.user.deleteMany();
-  // const deleteProfiles = prisma.profile.deleteMany();
-  // const deleteChats = prisma.chat.deleteMany();
-  const testPass = await bcrypt.hash("admin", 10);
-  // const data = await prisma.$transaction([
-  //   deleteMessages,
-  //   deleteProfiles,
-  //   deleteUsers,
-  //   deleteChats,
-  // ]);
-  const data = await prisma.chat.findMany({
-    include: {
-      users: true,
-    },
-    where: {
-      users: {
-        some: {
-          id: "c30eb052-258b-4137-92ff-ee07af7b70b2",
-        },
-      },
-    },
-  });
-  // data: [
-  //   {
-  //     username: "user1",
-  //     password: testPass,
-  //   },
-  //   {
-  //     username: "user2",
-  //     password: testPass,
-  //   },
-  // ],
+  const deleteMessages = await prisma.message.delete();
+
   console.log(data);
 }
 
