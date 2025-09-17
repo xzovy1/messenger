@@ -10,7 +10,7 @@ const Login = () => {
   async function login(formData) {
     setLoading(true);
     JSON.stringify(Object.fromEntries(formData));
-    const url = `${import.meta.env.VITE_BACKEND}/log-in`;
+    const url = `${import.meta.env.VITE_BACKEND}/auth/log-in`;
     await fetchDataPost(
       url,
       "post",
@@ -19,12 +19,13 @@ const Login = () => {
       .then((data) => {
         localStorage.setItem("jwt", data.token);
         if (!error) {
-          navigate("/");
+          navigate("/home");
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.log('name: ',error.name, 'message:', error.message);
         setError(error.message);
+        // throw new Error(error);
       })
       .finally(() => {
         setLoading(false);
@@ -40,17 +41,26 @@ const Login = () => {
 
   return (
     <>
-      {error ? <div className="error">An error occured {error}</div> : null}
+      {error ? <ErrorMessage error={error} /> : null}
       <form action={login}>
         <label htmlFor="username">Username: </label>
-        <input type="text" name="username" id="username" autoComplete="current-username"/>
+        <input type="text" name="username" id="username" autoComplete="current-username" required/>
         <label htmlFor="password">Password: </label>
-        <input type="password" name="password" id="password" autoComplete="current-password"/>
+        <input type="password" name="password" id="password" autoComplete="current-password" required/>
         <button>Log in</button>
       </form>
-      <a href="/sign-up">Create account</a>
+      <a href="/auth/sign-up">Create account</a>
     </>
   );
 };
+
+const ErrorMessage = ({error}) => {
+  console.log(error)
+  if(error == "HTTP error: Status 403"){
+    return <div className="error">Incorrect username or password</div>
+  }else{
+    return <div className="error">An error occurred {error}</div> 
+  }
+}
 
 export default Login;

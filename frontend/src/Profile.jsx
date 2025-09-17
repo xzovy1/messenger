@@ -5,8 +5,8 @@ const Profile = ({ setUser }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const url = `${import.meta.env.VITE_BACKEND}/api/user/profile`;
   useEffect(() => {
+    const url = `${import.meta.env.VITE_BACKEND}/api/user/profile`;
     const fetchData = async () => {
       try {
         const data = await fetchDataGet(url);

@@ -26,12 +26,12 @@ const Signup = () => {
       })
       .catch((error) => {
         setError(error.message);
-        // throw new Error(error);
+        throw new Error(error);
       })
       .finally(() => {
         setLoading(false);
         if (!error) {
-          navigate("/log-in");
+          navigate("/auth/log-in");
         }
       });
   }
@@ -47,29 +47,29 @@ const Signup = () => {
       {error ? <p className="error">an error occurred: {error} </p> : null}
       <form action={signup}>
         <label htmlFor="username">Username: </label>
-        <input type="text" name="username" id="username" />
+        <input type="text" name="username" id="username" required/>
 
         <label htmlFor="password">Password: </label>
-        <input type="password" name="password" id="password" />
+        <input type="password" name="password" id="password" required/>
 
         <label htmlFor="password-confirm">Confirm Password</label>
-        <input type="password" name="password-confirm" id="password-confirm" />
+        <input type="password" name="password-confirm" id="password-confirm" required/>
 
         <label htmlFor="firstname">First Name</label>
-        <input type="text" id="firstname" name="firstname" />
+        <input type="text" id="firstname" name="firstname" required/>
 
         <label htmlFor="lastname">Last Name</label>
-        <input type="text" name="lastname" id="lastname" />
+        <input type="text" name="lastname" id="lastname" required/>
 
         <label htmlFor="dob">Date of birth</label>
-        <input type="date" name="dob" id="dob" />
+        <input type="date" name="dob" id="dob" required/>
 
         <label htmlFor="bio">Bio</label>
-        <textarea name="bio" id="bio"></textarea>
+        <textarea name="bio" id="bio" maxLength="250"></textarea>
 
         <button type="submit">Create</button>
       </form>
-      <a href="/">Back to login</a>
+      <a href="/auth/log-in">Back to login</a>
     </>
   );
 };

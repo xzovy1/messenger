@@ -7,10 +7,10 @@ const Logout = () => {
 
   const nav = useNavigate();
   const logout = async () => {
-    const url = `${import.meta.env.VITE_BACKEND}/log-out`;
+    const url = `${import.meta.env.VITE_BACKEND}/auth/log-out`;
     try {
       await fetchDataGet(url);
-      nav("/log-in");
+      nav("/auth/log-in");
       setError(null);
       localStorage.clear();
     } catch (err) {

@@ -16,7 +16,7 @@ const Conversation = ({ conversation, user, messagesCount }) => {
       } catch (err) {
         setError(err.message);
         setData(null);
-        // throw new Error(err)
+        
       } finally {
         setLoading(false);
       }

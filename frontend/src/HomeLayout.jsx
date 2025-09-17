@@ -12,6 +12,16 @@ const HomeLayout = () => {
   const [user, setUser] = useState(null);
   const [conversation, setConversation] = useState({});
   const [messagesCount, setMessagesCount] = useState(0);
+  const [error, setError] = useState(null);
+
+  if(error){
+    return (
+      <>
+        <div>An error occurred</div>
+        <a href="/log-in">Log in</a>
+      </>
+    )
+  }
 
   return (
     <>
