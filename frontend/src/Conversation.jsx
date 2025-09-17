@@ -33,7 +33,7 @@ const Conversation = ({ conversation, user, messagesCount }) => {
 
   }
   if (!conversation.id || messagesCount == 0) {
-    return <p>No Conversation found</p>;
+    return <p>No conversation selected</p>;
   }
   if (error) {
     return <p className="error">an error occurred: {error} </p>;
@@ -68,7 +68,7 @@ const Conversation = ({ conversation, user, messagesCount }) => {
             )}
           </div>
           <form action={sendMessage}>
-            <input type="text" name="message" id="message" autoComplete="off" />
+            <input type="text" name="body" id="messageBody" autoComplete="off" />
             <button type="submit">Send</button>
           </form>
         </div>

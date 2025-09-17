@@ -47,7 +47,6 @@ passport.deserializeUser(async (id, done) => {
         id,
       },
     });
-    // console.log(user);
     done(null, user);
   } catch (err) {
     console.log(err);
@@ -62,7 +61,6 @@ router.post(
     failureRedirect: "/log-in",
   }),
   function (req, res) {
-    // console.log("after auth", req.user);
     const user = req.user;
     jwt.sign(
       { user },
@@ -76,7 +74,6 @@ router.post(
 );
 
 router.get("/", (req, res) => {
-  // console.log("user", req.session);
   const user = req.user;
   res.json("");
 });

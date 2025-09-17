@@ -23,7 +23,6 @@ exports.deleteConversation = async (id) => {
 }
 
 exports.getConversation = async (id) => {
-    console.log(id)
     return await prisma.message.findMany({
         where: {
             chat_id: id,
@@ -36,6 +35,16 @@ exports.getConversation = async (id) => {
             recipient: true,
         },
     });
+}
+exports.markMessageRead = async(id) => {
+    return await prisma.message.update({
+        where: {
+            id
+        },
+        data: {
+            read: true
+        }
+    })
 }
 
 exports.getAllConversations = async (id) => {
@@ -62,6 +71,7 @@ exports.getAllConversations = async (id) => {
                 select: {
                     body: true,
                     read: true,
+                    recipient_id: true,
                 },
                 take: 1,
             },

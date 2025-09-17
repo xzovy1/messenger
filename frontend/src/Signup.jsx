@@ -27,7 +27,7 @@ const Signup = () => {
       .finally(() => {
         setLoading(false);
         if (!error) {
-          // navigate("/log-in");
+          navigate("/log-in");
         }
       });
   }

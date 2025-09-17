@@ -10,8 +10,8 @@ const Profile = ({ setUser }) => {
     const fetchData = async () => {
       try {
         const data = await fetchDataGet(url);
-        setData(data);
         setUser(data.username);
+        setData(data);
         setError(null);
       } catch (err) {
         setError(err.message);
