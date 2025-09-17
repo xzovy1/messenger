@@ -1,11 +1,14 @@
 import { Outlet } from "react-router";
+import './public/auth.module.css'
 
 const AuthLayout = () => {
   return (
-    <>
-      <h1>Messenger App</h1>
+    <div>
+      <div className="header">
+        <h2>Messenger App</h2>
+      </div>
       <Outlet />
-    </>
+    </div>
   );
 };
 

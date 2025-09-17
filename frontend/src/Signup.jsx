@@ -40,32 +40,46 @@ const Signup = () => {
   }
   return (
     <>
-      <h4>Create Account</h4>
       {passwordError ? (
         <div className="error">Passwords do not match</div>
       ) : null}
       {error ? <p className="error">an error occurred: {error} </p> : null}
       <form action={signup}>
-        <label htmlFor="username">Username: </label>
-        <input type="text" name="username" id="username" required/>
+      <h4>Create Account</h4>
+        <div>
+          <label htmlFor="username">Username </label>
+          <input type="text" name="username" id="username" required/>
+        </div>
 
-        <label htmlFor="password">Password: </label>
-        <input type="password" name="password" id="password" required/>
+        <div>
+          <label htmlFor="password">Password </label>
+          <input type="password" name="password" id="password" required/>
+        </div>
 
-        <label htmlFor="password-confirm">Confirm Password</label>
-        <input type="password" name="password-confirm" id="password-confirm" required/>
+        <div>
+          <label htmlFor="password-confirm">Confirm Password </label>
+          <input type="password" name="password-confirm" id="password-confirm" required/>
+        </div>
 
-        <label htmlFor="firstname">First Name</label>
-        <input type="text" id="firstname" name="firstname" required/>
+        <div>
+          <label htmlFor="firstname">First Name </label>
+          <input type="text" id="firstname" name="firstname" required/>
+        </div>
 
-        <label htmlFor="lastname">Last Name</label>
-        <input type="text" name="lastname" id="lastname" required/>
+        <div>
+          <label htmlFor="lastname">Last Name </label>
+          <input type="text" name="lastname" id="lastname" required/>
+        </div>
 
-        <label htmlFor="dob">Date of birth</label>
-        <input type="date" name="dob" id="dob" required/>
+        <div>
+          <label htmlFor="dob">Birthday </label>
+          <input type="date" name="dob" id="dob" required/>
+        </div>
 
-        <label htmlFor="bio">Bio</label>
-        <textarea name="bio" id="bio" maxLength="250"></textarea>
+        <div>
+          <label htmlFor="bio">Bio </label>
+          <textarea name="bio" id="bio" maxLength="250"></textarea>
+        </div>
 
         <button type="submit">Create</button>
       </form>
