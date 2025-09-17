@@ -75,7 +75,7 @@ router.post(
 
 router.get("/", (req, res) => {
   const user = req.user;
-  res.json("");
+  res.json({ message: "logged in" });
 });
 
 router.get("/log-out", (req, res, next) => {
@@ -84,7 +84,7 @@ router.get("/log-out", (req, res, next) => {
       return next(err);
     }
   });
-  res.json("logged out");
+  res.json({ message: "logged out" });
 });
 
 module.exports = router;

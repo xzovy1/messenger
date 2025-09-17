@@ -1,10 +1,6 @@
 const express = require("express");
 const messageRouter = express.Router();
 const messageController = require("../controllers/messageController");
-const { addTokenToHeader, verifyToken } = require("./jwt.js");
-
-messageRouter.use(addTokenToHeader);
-messageRouter.use(verifyToken);
 
 // '/chat'
 messageRouter
