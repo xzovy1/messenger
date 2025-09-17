@@ -9,9 +9,13 @@ const Login = () => {
 
   async function login(formData) {
     setLoading(true);
-    JSON.stringify(Object.fromEntries(formData))
+    JSON.stringify(Object.fromEntries(formData));
     const url = `${import.meta.env.VITE_BACKEND}/log-in`;
-    await fetchDataPost(url, 'post', JSON.stringify(Object.fromEntries(formData)))
+    await fetchDataPost(
+      url,
+      "post",
+      JSON.stringify(Object.fromEntries(formData)),
+    )
       .then((data) => {
         localStorage.setItem("jwt", data.token);
         if (!error) {
@@ -36,14 +40,12 @@ const Login = () => {
 
   return (
     <>
-      {error ? (
-        <div className="error">An error occured {error}</div>
-      ) : null}
+      {error ? <div className="error">An error occured {error}</div> : null}
       <form action={login}>
         <label htmlFor="username">Username: </label>
-        <input type="text" name="username" id="username" />
+        <input type="text" name="username" id="username" autoComplete="current-username"/>
         <label htmlFor="password">Password: </label>
-        <input type="password" name="password" id="password" />
+        <input type="password" name="password" id="password" autoComplete="current-password"/>
         <button>Log in</button>
       </form>
       <a href="/sign-up">Create account</a>

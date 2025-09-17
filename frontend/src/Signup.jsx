@@ -16,7 +16,11 @@ const Signup = () => {
     const url = `${import.meta.env.VITE_BACKEND}/api/user`;
 
     // setLoading(true);
-    await fetchDataPost(url, "post", JSON.stringify(Object.fromEntries(formData)))
+    await fetchDataPost(
+      url,
+      "post",
+      JSON.stringify(Object.fromEntries(formData)),
+    )
       .then((data) => {
         console.log(data);
       })

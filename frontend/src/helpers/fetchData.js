@@ -14,12 +14,12 @@ const fetchDataGet = async (url) => {
   return response.json();
 };
 
-const fetchDataPost = async (url, method = 'post', body) => {
+const fetchDataPost = async (url, method = "post", body) => {
   const response = await fetch(url, {
     mode,
     headers: {
       authorization: `bearer ${localStorage.jwt}`,
-      'content-type': 'application/json'
+      "content-type": "application/json",
     },
     method,
     body,

@@ -37,7 +37,10 @@ const Contacts = ({ setRight, setLeft, setConversation }) => {
         body: JSON.stringify({ to: recipientId }),
       })
         .then((response) => response.json())
-        .then((data) => { console.log(data); return data.conversation.id });
+        .then((data) => {
+          console.log(data);
+          return data.conversation.id;
+        });
       setConversation({
         id: response,
         recipient: recipientId,

@@ -10,7 +10,7 @@ const Conversation = ({ conversation, user, messagesCount }) => {
   useEffect(() => {
     const fetchConversation = async () => {
       try {
-        const conversationData = await fetchDataGet(url)
+        const conversationData = await fetchDataGet(url);
         setData(conversationData);
         setError(null);
       } catch (err) {
@@ -28,9 +28,12 @@ const Conversation = ({ conversation, user, messagesCount }) => {
 
   async function sendMessage(formData) {
     formData.set("recipient", conversation.recipient.id);
-    await fetchDataPost(url, 'post', JSON.stringify(Object.fromEntries(formData))) //new URLSearchParams(formData)
+    await fetchDataPost(
+      url,
+      "post",
+      JSON.stringify(Object.fromEntries(formData)),
+    ); //new URLSearchParams(formData)
     setMessageTrigger(Math.random()); //used to trigger use effect
-
   }
   if (!conversation.id || messagesCount == 0) {
     return <p>No conversation selected</p>;
@@ -68,7 +71,12 @@ const Conversation = ({ conversation, user, messagesCount }) => {
             )}
           </div>
           <form action={sendMessage}>
-            <input type="text" name="body" id="messageBody" autoComplete="off" />
+            <input
+              type="text"
+              name="body"
+              id="messageBody"
+              autoComplete="off"
+            />
             <button type="submit">Send</button>
           </form>
         </div>

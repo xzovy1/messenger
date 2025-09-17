@@ -1,18 +1,25 @@
-const { newConversation, deleteConversation, getConversation, getAllConversations, sendMessage, markMessageRead } = require("../db/chatQueries.js")
+const {
+  newConversation,
+  deleteConversation,
+  getConversation,
+  getAllConversations,
+  sendMessage,
+  markMessageRead,
+} = require("../db/chatQueries.js");
 
 exports.newConversation = async (req, res) => {
   const { to } = req.body;
   const senderId = req.user.id;
   const recipientId = to;
   if (!recipientId) {
-    res.status(404).json({ message: "Recipient not found" })
+    res.status(404).json({ message: "Recipient not found" });
     return;
   }
   if (!senderId) {
-    res.status(404).json({ message: "User not found" })
+    res.status(404).json({ message: "User not found" });
     return;
   }
-  const conversation = await newConversation(senderId, recipientId)
+  const conversation = await newConversation(senderId, recipientId);
 
   req.chat = conversation;
   return res.json({ conversation });
@@ -24,7 +31,7 @@ exports.deleteConversation = async (req, res) => {
     res.status(404).json({ message: "Conversation not found" });
     return;
   }
-  await deleteConversation(id)
+  await deleteConversation(id);
   res.json({ message: ` chat ${id} deleted` });
 };
 
@@ -39,11 +46,15 @@ exports.getConversation = async (req, res) => {
     return;
   }
   const messages = await getConversation(id);
-  const recentMessage = messages[messages.length - 1]
-  if(recentMessage && req.user.id == recentMessage.recipient_id && !recentMessage.read){
-    const messageId = messages[messages.length - 1].id
+  const recentMessage = messages[messages.length - 1];
+  if (
+    recentMessage &&
+    req.user.id == recentMessage.recipient_id &&
+    !recentMessage.read
+  ) {
+    const messageId = messages[messages.length - 1].id;
     await markMessageRead(messageId);
-    console.log("message read")
+    console.log("message read");
   }
   res.json(messages);
 };
@@ -51,7 +62,7 @@ exports.getConversation = async (req, res) => {
 exports.getAllConversations = async (req, res) => {
   const id = req.user.id;
   if (!id) {
-    res.status(404).json({ message: "User not found" })
+    res.status(404).json({ message: "User not found" });
     return;
   }
   const chats = await getAllConversations(id);
@@ -63,14 +74,14 @@ exports.sendMessage = async (req, res) => {
   const { body, recipient } = req.body;
   const sender = req.user.id;
   if (!id) {
-    res.status(404).json({ message: "Conversation not found" })
+    res.status(404).json({ message: "Conversation not found" });
     return;
   }
   if (!recipient) {
-    res.status(404).json({ message: "Recipient not found" })
+    res.status(404).json({ message: "Recipient not found" });
   }
 
-  await sendMessage(sender, recipient, body, id)
+  await sendMessage(sender, recipient, body, id);
 
   res.json({ message: `message sent to ${recipient}` });
 };

@@ -9,10 +9,10 @@ async function main() {
     include: {
       message: {
         select: {
-          read: true
-        }
-      }
-    }
+          read: true,
+        },
+      },
+    },
   });
 
   console.log(data);

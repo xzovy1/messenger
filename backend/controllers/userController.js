@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const { getUser, newUser } = require("../db/userQueries")
+const { getUser, newUser } = require("../db/userQueries");
 
 // exports.getUser = async (req, res) => {
 //   const user = await prisma.user.findMany();
@@ -19,9 +19,17 @@ exports.createUser = async (req, res) => {
   const { username, password, firstname, lastname, dob, bio, image } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const userInfo = { username, password: hashedPassword, firstname, lastname, dob, bio, image };
+  const userInfo = {
+    username,
+    password: hashedPassword,
+    firstname,
+    lastname,
+    dob,
+    bio,
+    image,
+  };
 
-  const user = await newUser(userInfo)
+  const user = await newUser(userInfo);
   res.json({ user });
 };
 

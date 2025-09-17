@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import { fetchDataGet, fetchDataPost } from "./helpers/fetchData.js";
 
-const MessagesList = ({ setConversation, setRight, messagesCount, setMessagesCount }) => {
+const MessagesList = ({
+  setConversation,
+  setRight,
+  messagesCount,
+  setMessagesCount,
+}) => {
   const [messageTrigger, setMessageTrigger] = useState(0);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,10 +15,10 @@ const MessagesList = ({ setConversation, setRight, messagesCount, setMessagesCou
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const messages = await fetchDataGet(url)
-        setData(messages)
-        console.log(messages)
-        setMessagesCount(messages.length)
+        const messages = await fetchDataGet(url);
+        setData(messages);
+        console.log(messages);
+        setMessagesCount(messages.length);
         setError(null);
       } catch (err) {
         setError(err.message);
@@ -25,10 +30,10 @@ const MessagesList = ({ setConversation, setRight, messagesCount, setMessagesCou
     fetchMessages();
   }, [messageTrigger]);
   async function deleteMessage(id) {
-    await fetchDataPost(url + `/${id}`, "delete", JSON.stringify({ id: id }))
+    await fetchDataPost(url + `/${id}`, "delete", JSON.stringify({ id: id }));
     setMessageTrigger(Math.random());
   }
-  function openMessage(id, recipient){
+  function openMessage(id, recipient) {
     setConversation({
       id,
       recipient,
@@ -43,38 +48,48 @@ const MessagesList = ({ setConversation, setRight, messagesCount, setMessagesCou
     return <p>Loading messages...</p>;
   }
 
-
   return (
     <>
       <h2>Messages</h2>
       <div className="scroll">
         {data && data.length > 0 ? (
           data.map((chat) => {
-             return <div key={chat.id} className="conversation">
-              <div>{chat.users[0].username} </div>
-              <MessagePreview message={chat.message[0]} recipient={chat.users[0].id}/>
-                
-              <div>
-                <button
-                  onClick={() => {
-                    openMessage(chat.id, chat.users[0])
-                  }}
-                >
-                  Open
-                </button>
-                <button onClick={() => { 
-                  deleteMessage(chat.id);
-                  setMessagesCount(messagesCount--);
-                }}>
-                  Delete
-                </button>
+            return (
+              <div key={chat.id} className="conversation">
+                <div>{chat.users[0].username} </div>
+                <MessagePreview
+                  message={chat.message[0]}
+                  recipient={chat.users[0].id}
+                />
+
+                <div>
+                  <button
+                    onClick={() => {
+                      openMessage(chat.id, chat.users[0]);
+                    }}
+                  >
+                    Open
+                  </button>
+                  <button
+                    onClick={() => {
+                      deleteMessage(chat.id);
+                      setMessagesCount(messagesCount--);
+                    }}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
-            </div>
+            );
           })
         ) : (
           <>
-            <div><b>No messages</b></div>
-            <div>To start a conversation, go to contacts and click <i>message</i></div>
+            <div>
+              <b>No messages</b>
+            </div>
+            <div>
+              To start a conversation, go to contacts and click <i>message</i>
+            </div>
           </>
         )}
       </div>
@@ -82,16 +97,24 @@ const MessagesList = ({ setConversation, setRight, messagesCount, setMessagesCou
   );
 };
 
-const MessagePreview = ({message, recipient}) => {
-  if(message){
-    if(!message.read && recipient != message.recipient_id){
-      return <div><i>{message.body}</i></div>
-    }else{
-      return <div>{message.body}</div>
+const MessagePreview = ({ message, recipient }) => {
+  if (message) {
+    if (!message.read && recipient != message.recipient_id) {
+      return (
+        <div>
+          <i>{message.body}</i>
+        </div>
+      );
+    } else {
+      return <div>{message.body}</div>;
     }
-  }else{
-    return <div><i>No message</i></div>
+  } else {
+    return (
+      <div>
+        <i>No message</i>
+      </div>
+    );
   }
-}
+};
 
 export default MessagesList;

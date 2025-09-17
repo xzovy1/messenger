@@ -16,7 +16,7 @@ const verifyToken = (req, res, next) => {
   jwt.verify(req.token, process.env.JWT_KEY, (err, authData) => {
     if (err) {
       res.status(403).json({ message: err });
-      throw new Error(err)
+      throw new Error(err);
       return;
     } else {
       const { user } = authData;

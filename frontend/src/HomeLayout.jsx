@@ -48,7 +48,11 @@ const HomeLayout = () => {
               View{toggleRight ? " Messages" : " Conversation"}
             </button>
             {toggleRight ? (
-              <Conversation conversation={conversation} user={user} messagesCount={messagesCount} />
+              <Conversation
+                conversation={conversation}
+                user={user}
+                messagesCount={messagesCount}
+              />
             ) : (
               <MessagesList
                 setConversation={setConversation}
