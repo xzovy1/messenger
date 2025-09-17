@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { fetchDataPost } from "./helpers/fetchData";
+import styles from "./public/auth.module.css"
 const Signup = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -46,44 +47,44 @@ const Signup = () => {
       {error ? <p className="error">an error occurred: {error} </p> : null}
       <form action={signup}>
       <h4>Create Account</h4>
-        <div>
+        <div className={styles.input}>
           <label htmlFor="username">Username </label>
           <input type="text" name="username" id="username" required/>
         </div>
 
-        <div>
+        <div className={styles.input}>
           <label htmlFor="password">Password </label>
           <input type="password" name="password" id="password" required/>
         </div>
 
-        <div>
+        <div className={styles.input}>
           <label htmlFor="password-confirm">Confirm Password </label>
           <input type="password" name="password-confirm" id="password-confirm" required/>
         </div>
 
-        <div>
+        <div className={styles.input}>
           <label htmlFor="firstname">First Name </label>
           <input type="text" id="firstname" name="firstname" required/>
         </div>
 
-        <div>
+        <div className={styles.input}>
           <label htmlFor="lastname">Last Name </label>
           <input type="text" name="lastname" id="lastname" required/>
         </div>
 
-        <div>
+        <div className={styles.input}>
           <label htmlFor="dob">Birthday </label>
           <input type="date" name="dob" id="dob" required/>
         </div>
 
-        <div>
-          <label htmlFor="bio">Bio </label>
+        <div className={styles.input}>
+          <label htmlFor="bio">About </label>
           <textarea name="bio" id="bio" maxLength="250"></textarea>
         </div>
 
         <button type="submit">Create</button>
       </form>
-      <a href="/auth/log-in">Back to login</a>
+      <div> <a href="/auth/log-in">Return to login</a></div>
     </>
   );
 };

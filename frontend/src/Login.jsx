@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { fetchDataPost } from "./helpers/fetchData";
+import styles from './public/auth.module.css'
 
 const Login = () => {
   const navigate = useNavigate();
@@ -43,18 +44,21 @@ const Login = () => {
     <>
       {error ? <ErrorMessage error={error} /> : null}
       <form action={login}>
-        <p></p>
-        <div>
+        <div className={styles.info}>
+          <h3>Welcome back!</h3>
+          <div>We're glad you're here.</div>
+        </div>
+        <div className={styles.input}>
           <label htmlFor="username">Username: </label>
           <input type="text" name="username" id="username" autoComplete="current-username" required/>
         </div>
-        <div>
+        <div className={styles.input}>
           <label htmlFor="password">Password: </label>
           <input type="password" name="password" id="password" autoComplete="current-password" required/>
         </div>
         <button>Log in</button>
       </form>
-      <a href="/auth/sign-up">Create account</a>
+      <div>Need an account? <a href="/auth/sign-up">Register</a></div>
     </>
   );
 };
