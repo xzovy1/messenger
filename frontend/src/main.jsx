@@ -11,6 +11,7 @@ import ErrorPage from "./Error.jsx";
 const routes = [
  {
   path: '/',
+  errorElement: <ErrorPage />,
   children: [
     {
       path: "auth",

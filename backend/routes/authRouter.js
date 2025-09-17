@@ -29,6 +29,7 @@ passport.use(
         console.log("incorrect password");
         return done(null, false, { message: "Incorrect password" });
       }
+      console.log("authenticated");
       return done(null, user);
     } catch (err) {
       return done(err);
@@ -57,7 +58,6 @@ passport.deserializeUser(async (id, done) => {
 router.post(
   "/log-in",
   passport.authenticate("local", {
-    // successRedirect: "/",
     failureRedirect: "/log-in",
   }),
   function (req, res) {

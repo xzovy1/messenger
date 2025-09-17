@@ -13,12 +13,11 @@ const HomeLayout = () => {
   const [conversation, setConversation] = useState({});
   const [messagesCount, setMessagesCount] = useState(0);
   const [error, setError] = useState(null);
-
-  if(error){
+  if(!localStorage.jwt){
     return (
       <>
-        <div>An error occurred</div>
-        <a href="/log-in">Log in</a>
+        <h3>An error occurred</h3>
+        <a href="/auth/log-in">Log in</a>
       </>
     )
   }
@@ -28,7 +27,6 @@ const HomeLayout = () => {
       <Navbar user={user} />
       <div id="body">
         <div id="leftTab">
-          <Component>
             <button
               onClick={() => {
                 setLeft(!toggleLeft);
@@ -46,10 +44,8 @@ const HomeLayout = () => {
                 setConversation={setConversation}
               />
             )}
-          </Component>
         </div>
         <div id="rightTab">
-          <Component>
             <button
               onClick={() => {
                 setRight(!toggleRight);
@@ -65,13 +61,12 @@ const HomeLayout = () => {
               />
             ) : (
               <MessagesList
-                setConversation={setConversation}
-                setRight={setRight}
-                setMessagesCount={setMessagesCount}
-                messagesCount={messagesCount}
+              setRight={setRight}
+              setMessagesCount={setMessagesCount}
+              messagesCount={messagesCount}
+              setConversation={setConversation}
               />
             )}
-          </Component>
         </div>
       </div>
     </>

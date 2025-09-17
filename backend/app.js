@@ -2,7 +2,6 @@ const express = require("express");
 require("dotenv").config();
 const cors = require("cors");
 const app = express();
-const prisma = require("./prisma/client.js");
 const passport = require("passport");
 
 app.use(cors());
@@ -20,13 +19,13 @@ app.use(
 );
 app.use(passport.session());
 
-// app.use((req, res, next) => {
-//   console.log("body", req.session);
-//   next();
-// });
-
 const authRouter = require("./routes/authRouter");
-app.use("/", authRouter);
+app.use("/auth", authRouter);
+
+const { addTokenToHeader, verifyToken } = require("./jwt");
+
+app.use(addTokenToHeader);
+app.use(verifyToken);
 
 const contactsRouter = require("./routes/contactsRouter");
 app.use("/api/contacts", contactsRouter);

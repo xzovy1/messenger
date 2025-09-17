@@ -1,4 +1,4 @@
-const Component = ({ children, title }) => {
+const Component = ({ children }) => {
   return <>{children}</>;
 };
 
