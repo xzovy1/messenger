@@ -1,0 +1,118 @@
+.header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.body{
+  margin: 1em auto;
+  height: 50vh;
+  width: 35%;
+  padding: 3em;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 8px;
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+}
+
+#info {
+  color: rgb(255, 255, 255);
+  background-color: #67b2f8;
+  padding: 1rem;
+  margin: 3em auto;
+  width: 20%;
+  border-radius: 1em;
+}
+
+.chatbox{
+  margin: 1em auto;
+  width: 70%;
+  padding: 1em;
+  border-radius: 8px;
+  color:#ffffff;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.input{
+  width: 75%;
+  height: 40px;
+  margin: 0 auto;
+  border: 1px solid rgb(142, 142, 142);
+  border-radius: 7px;
+  grid-row: 5;
+  display: grid;
+  grid-template-columns: 5fr 1fr;
+  grid-template-rows: 1fr;
+  
+}
+
+.input > div > button {
+  height: fit-content;
+  margin: 0;
+  grid-column: 2;
+  
+}
+.userInput{
+  display: flex;
+}
+.text{
+  align-self: center;
+  padding-left: 5px;
+  overflow-x: hidden;
+  width: max-content;
+}
+
+
+
+.cursor{
+  /* border: 1px solid black; */
+  margin: 1px 10px;
+  background-color: rgb(152, 152, 152);
+  width: 2px;
+  height: 90%;
+  animation: blink 0.9s ease-in-out infinite;
+  grid-column: 1;
+  
+}
+
+.sent{
+  background-color: #67b2f8;
+}
+
+.received{
+  background-color: #d2d2d2;
+}
+
+.tailRight,
+.tailLeft {
+  background-color: inherit;
+  /* border: 1px solid black; */
+  position: relative;
+  width: 25px;
+  height: 20px;
+  border-radius: 3px;
+  margin-bottom: -9px;
+}
+
+.tailRight{
+  right: 25px;
+  transform: skew(-39deg);
+  
+}
+.tailLeft{
+  left: 99%;
+  transform: skew(39deg);
+}
+
+.buttons{
+  grid-row: 6;
+}
+
+@keyframes blink {
+  from{
+    opacity: 100%;
+  }
+  to{
+    opacity: 0%;
+  }
+}

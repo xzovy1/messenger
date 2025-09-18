@@ -16,7 +16,6 @@ const Signup = () => {
     }
     const url = `${import.meta.env.VITE_BACKEND}/api/user`;
 
-    // setLoading(true);
     await fetchDataPost(
       url,
       "post",
