@@ -83,7 +83,7 @@ const Signup = () => {
 
         <button type="submit">Create</button>
       </form>
-      <div> <a href="/auth/log-in">Return to login</a></div>
+      <div className={styles.footer}> <a href="/auth/log-in">Return to login</a></div>
     </>
   );
 };
