@@ -19,15 +19,6 @@ app.use(
 );
 app.use(passport.session());
 
-// app.get("/", (req, res) => {
-//   console.log(req.user, req.app.user);
-//   if (req.app.user) {
-//     res.redirect("/home");
-//   } else {
-//     res.redirect("/auth/log-in");
-//   }
-// });
-
 const authRouter = require("./routes/authRouter");
 app.use("/auth", authRouter);
 

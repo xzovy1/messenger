@@ -67,7 +67,10 @@ router.post(
       process.env.JWT_KEY,
       { expiresIn: "1d" },
       (err, token) => {
-        res.json({ token }).redirect("/");
+        if (err) {
+          console.log("login", err);
+        }
+        res.json(token);
       },
     );
   },

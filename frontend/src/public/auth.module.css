@@ -1,7 +1,4 @@
-.header{
-    display: grid;
-    grid-template-columns: 1fr 5fr;
-}
+
 form {
     display: flex;
     flex-direction: column;
@@ -16,7 +13,7 @@ form {
 }
 
 .body{
-    margin-top: 12%;
+    margin-top: 10%;
 }
 
 .input {

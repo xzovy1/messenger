@@ -18,15 +18,12 @@ const Login = () => {
       JSON.stringify(Object.fromEntries(formData)),
     )
       .then((data) => {
-        localStorage.setItem("jwt", data.token);
-        if (!error) {
+        localStorage.setItem("jwt", data);
           navigate("/home");
-        }
       })
       .catch((error) => {
         console.log('name: ',error.name, 'message:', error.message);
         setError(error.message);
-        // throw new Error(error);
       })
       .finally(() => {
         setLoading(false);

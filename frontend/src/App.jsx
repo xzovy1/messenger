@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import "./App.css";
 import { Outlet, useNavigate } from "react-router";
-import messenger from './public/messenger.png'
 import styles from './public/app.module.css'
+import AuthHeader from "./AuthHeader";
 function App() {
   const[exampleText, setExampleText] = useState("")
   const [trigger, setTrigger] = useState(0);
@@ -10,7 +10,6 @@ function App() {
 
 
   function dummySend(e){
-    console.log(trigger)
     e.target.blur();
     // setExampleText(''); 
     // setTrigger(Math.random()* 10)
@@ -50,10 +49,7 @@ function App() {
 
   return (
     <> 
-      <div className={styles.header}>
-        <h2>Odin Messenger</h2>
-        <img src={messenger} alt="" className="logo"/>
-      </div>
+      <AuthHeader />
       
         <div className={styles.body}>
           <div id="info" className={`${styles.chatbox} ${styles.sent}`}>
