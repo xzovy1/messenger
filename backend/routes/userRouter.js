@@ -7,7 +7,7 @@ userRouter.get("/profile", userController.getUser);
 
 userRouter
   .route("/")
-  .post(userController.createUser)
+  // .post(userController.createUser)
   .delete(userController.deleteUser)
   .put(userController.updateUser);
 

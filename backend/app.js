@@ -31,6 +31,9 @@ app.use(passport.session());
 const authRouter = require("./routes/authRouter");
 app.use("/auth", authRouter);
 
+const userController = require("./controllers/userController");
+app.post("/api/user", userController.createUser);
+
 const { addTokenToHeader, verifyToken } = require("./jwt");
 
 app.use(addTokenToHeader);
