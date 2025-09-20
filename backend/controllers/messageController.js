@@ -26,6 +26,7 @@ exports.newConversation = async (req, res) => {
 };
 exports.deleteConversation = async (req, res) => {
   //only deletes conversation for user
+  // to only delete for use it should be handled on the front end
   const { id } = req.params;
   if (!id) {
     res.status(404).json({ message: "Conversation not found" });
@@ -79,6 +80,7 @@ exports.sendMessage = async (req, res) => {
   }
   if (!recipient) {
     res.status(404).json({ message: "Recipient not found" });
+    return;
   }
 
   await sendMessage(sender, recipient, body, id);
