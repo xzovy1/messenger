@@ -14,7 +14,7 @@ exports.getAllFavorites = async (req, res) => {
   res.json(contact);
 };
 exports.getAllContacts = async (req, res) => {
-  const { id } = req.app.user;
+  const { id } = req.user;
   if (!id) {
     res.status(404).json({ message: "User not found" });
   }

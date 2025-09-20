@@ -6,7 +6,7 @@ const { getUser, newUser } = require("../db/userQueries");
 //   return res.json(user);
 // };
 exports.getUser = async (req, res) => {
-  const id = req.app.user.id;
+  const id = req.user.id;
   if (!id) {
     res.status(404).json("User not found");
     return;

@@ -21,7 +21,6 @@ const verifyToken = (req, res, next) => {
       return;
     } else {
       const { user } = authData;
-      req.app.user = user;
       req.user = user;
       next();
     }
