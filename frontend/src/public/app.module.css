@@ -1,10 +1,14 @@
-.header{
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.body{
+.header div {
+  margin: 0 1em;
+}
+
+.body {
   margin: 1em auto;
   height: 50vh;
   width: 35%;
@@ -24,16 +28,16 @@
   border-radius: 1em;
 }
 
-.chatbox{
+.chatbox {
   margin: 1em auto;
   width: 70%;
   padding: 1em;
   border-radius: 8px;
-  color:#ffffff;
+  color: #ffffff;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
-.input{
+.input {
   width: 75%;
   height: 40px;
   margin: 0 auto;
@@ -43,26 +47,28 @@
   display: grid;
   grid-template-columns: 5fr 1fr;
   grid-template-rows: 1fr;
-  
+
 }
 
-.input > div > button {
+.input>div>button {
   height: fit-content;
   margin: 0;
   grid-column: 2;
-  
+
 }
-.userInput{
+
+.userInput {
   display: flex;
 }
-.text{
+
+.text {
   align-self: center;
   padding-left: 5px;
   overflow-x: hidden;
   width: max-content;
 }
 
-.cursor{
+.cursor {
   /* border: 1px solid black; */
   margin: 1px 10px;
   background-color: rgb(152, 152, 152);
@@ -70,14 +76,14 @@
   height: 90%;
   animation: blink 0.9s ease-in-out infinite;
   grid-column: 1;
-  
+
 }
 
-.sent{
+.sent {
   background-color: #67b2f8;
 }
 
-.received{
+.received {
   background-color: #d2d2d2;
 }
 
@@ -92,25 +98,27 @@
   margin-bottom: -9px;
 }
 
-.tailRight{
+.tailRight {
   right: 25px;
   transform: skew(-39deg);
-  
+
 }
-.tailLeft{
+
+.tailLeft {
   left: 99%;
   transform: skew(39deg);
 }
 
-.buttons{
+.buttons {
   grid-row: 6;
 }
 
 @keyframes blink {
-  from{
+  from {
     opacity: 100%;
   }
-  to{
+
+  to {
     opacity: 0%;
   }
 }

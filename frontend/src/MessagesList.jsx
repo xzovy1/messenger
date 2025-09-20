@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { fetchDataGet, fetchDataPost } from "./helpers/fetchData.js";
+import styles from './public/card.module.css'
 
 const MessagesList = ({
   setConversation,
@@ -51,11 +52,11 @@ const MessagesList = ({
   return (
     <>
       <h2>Messages</h2>
-      <div className="scroll">
+      <div className={styles.scroll}>
         {data && data.length > 0 ? (
           data.map((chat) => {
             return (
-              <div key={chat.id} className="conversation">
+              <div key={chat.id} className={`${styles.conversation}`}>
                 <div>{chat.users[0].username} </div>
                 <MessagePreview
                   message={chat.message[0]}
@@ -101,12 +102,12 @@ const MessagePreview = ({ message, recipient }) => {
   if (message) {
     if (!message.read && recipient != message.recipient_id) {
       return (
-        <div>
+        <div className={styles.messagePreview}>
           <i>{message.body}</i>
         </div>
       );
     } else {
-      return <div>{message.body}</div>;
+      return <div className={styles.messagePreview}>{message.body}</div>;
     }
   } else {
     return (

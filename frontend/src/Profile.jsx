@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { fetchDataGet } from "./helpers/fetchData.js";
+import styles from "./public/card.module.css"
 
 const Profile = ({ setUser }) => {
   const [data, setData] = useState([]);
@@ -36,16 +37,26 @@ const Profile = ({ setUser }) => {
     <>
       <h2>Profile</h2>
       <div>
-        <p>Username: </p>
-        <p> {data.username}</p>
-        <p>First Name: </p>
-        <p> {profile.firstname}</p>
-        <p>Last Name: </p>
-        <p> {profile.lastname}</p>
-        <p>Date of birth: </p>
-        <p> {new Date(profile.dob).toDateString()}</p>
-        <p>About: </p>
-        <p>{profile.bio}</p>
+        <div className={styles.input}>
+          <p>Username: </p>
+          <p> {data.username}</p>
+        </div>
+        <div className={styles.input}>
+          <p>First Name: </p>
+          <p> {profile.firstname}</p>
+        </div>
+        <div className={styles.input}>
+          <p>Last Name: </p>
+          <p> {profile.lastname}</p>
+        </div>
+        <div className={styles.input}>
+          <p>Date of birth: </p>
+          <p> {new Date(profile.dob).toDateString()}</p>
+        </div>
+        <div className={styles.input}>
+          <p>About: </p>
+          <p>{profile.bio}</p>
+        </div>
       </div>
     </>
   );

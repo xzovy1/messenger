@@ -1,28 +1,29 @@
-
-form {
+.form {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: space-between;
+    align-items: center;
     gap: 15px;
-    width: 50%;
     margin: 0 auto;
     padding: 1rem;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     border-radius: 1em;
+    width: 50%;
+    min-width: 285px;
 }
 
-.body{
-    margin-top: 10%;
+.body {
+    margin-top: 5em;
 }
 
 .input {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 2fr;
     gap: 1em;
+    margin: 1em;
 }
 
-.footer{
+.footer {
     margin: 2em;
 }
 
@@ -40,11 +41,13 @@ form button {
     align-self: center;
 }
 
-div > button {
+div>button {
     grid-column: 2;
 }
 
-input, label, textarea{
+input,
+label,
+textarea {
     margin: 0 1rem;
 }
 
@@ -52,7 +55,16 @@ button {
     margin: 1rem;
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: light) {}
 
+@media(max-width: 750px) {
+    .form {
+        width: 70%;
+        flex-direction: row;
+    }
 
+    .input {
+        grid-template-rows: 1fr 1fr;
+        grid-template-columns: 1fr;
+    }
 }

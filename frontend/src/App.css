@@ -1,8 +1,10 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
+  display: grid;
+  grid-template-rows: 1fr 10fr;
+  gap: 3em;
 }
 
 .logo {
@@ -13,31 +15,23 @@
   animation: logo-spin 1s ease-in-out 2s;
 }
 
-.header img{
+.header img {
   grid-column: 3;
 }
-/* .header{
-    display: grid;
-    grid-template-columns: 1fr 5fr;
-} */
+
+
 form {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: space-between;
-    gap: 15px;
-    width: 50%;
-    margin: 0 auto;
-    padding: 1rem;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    border-radius: 1em;
+  margin: 0 auto;
 }
-.header h2{
-  color: #5c5c5c; 
+
+.header h2 {
+  color: #5c5c5c;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -46,6 +40,7 @@ form {
   from {
     transform: rotateY(0deg);
   }
+
   to {
     transform: rotateY(360deg);
   }

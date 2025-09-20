@@ -1,5 +1,6 @@
 import { fetchDataGet, fetchDataPost } from "./helpers/fetchData";
 import { useEffect, useState } from "react";
+import styles from './public/card.module.css'
 
 const Contacts = ({ setRight, setLeft, setConversation }) => {
   const [data, setData] = useState([]);
@@ -58,17 +59,20 @@ const Contacts = ({ setRight, setLeft, setConversation }) => {
     return <p className="error">An Error has occured: {error}</p>;
   }
   return (
-    <>
-      <h3>Contacts</h3>
-      <div>
+    <div>
+      <h2>Contacts</h2>
+      <div className={styles.scroll}>
         {data.map((contact) => {
           return (
-            <div key={contact.id}>
+            <div key={contact.id} className={styles.contact}>
               <img src={contact.profile.image} />
-              <p>
-                {contact.profile.firstname} {contact.profile.lastname}
-              </p>
-              <p>@{contact.username}</p>
+              <div>
+
+                <p>
+                  {contact.profile.firstname} {contact.profile.lastname}
+                </p>
+                <p>@{contact.username}</p>
+              </div>
               <button
                 onClick={() => {
                   createChat(contact.id);
@@ -81,7 +85,7 @@ const Contacts = ({ setRight, setLeft, setConversation }) => {
           );
         })}
       </div>
-    </>
+    </div>
   );
 };
 

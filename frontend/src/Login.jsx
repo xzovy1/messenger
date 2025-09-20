@@ -19,10 +19,10 @@ const Login = () => {
     )
       .then((data) => {
         localStorage.setItem("jwt", data);
-          navigate("/home");
+        navigate("/home");
       })
       .catch((error) => {
-        console.log('name: ',error.name, 'message:', error.message);
+        console.log('name: ', error.name, 'message:', error.message);
         setError(error.message);
       })
       .finally(() => {
@@ -40,32 +40,34 @@ const Login = () => {
   return (
     <>
       {error ? <ErrorMessage error={error} /> : null}
-      <form action={login}>
-        <div className={styles.info}>
-          <h3>Welcome back!</h3>
-          <div>We're glad you're here.</div>
-        </div>
-        <div className={styles.input}>
-          <label htmlFor="username">Username: </label>
-          <input type="text" name="username" id="username" autoComplete="current-username" required/>
-        </div>
-        <div className={styles.input}>
-          <label htmlFor="password">Password: </label>
-          <input type="password" name="password" id="password" autoComplete="current-password" required/>
-        </div>
-        <button>Log in</button>
-      </form>
+      <div className={styles.form}>
+        <form action={login}>
+          <div className={styles.info}>
+            <h3>Welcome back!</h3>
+            <div>We're glad you're here.</div>
+          </div>
+          <div className={styles.input}>
+            <label htmlFor="username">Username: </label>
+            <input type="text" name="username" id="username" autoComplete="current-username" required />
+          </div>
+          <div className={styles.input}>
+            <label htmlFor="password">Password: </label>
+            <input type="password" name="password" id="password" autoComplete="current-password" required />
+          </div>
+          <button>Log in</button>
+        </form>
+      </div>
       <div className={styles.footer}>Need an account? <a href="/auth/sign-up">Register</a></div>
     </>
   );
 };
 
-const ErrorMessage = ({error}) => {
+const ErrorMessage = ({ error }) => {
   console.log(error)
-  if(error == "HTTP error: Status 403"){
+  if (error == "HTTP error: Status 403") {
     return <div className="error">Incorrect username or password</div>
-  }else{
-    return <div className="error">An error occurred {error}</div> 
+  } else {
+    return <div className="error">An error occurred {error}</div>
   }
 }
 

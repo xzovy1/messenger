@@ -1,5 +1,6 @@
 import { fetchDataGet, fetchDataPost } from "./helpers/fetchData";
 import { useState, useEffect, useRef } from "react";
+import styles from "./public/card.module.css"
 
 const Conversation = ({ conversation, user, messagesCount }) => {
   const [messageTrigger, setMessageTrigger] = useState(0);
@@ -16,7 +17,7 @@ const Conversation = ({ conversation, user, messagesCount }) => {
       } catch (err) {
         setError(err.message);
         setData(null);
-        
+
       } finally {
         setLoading(false);
       }
@@ -49,19 +50,22 @@ const Conversation = ({ conversation, user, messagesCount }) => {
       <>
         <h2>Conversation with {conversation.recipient.username}</h2>
         <div>
-          <div className="scroll chatWindow">
+          <div className={`${styles.scroll} ${styles.chatWindow}`}>
             {data && data.length > 0 ? (
               data.map((message) => {
                 if (user == message.sender.username) {
                   return (
-                    <div key={message.id} className="sent">
+                    <div key={message.id} className={styles.sent}>
+
                       {message.body}
+                      <div className={styles.tailLeft}></div>
                     </div>
                   );
                 } else {
                   return (
-                    <div key={message.id} className="received">
+                    <div key={message.id} className={styles.received}>
                       {message.body}
+                      <div className={styles.tailRight}></div>
                     </div>
                   );
                 }
@@ -79,7 +83,7 @@ const Conversation = ({ conversation, user, messagesCount }) => {
             />
             <button type="submit">Send</button>
           </form>
-        </div>
+        </div >
       </>
     );
   }
