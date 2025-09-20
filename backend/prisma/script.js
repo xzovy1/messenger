@@ -4,15 +4,26 @@ const { user } = require("./client");
 
 const prisma = new PrismaClient();
 
+
+const username = 'admin'
+const firstname = 'adam'
+const lastname = 'min'
 async function main() {
-  const data = await prisma.chat.findFirst({
-    include: {
-      message: {
-        select: {
-          read: true,
-        },
-      },
+  const data = await prisma.user.update({
+    where: {
+      id: 'c0af1279-a348-4474-921a-ec07309cb6b5'
     },
+    data: {
+      username,
+      profile: {
+        update: {
+          bio: 'hey there!',
+          lastname,
+          firstname,
+        }
+      }
+    }
+
   });
 
   console.log(data);

@@ -29,7 +29,7 @@ const userRouter = require("./routes/userRouter");
 app.use("/api/user", userRouter);
 
 app.use((err, req, res, next) => {
-  console.error(err);
+  console.error(" ERROR MIDDLEWARE", err);
   res.status(500).send(err);
 });
 

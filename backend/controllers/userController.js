@@ -1,22 +1,26 @@
 const bcrypt = require("bcryptjs");
-const { getUser, newUser } = require("../db/userQueries");
+const db = require("../db/userQueries");
 
-// exports.getUser = async (req, res) => {
-//   const user = await prisma.user.findMany();
-//   return res.json(user);
-// };
+
 exports.getUser = async (req, res) => {
   const id = req.user.id;
   if (!id) {
     res.status(404).json("User not found");
     return;
   }
-  const user = await getUser(id);
+  const user = await db.getUser(id);
   res.json(user);
 };
 
 exports.createUser = async (req, res) => {
   const { username, password, firstname, lastname, dob, bio, image } = req.body;
+  const passwordconfirm = req.body["password-confirm"]
+
+  if (user.password != passwordconfirm) {
+    res.status(400).json({ message: "passwords do not match!" });
+    return;
+  }
+
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const userInfo = {
@@ -29,18 +33,48 @@ exports.createUser = async (req, res) => {
     image,
   };
 
-  const user = await newUser(userInfo);
+  const user = await db.newUser(userInfo);
   res.json({ user });
 };
 
 exports.updateUser = async (req, res) => {
+  const field = req.body;
+  const passwordconfirm = req.body["password-confirm"]
+  let user = { username: field.username, id: field.id }
+
+  //validate password with password comfirmation
+  if (field.password != passwordconfirm) {
+    res.status(400).json({ message: "passwords do not match!" });
+    return;
+  }
+  //check if password or username is empty
+  if (user.username == '') {
+    res.status(400).json({ message: "username cannot be empty!" });
+    return;
+  }
+  if (field.password !== '' && passwordconfirm !== '') {
+    user.password = field.password;
+  }
+  console.log(user)
   try {
-    const user = await prisma.user.update({
-      where: {},
-    });
-    return res.json(user);
+    const updatedInfo = await db.updateUser(user);
+    res.json(updatedInfo);
   } catch (error) {
-    res.json({ error: `user does not exist in the database` });
+    throw new Error(error)
+  }
+
+
+}
+exports.updateProfile = async (req, res) => {
+  const user = req.body;
+  if (!user.image) {
+
+  }
+  try {
+    const updatedInfo = await db.updateProfile(user);
+    res.json(updatedInfo);
+  } catch (error) {
+    throw new Error(error)
   }
 };
 

@@ -8,6 +8,9 @@ exports.getUser = async (id) => {
     include: {
       profile: true,
     },
+    omit: {
+      password_id: true,
+    }
   });
 };
 
@@ -33,3 +36,32 @@ exports.newUser = async (user) => {
     },
   });
 };
+
+exports.updateUser = async (user) => {
+  const { username, password, id } = user;
+
+  return await prisma.user.update({
+    where: {
+      id
+    },
+    data: user
+  })
+}
+
+//multer??
+exports.updateProfile = async (user) => {
+  const { firstname, lastname, dob, bio, image, id, } = user;
+
+  return await prisma.profile.update({
+    where: {
+      user_id: id
+    },
+    data: {
+      dob: new Date(dob),
+      firstname,
+      lastname,
+      bio,
+
+    },
+  })
+}
