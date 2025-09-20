@@ -9,8 +9,8 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   async function login(formData) {
+    console.log(formData)
     setLoading(true);
-    JSON.stringify(Object.fromEntries(formData));
     const url = `${import.meta.env.VITE_BACKEND}/auth/log-in`;
     await fetchDataPost(
       url,

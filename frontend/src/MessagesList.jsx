@@ -18,7 +18,6 @@ const MessagesList = ({
       try {
         const messages = await fetchDataGet(url);
         setData(messages);
-        console.log(messages);
         setMessagesCount(messages.length);
         setError(null);
       } catch (err) {
