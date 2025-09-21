@@ -15,6 +15,7 @@ const Profile = ({ setUser }) => {
         const data = await fetchDataGet(url);
         setUser(data.username);
         setData(data);
+        console.log(data.profile.image)
         setError(null);
       } catch (err) {
         setError(err.message);
@@ -41,6 +42,7 @@ const Profile = ({ setUser }) => {
   return (
     <>
       <h2>Profile</h2>
+      <img srcSet={data.profile.image} alt="profile pic" className={styles.avatar} />
       {updating ? <UpdateProfileForm userInfo={data} setUpdating={setUpdating} /> : <ProfileInfo data={data} updateProfile={updateProfile} />}
     </>
   )

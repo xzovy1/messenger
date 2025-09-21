@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const db = require("../db/userQueries");
 const path = require("node:path")
-const { fileUrlToPath } = require("node:url")
+const { fileUrlToPath, URL } = require("node:url");
 // const multer = require("multer");
 // const upload = multer({ dest: 'uploads/' })
 
@@ -73,8 +73,10 @@ exports.updateUser = async (req, res) => {
 
 
 exports.uploadProfileImage = async (req, res) => {
-  console.log(req.file)
-
+  const { id } = req.params;
+  const path = 'http://localhost:8000/uploads/' + encodeURI(req.file.originalname)
+  await db.updateProfileImage(path, id)
+  res.json({ message: 'image uploaded' })
 
 }
 

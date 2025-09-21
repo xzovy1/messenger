@@ -12,7 +12,7 @@ async function main() {
   const data = await prisma.profile.updateMany({
 
     data: {
-      image: 'http://localhost:8000/static/images/default_image.jpg'
+      image: 'http://localhost:8000/uploads/default_image.jpg'
     }
 
   });

@@ -34,3 +34,8 @@
     justify-self: center;
     margin: 5px;
 }
+
+.avatar {
+    width: auto;
+    height: 5em;
+}
