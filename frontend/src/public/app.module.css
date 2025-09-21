@@ -2,6 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 1em 0;
 }
 
 .header div {
@@ -96,6 +97,7 @@
   height: 20px;
   border-radius: 3px;
   margin-bottom: -9px;
+  z-index: 0;
 }
 
 .tailRight {
