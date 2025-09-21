@@ -95,19 +95,20 @@ logs in
 #### Dashboard
 
 - Tiled dashboard with nav bar containing redirects for contacts and view/edit profile
-  - left tile displays chats(if any)
+  - left tile displays profile and contacts
     - shows username/profile picture & truncated last sent message
     - edit widget to delete chats.
-  - right tile shows currently open chat with widget in bottom corner for creating a new chat.
+  - right tile shows currently open chat ~~with widget in bottom corner for creating a new chat.~~ and all conversations.
     - messages in chronological order oldest on top
     - recipients messages on left side
     - sender (user) messages on the right.
 
 #### Profile edit
 
-- similar to cv application app:
-  - left side, populated form with current info
-  - right side, displayed info which updates along with the form.
+- ~~similar to cv application app:~~
+  - ~~left side, populated form with current info~~
+  - ~~right side, displayed info which updates along with the form.~~
+    - using nested form components instead.
   - update and cancel buttons
 
 #### Contacts
@@ -125,3 +126,9 @@ logs in
   - left side is contact list and message list
   - right side is profile info and displayed message
 - read receipts
+
+#### Lessons learned
+
+- You dont necessarily need passport js when using JWT's in fact implementing local strategy is kind of a pain when using jwt's as well. I intend to implement logging in with google though, so passport will be needed for that. (go back and review session-based authentication)
+- I'm using 'useEffect' heavily and frequently making requests to the db, fine for a few users, but useMemo use be implemented instead. no point making all these requests to the server just to load the same data that has already been loaded. (this is a case of not using react for a few months)
+- got more familiar with how to use prisma for more "complicated" queries. while i see and can appreciate the use, sometimes just raw-dogging sql queries is more straight forward.
