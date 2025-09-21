@@ -9,19 +9,10 @@ const username = 'admin'
 const firstname = 'adam'
 const lastname = 'min'
 async function main() {
-  const data = await prisma.user.update({
-    where: {
-      id: 'c0af1279-a348-4474-921a-ec07309cb6b5'
-    },
+  const data = await prisma.profile.updateMany({
+
     data: {
-      username,
-      profile: {
-        update: {
-          bio: 'hey there!',
-          lastname,
-          firstname,
-        }
-      }
+      image: 'http://localhost:8000/static/images/default_image.jpg'
     }
 
   });

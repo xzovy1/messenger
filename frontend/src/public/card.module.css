@@ -23,6 +23,11 @@
     margin: 0 auto;
 }
 
+.contact img {
+    width: auto;
+    height: 5em;
+}
+
 .contact>button {
     grid-column: 3;
 }

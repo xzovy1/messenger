@@ -49,7 +49,7 @@ const Profile = ({ setUser }) => {
 const ProfileInfo = ({ data, updateProfile }) => {
   const { profile } = data;
   return (
-    <div>
+    <div className={styles.body}>
       <div className={` ${styles.info}`}>
         <p><strong>Username:</strong> </p>
         <p> {data.username}</p>
@@ -78,13 +78,30 @@ const ProfileInfo = ({ data, updateProfile }) => {
 
 const UpdateProfileForm = ({ userInfo, setUpdating }) => {
   const [updateLoginInfo, setUpdateLoginInfo] = useState(false);
+  const url = `${import.meta.env.VITE_BACKEND}/api/user/${userInfo.id}`;
+
+  const uploadImage = async (img) => {
+    const response = await fetch(url + `/image`, {
+      headers: {
+        authorization: `bearer ${localStorage.jwt}`,
+      },
+      body: img,
+      mode: "cors",
+      method: "post",
+
+    }).then(response => response.json())
+    console.log(img)
+    console.log(response)
+    return response
+
+  }
 
   const updateProfile = async (formData) => {
-    const url = `${import.meta.env.VITE_BACKEND}/api/user/${userInfo.id}/profile`;
-    formData.set("id", userInfo.id)
+    const image = formData.get("image")
+    console.log("image", image)
     const data = JSON.stringify(Object.fromEntries(formData))
-    console.log(data)
-    const response = await fetchDataPost(url, 'put', data);
+    // console.log(data)
+    const response = await fetchDataPost(url + `/profile`, 'put', data);
     console.log(response)
     setUpdating(false);
   }
@@ -94,7 +111,7 @@ const UpdateProfileForm = ({ userInfo, setUpdating }) => {
   }
   if (!updateLoginInfo) {
     return (
-      <div>
+      <div className={styles.body}>
         <form action={updateProfile}>
           <div className={` ${styles.info}`}>
             <label htmlFor="firstname"><strong>First Name: </strong></label >
@@ -112,13 +129,16 @@ const UpdateProfileForm = ({ userInfo, setUpdating }) => {
             <label htmlFor="bio"><strong>About: </strong></label >
             <textarea name="bio" id="bio" maxLength="250" defaultValue={userInfo.profile.bio}></textarea>
           </div>
-          <div className={` ${styles.info}`}>
-            <label htmlFor="image"><strong>Profile Picture: </strong></label >
-            <input type="file" name="image" id="image" accept="image/png, image/jpeg" />
-          </div>
           <button>Submit</button>
           <button onClick={cancelUpdate}>Cancel</button>
         </form>
+        <div className={styles.imageUpload}>
+          <form action={uploadImage}>
+            <label htmlFor="image"><strong>Profile Picture: </strong></label >
+            <input type="file" name="image" id="image" />
+            <button>Update Image</button>
+          </form>
+        </div>
         <button onClick={() => { setUpdateLoginInfo(true) }}>Update Login Info</button>
       </div>
     )
@@ -136,8 +156,6 @@ const UpdateLoginForm = ({ setUpdateLoginInfo, userInfo }) => {
 
   const updateUser = async (formData) => {
     const url = `${import.meta.env.VITE_BACKEND}/api/user/${userInfo.id}`;
-    formData.set("id", userInfo.id)
-
     const password = formData.get("password");
     const passwordConfirm = formData.get("password-confirm");
     if (password != passwordConfirm) {
@@ -149,7 +167,7 @@ const UpdateLoginForm = ({ setUpdateLoginInfo, userInfo }) => {
     setUpdateLoginInfo(false);
   }
   return (
-    <div>
+    <div className={styles.body}>
       {passwordError ? (
         <div className="error">Passwords do not match</div>
       ) : null}

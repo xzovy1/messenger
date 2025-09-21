@@ -2,6 +2,14 @@ const express = require("express");
 require("dotenv").config();
 const cors = require("cors");
 const app = express();
+const path = require("path")
+
+app.use((req, res, next) => {
+  console.log(req.url)
+  next()
+})
+
+app.use('/static', express.static(path.join(__dirname, 'public')))
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));

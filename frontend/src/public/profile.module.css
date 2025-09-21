@@ -1,14 +1,36 @@
 .info {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    align-items: center;
 }
 
 .info p,
 .info input,
-.info label {
+.info label,
+.info textarea {
     margin: 1em 0;
 }
 
 .info input {
     padding: 0.5em;
+}
+
+.imageUpload {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imageUpload form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.imageUpload * {
+    justify-self: center;
+    margin: 5px;
 }

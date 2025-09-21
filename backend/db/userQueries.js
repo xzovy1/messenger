@@ -30,7 +30,7 @@ exports.newUser = async (user) => {
           lastname,
           dob: new Date(dob), //convert from "YYYY-MM-DD" to time
           bio,
-          image: image || "backend/images/default_image.jpg",
+          image: image
         },
       },
     },
@@ -48,9 +48,8 @@ exports.updateUser = async (user) => {
   })
 }
 
-//multer??
-exports.updateProfile = async (user) => {
-  const { firstname, lastname, dob, bio, image, id, } = user;
+exports.updateProfile = async (user, id) => {
+  const { firstname, lastname, dob, bio, image } = user;
 
   return await prisma.profile.update({
     where: {

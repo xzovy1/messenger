@@ -6,11 +6,25 @@ const Contacts = ({ setRight, setLeft, setConversation }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const url = `${import.meta.env.VITE_BACKEND}/api/contacts`;
+  const fetchProfileImages = async () => {
+    const response = await fetch(url + 'profileImages', {
+      mode: "cors",
+      headers: {
+        authorization: `bearer ${localStorage.jwt}`
+      }
+    }).then(response => response.json());
+
+    console.log(response)
+
+  }
+
   useEffect(() => {
-    const url = `${import.meta.env.VITE_BACKEND}/api/contacts`;
     const fetchContacts = async () => {
       try {
         const contacts = await fetchDataGet(url);
+        console.log(contacts)
         setData(contacts);
         setError(null);
       } catch (err) {
@@ -65,7 +79,7 @@ const Contacts = ({ setRight, setLeft, setConversation }) => {
         {data.map((contact) => {
           return (
             <div key={contact.id} className={styles.contact}>
-              <img src={contact.profile.image} />
+              <img src={contact.profile.image} alt="profile image" />
               <div>
 
                 <p>
