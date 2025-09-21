@@ -56,11 +56,14 @@ const MessagesList = ({
           data.map((chat) => {
             return (
               <div key={chat.id} className={`${styles.conversation}`}>
-                <div>{chat.users[0].username} </div>
-                <MessagePreview
-                  message={chat.message[0]}
-                  recipient={chat.users[0].id}
-                />
+                <div className={styles.conversationInfo}>
+
+                  <div><strong>{chat.users[0].username} </strong> </div>
+                  <MessagePreview
+                    message={chat.message[0]}
+                    recipient={chat.users[0].id}
+                  />
+                </div>
 
                 <div>
                   <button

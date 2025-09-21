@@ -93,7 +93,6 @@ const UpdateProfileForm = ({ userInfo, setUpdating }) => {
     setUpdating(false)
   }
   if (!updateLoginInfo) {
-    console.log(userInfo.profile)
     return (
       <div>
         <form action={updateProfile}>
