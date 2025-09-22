@@ -13,10 +13,10 @@ exports.getAllFavorites = async (req, res) => {
   });
   res.json(contact);
 };
-exports.getAllContacts = async (req, res) => {
+exports.getAllContacts = async (req, res, next) => {
   const { id } = req.user;
   if (!id) {
-    res.status(404).json({ message: "User not found" });
+    next(new Error("User ID not found"));
   }
   const contacts = await getContacts(id);
   res.json(contacts);

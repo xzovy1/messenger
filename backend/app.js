@@ -2,14 +2,14 @@ const express = require("express");
 require("dotenv").config();
 const cors = require("cors");
 const app = express();
-const path = require("path")
+const path = require("path");
 
 app.use((req, res, next) => {
   // console.log(req.url)
-  next()
-})
+  next();
+});
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -38,7 +38,8 @@ app.use("/api/user", userRouter);
 
 app.use((err, req, res, next) => {
   console.error(" ERROR MIDDLEWARE", err);
-  res.status(500).send(err);
+  console.log(err);
+  res.status(err.statusCode || 500).json(err.message);
 });
 
 const PORT = process.env.PORT || 8000;
