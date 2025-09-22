@@ -15,7 +15,6 @@ const Profile = ({ setUser }) => {
         const data = await fetchDataGet(url);
         setUser(data.username);
         setData(data);
-        console.log(data.profile.image)
         setError(null);
       } catch (err) {
         setError(err.message);
@@ -29,7 +28,7 @@ const Profile = ({ setUser }) => {
   }, []);
 
   if (error) {
-    return <p className="error">an error occurred: {error} </p>;
+    return <p className="error">An error occurred: {error} </p>;
   }
   if (loading) {
     return <p>Loading Profile...</p>;
@@ -102,7 +101,6 @@ const UpdateProfileForm = ({ userInfo, setUpdating }) => {
     const image = formData.get("image")
     console.log("image", image)
     const data = JSON.stringify(Object.fromEntries(formData))
-    // console.log(data)
     const response = await fetchDataPost(url + `/profile`, 'put', data);
     console.log(response)
     setUpdating(false);

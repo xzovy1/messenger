@@ -42,7 +42,7 @@ const MessagesList = ({
   }
 
   if (error) {
-    return <p className="error">an error occurred: {error} </p>;
+    return <p className="error">An error occurred: {error} </p>;
   }
   if (loading) {
     return <p>Loading messages...</p>;

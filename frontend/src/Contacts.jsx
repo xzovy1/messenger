@@ -8,17 +8,6 @@ const Contacts = ({ setRight, setLeft, setConversation }) => {
   const [error, setError] = useState(null);
 
   const url = `${import.meta.env.VITE_BACKEND}/api/contacts`;
-  const fetchProfileImages = async () => {
-    const response = await fetch(url + 'profileImages', {
-      mode: "cors",
-      headers: {
-        authorization: `bearer ${localStorage.jwt}`
-      }
-    }).then(response => response.json());
-
-    console.log(response)
-
-  }
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -28,10 +17,10 @@ const Contacts = ({ setRight, setLeft, setConversation }) => {
         setData(contacts);
         setError(null);
       } catch (err) {
-        setError(err.message);
+        console.log(err)
+        setError(err);
         setData(null);
-        console.log(err);
-        throw new Error(error);
+        // throw new Error(error);
       } finally {
         setLoading(false);
       }
@@ -53,7 +42,6 @@ const Contacts = ({ setRight, setLeft, setConversation }) => {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           return data.conversation.id;
         });
       setConversation({
@@ -70,7 +58,7 @@ const Contacts = ({ setRight, setLeft, setConversation }) => {
     return <p>Loading Contacts...</p>;
   }
   if (error) {
-    return <p className="error">An Error has occured: {error}</p>;
+    return <p className="error">An error occurred: {error.message}</p>;
   }
   return (
     <div>

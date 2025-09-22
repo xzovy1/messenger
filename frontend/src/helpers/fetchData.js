@@ -7,11 +7,15 @@ const fetchDataGet = async (url) => {
       authorization: `bearer ${localStorage.jwt}`,
       // "content-type": "application/json",
     },
+  }).then((response) => {
+    if (response.status >= 400) {
+      throw new Error(
+        `Status ${response.status}, Message: ${response.statusText}`,
+      );
+    }
+    return response.json();
   });
-  if (!response.ok) {
-    throw new Error(`HTTP error: Status ${response.status}`);
-  }
-  return response.json();
+  return response;
 };
 
 const fetchDataPost = async (url, method = "post", body) => {
