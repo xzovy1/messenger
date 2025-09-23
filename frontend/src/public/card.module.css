@@ -100,7 +100,8 @@
 }
 
 .tailRight {
-    right: 0.7em;
+    right: 16px;
+    top: -5px;
     transform: skew(-45deg);
 
 }
@@ -108,7 +109,7 @@
 .tailLeft {
     left: 0.7em;
     transform: skew(45deg);
-    top: -1px;
+    top: -3px;
     align-self: end;
 
 }

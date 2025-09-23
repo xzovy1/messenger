@@ -13,14 +13,13 @@ const Contacts = ({ setRight, setLeft, setConversation }) => {
     const fetchContacts = async () => {
       try {
         const contacts = await fetchDataGet(url);
-        console.log(contacts)
         setData(contacts);
         setError(null);
       } catch (err) {
         console.log(err)
         setError(err);
         setData(null);
-        // throw new Error(error);
+        throw new Error(err);
       } finally {
         setLoading(false);
       }

@@ -4,17 +4,23 @@ const { user } = require("./client");
 
 const prisma = new PrismaClient();
 
-
-const username = 'admin'
-const firstname = 'adam'
-const lastname = 'min'
+const username = "admin";
+const firstname = "adam";
+const lastname = "min";
 async function main() {
-  const data = await prisma.profile.updateMany({
-
+  const data = await prisma.user.update({
+    where: {
+      username: "admin",
+    },
     data: {
-      image: 'http://localhost:8000/uploads/default_image.jpg'
-    }
-
+      password: {
+        update: {
+          data: {
+            password: await bcrypt.hash("admin", 10),
+          },
+        },
+      },
+    },
   });
 
   console.log(data);

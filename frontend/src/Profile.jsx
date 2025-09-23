@@ -91,8 +91,6 @@ const UpdateProfileForm = ({ userInfo, setUpdating }) => {
       method: "post",
 
     }).then(response => response.json())
-    console.log(img)
-    console.log(response)
     return response
 
   }
@@ -102,7 +100,6 @@ const UpdateProfileForm = ({ userInfo, setUpdating }) => {
     console.log("image", image)
     const data = JSON.stringify(Object.fromEntries(formData))
     const response = await fetchDataPost(url + `/profile`, 'put', data);
-    console.log(response)
     setUpdating(false);
   }
 
@@ -177,12 +174,16 @@ const UpdateLoginForm = ({ setUpdateLoginInfo, userInfo }) => {
           <input type="text" name="username" defaultValue={userInfo.username} />
         </div>
         <div className={` ${styles.info}`}>
+          <label htmlFor="current-password"><strong>Current Password: </strong></label >
+          <input type="password" name="password-current" id="password-current" />
+        </div>
+        <div className={` ${styles.info}`}>
           <label htmlFor="password"><strong>Password: </strong></label >
-          <input type="text" name="password" id="password" />
+          <input type="password" name="password" id="password" />
         </div>
         <div className={` ${styles.info}`}>
           <label htmlFor="password-confirm"><strong>Confirm Password: </strong></label >
-          <input type="text" name="password-confirm" id="password-confirm" />
+          <input type="password" name="password-confirm" id="password-confirm" />
         </div>
         <button>Submit</button>
         <button onClick={() => setUpdateLoginInfo(false)}>Cancel</button>

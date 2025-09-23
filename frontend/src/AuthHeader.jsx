@@ -1,6 +1,6 @@
 import styles from './public/app.module.css'
 import "./App.css";
-import messenger from './public/messenger.png'
+import messenger from './public/images/messenger.png'
 import { useNavigate } from 'react-router';
 const AuthHeader = () => {
     const navigate = useNavigate();
