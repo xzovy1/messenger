@@ -1,12 +1,12 @@
 const { Router } = require("express");
-const router = Router();
+const authRouter = Router();
 const authController = require("../controllers/authController.js");
-console.log(authController);
+const { validateUsername, validateUserPassword } = require("../controllers/validation/userValidation.js")
 
-router.post("/log-in", authController.login);
+authRouter.post("/log-in", validateUsername, validateUserPassword, authController.login);
 
-router.get("/log-out", (req, res) => {
+authRouter.get("/log-out", (req, res) => {
   res.json({ message: "logged out" });
 });
 
-module.exports = router;
+module.exports = authRouter;
