@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const db = require("../db/userQueries");
+const { validateUserLogin } = require("./validation/userValidation");
 
 exports.getUser = async (req, res) => {
   const id = req.user.id;
