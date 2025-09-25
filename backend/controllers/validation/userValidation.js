@@ -13,6 +13,8 @@ const validateUser = {
       .withMessage(`${errDescription} ${emptyErr}`)
       .isLength({ min: 4, max: 15 })
       .withMessage("Username must be between 4 and 15 characters")
+      .isAlphanumeric()
+      .withMessage("username must only contain letters and numbers")
   },
   password: (inputName, errDescription) => {
     return body(inputName)
@@ -36,6 +38,16 @@ const validateUser = {
       .isLength({ min: 1, max: 10 })
       .withMessage(`${errDescription} ${lengthErr}`);
   },
+  dob: (inputName, errDescription) => {
+    return body(inputName)
+      .trim()
+      .notEmpty()
+      .withMessage("Birth date is required")
+      .isISO8601()
+      .withMessage("must be in the format YYYY-MM-DD")
+      .isDate()
+
+  }
 
 }
 
