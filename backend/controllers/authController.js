@@ -2,9 +2,11 @@ const prisma = require("../prisma/client.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
+const { validateLoginUsername, validateLoginPassword } = require("./validation/userValidation.js")
 
-
-exports.login =  // module exports need to be an object
+exports.login = [
+  validateLoginUsername,
+  validateLoginPassword,
   async (req, res, next) => {
     const { username, password } = req.body;
 
@@ -25,7 +27,7 @@ exports.login =  // module exports need to be an object
 
       if (!user) {
         console.log("incorrect username");
-        res.status(401).json({ message: "Incorrect username" });
+        res.status(401).json({ message: "Incorrect username or password" });
         return;
       }
       const pass = user.password;
@@ -34,7 +36,7 @@ exports.login =  // module exports need to be an object
 
       if (!matched) {
         console.log("incorrect password");
-        res.status(401).json({ message: "Incorrect password" });
+        res.status(401).json({ message: "Incorrect username or password" });
         return;
       }
       console.log("authenticated");
@@ -53,4 +55,5 @@ exports.login =  // module exports need to be an object
       return next(err);
     }
   }
+]
 

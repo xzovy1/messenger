@@ -29,7 +29,8 @@ const fetchDataPost = async (url, method = "post", body) => {
     body,
   });
   if (!response.ok) {
-    throw new Error(`HTTP error: Status ${response.status}`);
+    const error = await response.json()
+    throw new Error(error.message);
   }
   return response.json();
 };

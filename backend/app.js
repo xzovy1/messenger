@@ -38,9 +38,9 @@ app.use("/api/user", userRouter);
 
 app.use((err, req, res, next) => {
   console.error(" ERROR MIDDLEWARE", err);
-  if (err[0].msg) { err.message = err[0].msg; err.statusCode = 404 } // re-assigns message from express-validator
-  console.log(err.message)
-  res.status(err.statusCode || 500).json(err);
+  if (err[0]) { err.message = err[0].msg; err.statusCode = 404 } // re-assigns message from express-validator
+  console.error(err.message, err.stack)
+  res.status(err.statusCode || 500).json({ message: err.message });
 });
 
 const PORT = process.env.PORT || 8000;

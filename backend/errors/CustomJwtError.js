@@ -1,4 +1,4 @@
-class CustomJwtExpiredError extends Error {
+class CustomJwtError extends Error {
   constructor(message) {
     super(message);
     this.statusCode = 403;
@@ -6,4 +6,4 @@ class CustomJwtExpiredError extends Error {
   }
 }
 
-module.exports = CustomJwtExpiredError;
+module.exports = CustomJwtError;

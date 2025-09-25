@@ -9,7 +9,6 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   async function login(formData) {
-    console.log(formData)
     setLoading(true);
     const url = `${import.meta.env.VITE_BACKEND}/auth/log-in`;
     await fetchDataPost(
@@ -22,7 +21,6 @@ const Login = () => {
         navigate("/home");
       })
       .catch((error) => {
-        console.log('name: ', error.name, 'message:', error.message);
         setError(error.message);
       })
       .finally(() => {
@@ -63,11 +61,10 @@ const Login = () => {
 };
 
 const ErrorMessage = ({ error }) => {
-  console.log(error)
   if (error == "HTTP error: Status 403") {
     return <div className="error">Incorrect username or password</div>
   } else {
-    return <div className="error">An error occurred {error}</div>
+    return <div className="error"> {error}</div>
   }
 }
 
