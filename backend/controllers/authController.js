@@ -2,7 +2,10 @@ const prisma = require("../prisma/client.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
-const { validateLoginUsername, validateLoginPassword } = require("./validation/userValidation.js")
+const {
+  validateLoginUsername,
+  validateLoginPassword,
+} = require("./validation/userValidation.js");
 
 exports.login = [
   validateLoginUsername,
@@ -12,6 +15,8 @@ exports.login = [
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log(errors.array());
+      res.status(401);
       next(errors.array());
       return;
     }
@@ -39,7 +44,7 @@ exports.login = [
         res.status(401).json({ message: "Incorrect username or password" });
         return;
       }
-      console.log("authenticated");
+      // console.log("authenticated");
       jwt.sign(
         { user: { username, id: user.id } },
         process.env.JWT_KEY,
@@ -54,6 +59,5 @@ exports.login = [
     } catch (err) {
       return next(err);
     }
-  }
-]
-
+  },
+];

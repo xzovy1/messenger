@@ -1,28 +1,22 @@
-const { PrismaClient, Prisma } = require("../generated/prisma/index");
+require("dotenv").config();
 const bcrypt = require("bcryptjs");
-const { user } = require("./client");
+const prisma = require("./client");
 
-const prisma = new PrismaClient();
-
-const username = "admin";
-const firstname = "adam";
-const lastname = "min";
+const delUsers = prisma.user.deleteMany();
+const delPass = prisma.pW.deleteMany();
+const delProfile = prisma.profile.deleteMany();
+const getUser = prisma.user.findMany();
 async function main() {
-  const data = await prisma.user.update({
-    where: {
-      username: "admin",
-    },
+  const data = await prisma.user.create({
     data: {
+      username: "admin",
       password: {
-        update: {
-          data: {
-            password: await bcrypt.hash("admin", 10),
-          },
+        create: {
+          password: await bcrypt.hash("admin", 10),
         },
       },
     },
   });
-
   console.log(data);
 }
 

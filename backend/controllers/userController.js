@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const db = require("../db/userQueries");
-const { validateUserLogin } = require("./validation/userValidation");
+const path = require("node:path");
+const { validateSignup } = require("./validation/userValidation");
 
 exports.getUser = async (req, res) => {
   const id = req.user.id;
@@ -12,32 +13,41 @@ exports.getUser = async (req, res) => {
   res.json(user);
 };
 
-exports.createUser = async (req, res) => {
-  const { username, password, firstname, lastname, dob, bio } = req.body;
-  const path = process.env.BACKENDURL || "http://localhost:8000/images";
-  const image = path.dirname(`${process.env.BACKENDURL}`);
+exports.createUser = [
+  validateSignup.username,
+  validateSignup.password,
+  validateSignup.passwordConfirm,
+  validateSignup.firstName,
+  validateSignup.lastName,
+  validateSignup.dob,
+  validateSignup.bio,
+  async (req, res) => {
+    const { username, password, firstname, lastname, dob, bio } = req.body;
+    const imgPath = process.env.BACKEND_URL || "http://localhost:8000/images";
+    const image = path.dirname(`${process.env.BACKEND_URL}`);
 
-  const confirmPassword = req.body["password-confirm"];
-  if (user.password != confirmPassword) {
-    res.status(400).json({ message: "passwords do not match!" });
-    return;
-  }
+    const confirmPassword = req.body["password-confirm"];
+    if (password != confirmPassword) {
+      res.status(400).json({ message: "passwords do not match!" });
+      return;
+    }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  const userInfo = {
-    username,
-    password: hashedPassword,
-    firstname,
-    lastname,
-    dob,
-    bio,
-    image,
-  };
+    const userInfo = {
+      username,
+      password: hashedPassword,
+      firstname,
+      lastname,
+      dob,
+      bio,
+      image,
+    };
 
-  const user = await db.newUser(userInfo);
-  res.json({ user });
-};
+    const user = await db.newUser(userInfo);
+    res.json({ user });
+  },
+];
 
 exports.updateUser = async (req, res) => {
   const field = req.body;
@@ -45,6 +55,7 @@ exports.updateUser = async (req, res) => {
   const confirmPassword = req.body["password-confirm"];
   const currentPassword = req.body["password-current"];
   let user = { username: field.username, id };
+
   //validate current password.
   const hashedPassword = await db.getUserPassword(id);
   const matched = await bcrypt.compare(currentPassword, hashedPassword);

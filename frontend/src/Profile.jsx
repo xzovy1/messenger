@@ -41,7 +41,7 @@ const Profile = ({ setUser }) => {
   return (
     <>
       <h2>Profile</h2>
-      <img srcSet={data.profile.image} alt="profile pic" className={styles.avatar} />
+      
       {updating ? <UpdateProfileForm userInfo={data} setUpdating={setUpdating} /> : <ProfileInfo data={data} updateProfile={updateProfile} />}
     </>
   )
@@ -49,8 +49,10 @@ const Profile = ({ setUser }) => {
 
 const ProfileInfo = ({ data, updateProfile }) => {
   const { profile } = data;
+  if(profile){
   return (
     <div className={styles.body}>
+      <img srcSet={profile.image} alt="profile pic" className={styles.avatar} />
       <div className={` ${styles.info}`}>
         <p><strong>Username:</strong> </p>
         <p> {data.username}</p>
@@ -74,6 +76,7 @@ const ProfileInfo = ({ data, updateProfile }) => {
       <button onClick={updateProfile}>Update</button>
     </div>
   );
+}
 }
 
 
@@ -120,11 +123,11 @@ const UpdateProfileForm = ({ userInfo, setUpdating }) => {
           </div>
           <div className={` ${styles.info}`}>
             <label htmlFor="dob"><strong>Date of birth: </strong></label >
-            <input type="date" name="dob" id="dob" defaultValue={userInfo.profile.dob.split('T')[0]} />
+            <input type="date" name="dob" id="dob" defaultValue={userInfo.profile.dob ? userInfo.profile.dob.split('T')[0] : "no date"} />
           </div>
           <div className={` ${styles.info}`}>
             <label htmlFor="bio"><strong>About: </strong></label >
-            <textarea name="bio" id="bio" maxLength="250" defaultValue={userInfo.profile.bio}></textarea>
+            <textarea name="bio" id="bio" maxLength="250" defaultValue={userInfo.profile.bio || ""}></textarea>
           </div>
           <button>Submit</button>
           <button onClick={cancelUpdate}>Cancel</button>

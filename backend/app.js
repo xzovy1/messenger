@@ -3,7 +3,6 @@ require("dotenv").config();
 const cors = require("cors");
 const app = express();
 const path = require("path");
-
 app.use((req, res, next) => {
   // console.log(req.url)
   next();
@@ -38,8 +37,11 @@ app.use("/api/user", userRouter);
 
 app.use((err, req, res, next) => {
   console.error(" ERROR MIDDLEWARE", err);
-  if (err[0]) { err.message = err[0].msg; err.statusCode = 404 } // re-assigns message from express-validator
-  console.error(err.message, err.stack)
+  if (err[0]) {
+    err.message = err[0].msg;
+    err.statusCode = 404;
+  } // re-assigns message from express-validator
+  console.error(err.message, err.stack);
   res.status(err.statusCode || 500).json({ message: err.message });
 });
 
