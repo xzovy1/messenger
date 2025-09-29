@@ -50,7 +50,8 @@ const validateUser = {
     return body(inputName)
       .trim()
       .isLength({ max: 250 })
-      .withMessage("Bio cannot exceed 250 characters");
+      .withMessage("Bio cannot exceed 250 characters")
+      .optional();
   },
 };
 //login
@@ -58,11 +59,14 @@ const validateLoginUsername = body("username")
   .trim()
   .notEmpty()
   .withMessage(emptyErr);
-const validateLoginPassword = validateUser.password("password", "Password");
+const validateLoginPassword = body("password")
+  .trim()
+  .notEmpty()
+  .withMessage(emptyErr);
 
 //signup
 const validateSignup = {
-  username: validateLoginUsername,
+  username: validateUser.username("username", "Username"),
   password: validateLoginPassword,
   passwordConfirm: validateUser.password(
     "password-confirm",

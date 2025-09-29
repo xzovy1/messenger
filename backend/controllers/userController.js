@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const db = require("../db/userQueries");
 const path = require("node:path");
 const { validateSignup } = require("./validation/userValidation");
+const { validationResult } = require("express-validator");
 
 exports.getUser = async (req, res) => {
   const id = req.user.id;
@@ -26,6 +27,12 @@ exports.createUser = [
     const imgPath = process.env.BACKEND_URL || "http://localhost:8000/images";
     const image = path.dirname(`${process.env.BACKEND_URL}`);
 
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400);
+      next(errors.array());
+      return;
+    }
     const confirmPassword = req.body["password-confirm"];
     if (password != confirmPassword) {
       res.status(400).json({ message: "passwords do not match!" });
@@ -43,9 +50,12 @@ exports.createUser = [
       bio,
       image,
     };
-
-    const user = await db.newUser(userInfo);
-    res.json({ user });
+    try {
+      const user = await db.newUser(userInfo);
+      res.json({ user });
+    } catch (error) {
+      res.status(400).send({ message: "User already exists" });
+    }
   },
 ];
 

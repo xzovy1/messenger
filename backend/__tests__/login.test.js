@@ -3,13 +3,13 @@ const request = require("supertest");
 const express = require("express");
 const prisma = require("../prisma/client.js");
 const bcrypt = require("bcryptjs");
+const { expect } = require("@jest/globals");
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/auth", authRouter);
 
-// Test with async/await (cleaner)
 describe("Auth Controller", () => {
   beforeEach(async () => {
     // Clean and seed test data
