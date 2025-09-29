@@ -7,6 +7,7 @@ const {
   beforeAll,
   afterAll,
   beforeEach,
+  test,
 } = require("@jest/globals");
 
 const app = express();
@@ -224,5 +225,29 @@ describe("User Router", () => {
       .set("Content-Type", "application/json")
       .set("Accept", "application/json")
       .expect(400);
+  });
+  test("password is hashed before storing", async () => {
+    const plainPassword = "Testtest@1";
+    await request(app).post("/api/user").send({
+      username: "testUser",
+      password: plainPassword,
+      "password-confirm": plainPassword,
+      firstname: "Test",
+      lastname: "User",
+      dob: "2020-10-10",
+      bio: "Test bio",
+    });
+    const storedUser = await prisma.user.findUnique({
+      where: {
+        username: "testUser",
+      },
+      include: {
+        password: true,
+      },
+    });
+
+    expect(storedUser.password.password).not.toBe(plainPassword);
+    expect(storedUser.password.password).toMatch(/^\$2[aby]\$\d+\$/);
+    expect(storedUser.password.password.length).toBeGreaterThan(50);
   });
 });

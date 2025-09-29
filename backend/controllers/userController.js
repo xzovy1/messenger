@@ -74,17 +74,6 @@ exports.updateUser = async (req, res) => {
     return;
   }
 
-  //validate password with password comfirmation
-  if (field.password != confirmPassword) {
-    res.status(400).json({ message: "passwords do not match!" });
-    return;
-  }
-
-  //check if password or username is empty
-  if (user.username == "") {
-    res.status(400).json({ message: "username cannot be empty!" });
-    return;
-  }
   if (field.password !== "" || confirmPassword !== "") {
     user.password = await bcrypt.hash(field.password, 10);
   } else {
