@@ -6,7 +6,6 @@
 
 generator client {
   provider        = "prisma-client-js"
-  output          = "../generated/prisma"
   previewFeatures = ["relationJoins"]
 }
 
@@ -22,8 +21,8 @@ model User {
   sender      Message[] @relation("SentMessage")
   recipient   Message[] @relation("RecievedMessage")
   chats       Chat[]
-  password    PW        @relation(fields: [password_id], references: [id])
-  password_id String    @unique @default(uuid()) @db.Uuid
+  password    PW?        @relation(fields: [password_id], references: [id])
+  password_id String?    @unique @default(uuid()) @db.Uuid
 }
 
 model PW {

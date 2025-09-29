@@ -3,7 +3,7 @@ const CustomJwtError = require("./errors/CustomJwtError");
 
 const addTokenToHeader = (req, res, next) => {
   const bearerHeader = req.headers["authorization"];
-  console.log("HEADER", bearerHeader, req.url)
+  // console.log("HEADER", bearerHeader, req.url)
   if (typeof bearerHeader !== "undefined") {
     const bearer = bearerHeader.split(" ");
     const token = bearer[1];

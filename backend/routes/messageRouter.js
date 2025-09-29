@@ -2,7 +2,7 @@ const express = require("express");
 const messageRouter = express.Router();
 const messageController = require("../controllers/messageController");
 
-// '/chat'
+// '/api/chat'
 messageRouter
   .route("/")
   .get(messageController.getAllConversations)

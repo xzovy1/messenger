@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const db = require("../db/userQueries");
 const path = require("node:path");
-const { validateSignup } = require("./validation/userValidation");
+const { validateSignup, validateLoginPassword } = require("./validation/userValidation");
 const { validationResult } = require("express-validator");
 
 exports.getUser = async (req, res) => {
@@ -59,36 +59,45 @@ exports.createUser = [
   },
 ];
 
-exports.updateUser = async (req, res) => {
-  const field = req.body;
-  const { id } = req.params; //user id
-  const confirmPassword = req.body["password-confirm"];
-  const currentPassword = req.body["password-current"];
-  let user = { username: field.username, id };
+exports.updateUser = [
+  validateLoginPassword,
+  async (req, res, next) => {
+    const field = req.body;
+    const confirmPassword = req.body["password-confirm"];
+    const currentPassword = req.body["password-current"];
+    // let user = { username: field.username, id };
+    console.log(currentPassword)
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400);
+      next(errors.array());
+      return;
+    }
+    const currentInfo = await db.getUser(req.user.id);
+    console.log(currentInfo)
+    //validate current password.
+    const hashedPassword = await db.getUserPassword(req.user.id);
+    const matched = await bcrypt.compare(currentPassword, hashedPassword);
+    if (!matched) {
+      res.status(400).json({ message: "current password is incorrect" });
+      return;
+    }
 
-  //validate current password.
-  const hashedPassword = await db.getUserPassword(id);
-  const matched = await bcrypt.compare(currentPassword, hashedPassword);
-  if (!matched) {
-    res.status(400).json({ message: "current password is incorrect" });
-    return;
-  }
+    if (field.password !== "" || confirmPassword !== "") {
+      user.password = await bcrypt.hash(field.password, 10);
+    } else {
+      res.status(400).json({ message: "password fields cannot be empty!" });
+      return;
+    }
 
-  if (field.password !== "" || confirmPassword !== "") {
-    user.password = await bcrypt.hash(field.password, 10);
-  } else {
-    res.status(400).json({ message: "password fields cannot be empty!" });
-    return;
-  }
 
-  try {
-    console.log(user);
-    const updatedInfo = await db.updateUser(user);
-    res.json(updatedInfo);
-  } catch (error) {
-    throw new Error(error);
-  }
-};
+    try {
+      const updatedInfo = await db.updateUser(currentInfo);
+      res.json(updatedInfo);
+    } catch (error) {
+      next(error)
+    }
+  }];
 
 exports.uploadProfileImage = async (req, res) => {
   const { id } = req.params;

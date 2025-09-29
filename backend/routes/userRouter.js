@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage })
 
-// '/user'
+// '/api/user'
 userRouter.get("/profile", userController.getUser);
 
 userRouter

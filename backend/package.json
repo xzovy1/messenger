@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test jest signup --watch",
+    "test": "NODE_ENV=test jest user --watch",
     "dev": "NODE_ENV=development node --watch app.js",
     "script": "node prisma/script.js"
   },
