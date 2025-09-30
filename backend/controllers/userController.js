@@ -3,6 +3,7 @@ const db = require("../db/userQueries");
 const path = require("node:path");
 const { validateSignup, validateLoginPassword } = require("./validation/userValidation");
 const { validationResult } = require("express-validator");
+const { hash } = require("node:crypto");
 
 exports.getUser = async (req, res) => {
   const id = req.user.id;
@@ -24,8 +25,8 @@ exports.createUser = [
   validateSignup.bio,
   async (req, res) => {
     const { username, password, firstname, lastname, dob, bio } = req.body;
-    const imgPath = process.env.BACKEND_URL || "http://localhost:8000/images";
-    const image = path.dirname(`${process.env.BACKEND_URL}`);
+    const imgPath = process.env.BACKEND_URL || "http://localhost:8000/uploads";
+    const image = path.dirname(`${process.env.BACKEND_URL}/uploads/default_image.jpg`);
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -62,37 +63,35 @@ exports.createUser = [
 exports.updateUser = [
   validateLoginPassword,
   async (req, res, next) => {
-    const field = req.body;
     const confirmPassword = req.body["password-confirm"];
     const currentPassword = req.body["password-current"];
-    // let user = { username: field.username, id };
-    console.log(currentPassword)
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(400);
-      next(errors.array());
-      return;
-    }
+    const { password } = req.body
+    const username = req.body.username;
     const currentInfo = await db.getUser(req.user.id);
-    console.log(currentInfo)
-    //validate current password.
-    const hashedPassword = await db.getUserPassword(req.user.id);
-    const matched = await bcrypt.compare(currentPassword, hashedPassword);
-    if (!matched) {
-      res.status(400).json({ message: "current password is incorrect" });
+    let updatedUser = {
+      id: currentInfo.id,
+      username: currentInfo.id,
+      password: currentInfo.password.hash
+    }
+    const hashed = await bcrypt.compare(currentPassword, currentInfo.password.hash);
+    if (!hashed) {
+      res.status(401).send({ message: "password incorrect" });
       return;
     }
 
-    if (field.password !== "" || confirmPassword !== "") {
-      user.password = await bcrypt.hash(field.password, 10);
-    } else {
-      res.status(400).json({ message: "password fields cannot be empty!" });
-      return;
+    if (username) {
+      updatedUser.username = username
     }
-
-
+    if (password) {
+      if (password == confirmPassword) {
+        const newPassword = await bcrypt.hash(password, 10)
+        updatedUser.password = newPassword
+      } else {
+        res.status(400).send({ message: "passwords must match" })
+      }
+    }
     try {
-      const updatedInfo = await db.updateUser(currentInfo);
+      const updatedInfo = await db.updateUser(updatedUser);
       res.json(updatedInfo);
     } catch (error) {
       next(error)

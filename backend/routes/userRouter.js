@@ -16,6 +16,7 @@ userRouter.get("/profile", userController.getUser);
 userRouter
   .route("/:id")
   .delete(userController.deleteUser)
+  // .get(userController.getUser)
   .put(userController.updateUser);
 
 userRouter.put('/:id/profile', userController.updateProfile)

@@ -13,32 +13,42 @@ app.use("/auth", authRouter);
 describe("Auth Controller", () => {
   beforeEach(async () => {
     // Clean and seed test data
+    await prisma.message.deleteMany()
+    await prisma.chat.deleteMany()
     await prisma.profile.deleteMany();
     await prisma.user.deleteMany();
     await prisma.pW.deleteMany();
-
     const hashedPassword = await bcrypt.hash("Adminadmin@1", 10);
     await prisma.user.create({
       data: {
         username: "admin",
         password: {
           create: {
-            password: hashedPassword,
+            hash: hashedPassword,
           },
         },
       },
     });
+
   });
 
   afterAll(async () => {
+    await prisma.message.deleteMany()
+    await prisma.chat.deleteMany()
+    await prisma.profile.deleteMany();
+    await prisma.user.deleteMany();
+    await prisma.pW.deleteMany();
     await prisma.$disconnect();
   });
-
+  test("true", async () => {
+    expect(true).toBe(true)
+  })
   test("should login with valid credentials", async () => {
     const response = await request(app)
       .post("/auth/log-in")
       .send({ username: "admin", password: "Adminadmin@1" })
-      .expect(200);
+      .expect(200)
+    // console.log(response.body)
 
     // Test that we get a JWT token back
     expect(typeof response.body).toBe("string");

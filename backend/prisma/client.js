@@ -11,7 +11,7 @@ if (!databaseUrl) {
     `Database URL not found for environment ${process.env.NODE_ENV}`,
   );
 }
-console.log(databaseUrl);
+// console.log(databaseUrl);
 const prisma = new PrismaClient({
   datasources: {
     db: {

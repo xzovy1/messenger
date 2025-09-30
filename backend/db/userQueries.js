@@ -7,10 +7,9 @@ exports.getUser = async (id) => {
     },
     include: {
       profile: true,
+      password: true
     },
-    omit: {
-      password_id: true,
-    },
+
   });
 };
 
@@ -23,7 +22,7 @@ exports.getUserPassword = async (id) => {
       password: true,
     },
   });
-  const password = user.password.password;
+  const password = user.password.hash;
   return password;
 };
 
@@ -34,7 +33,7 @@ exports.newUser = async (user) => {
       username,
       password: {
         create: {
-          password,
+          hash: password,
         },
       },
       profile: {
@@ -60,7 +59,7 @@ exports.updateUser = async (user) => {
       username,
       password: {
         update: {
-          password: password,
+          hash: password,
         },
       },
     },

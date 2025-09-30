@@ -18,13 +18,23 @@ app.post("/api/user", userController.createUser);
 
 describe("User Router", () => {
   beforeEach(async () => {
+    await prisma.message.deleteMany()
+    await prisma.chat.deleteMany()
     await prisma.profile.deleteMany();
     await prisma.user.deleteMany();
     await prisma.pW.deleteMany();
   });
   afterAll(async () => {
+    await prisma.message.deleteMany()
+    await prisma.chat.deleteMany()
+    await prisma.profile.deleteMany();
+    await prisma.user.deleteMany();
+    await prisma.pW.deleteMany();
     await prisma.$disconnect();
   });
+  test("true", async () => {
+    expect(true).toBe(true)
+  })
   test("should create a user when all fields are filled correctly", async () => {
     const userpass = "testUser2@";
     const response = await request(app)
@@ -246,8 +256,8 @@ describe("User Router", () => {
       },
     });
 
-    expect(storedUser.password.password).not.toBe(plainPassword);
-    expect(storedUser.password.password).toMatch(/^\$2[aby]\$\d+\$/);
-    expect(storedUser.password.password.length).toBeGreaterThan(50);
+    expect(storedUser.password.hash).not.toBe(plainPassword);
+    expect(storedUser.password.hash).toMatch(/^\$2[aby]\$\d+\$/);
+    expect(storedUser.password.hash.length).toBeGreaterThan(50);
   });
 });

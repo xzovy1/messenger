@@ -35,8 +35,7 @@ exports.login = [
         res.status(401).json({ message: "Incorrect username or password" });
         return;
       }
-      const pass = user.password;
-      const hashedPassword = pass.password;
+      const hashedPassword = user.password.hash;
       const matched = await bcrypt.compare(password, hashedPassword);
 
       if (!matched) {

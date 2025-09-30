@@ -25,20 +25,19 @@ describe("Message Router", () => {
         password: "TestUser@1"
     }
     const session = {}
-    beforeAll(async () => {
-        const delUsers = prisma.user.deleteMany();
-        const delPass = prisma.pW.deleteMany();
-        const delProfile = prisma.profile.deleteMany();
-        const delMessages = prisma.message.deleteMany();
-        const delChats = prisma.chat.deleteMany()
-        await prisma.$transaction([delMessages, delChats, delProfile, delPass, delUsers])
+    beforeEach(async () => {
+        await prisma.message.deleteMany()
+        await prisma.chat.deleteMany()
+        await prisma.profile.deleteMany();
+        await prisma.user.deleteMany();
+        await prisma.pW.deleteMany();
         const user1 = await prisma.user.create({
             data:
             {
                 username: user.username,
                 password: {
                     create: {
-                        password: await bcrypt.hash(user.password, 10)
+                        hash: await bcrypt.hash(user.password, 10)
                     }
                 },
                 profile: {
@@ -58,7 +57,7 @@ describe("Message Router", () => {
                 username: "TestUser2",
                 password: {
                     create: {
-                        password: await bcrypt.hash("TestUser2@", 10)
+                        hash: await bcrypt.hash("TestUser2@", 10)
                     }
                 },
                 profile: {
@@ -71,17 +70,22 @@ describe("Message Router", () => {
                 }
             },
         })
-        response = await request(app).post("/auth/log-in").send({ username: user.username, password: user.password }).expect(200).then((response) => {
-            session.jwt = response.body;
-        })
+        session.jwt = await request(app).post("/auth/log-in").send({ username: user.username, password: user.password }).expect(200).then(resp => resp.body)
         session.sender = user1;
         session.recipient = user2;
-    })
-    beforeEach(async () => {
 
     })
+
     afterAll(async () => {
-        await prisma.$disconnect()
+        await prisma.message.deleteMany()
+        await prisma.chat.deleteMany()
+        await prisma.profile.deleteMany();
+        await prisma.user.deleteMany();
+        await prisma.pW.deleteMany();
+        await prisma.$disconnect();
+    })
+    test("true", async () => {
+        expect(true).toBe(true)
     })
     test("fetches user conversations with no current conversations", async () => {
         const response = await request(app).get('/api/chat/').set("authorization", `bearer ${session.jwt}`).set("Content-Type", "application/json").expect(200).then(response => response.body);
@@ -122,18 +126,31 @@ describe("Message Router", () => {
     })
 
     test("recipient can view the conversation, mark previous message as read and reply to the conversation", async () => {
+
+        const recievedMessage = `Hi ${session.recipient.username}`
+        //create convo
+        await request(app).post("/api/chat").set("authorization", `bearer ${session.jwt}`).set("Content-Type", "application/json").send({
+            to: session.recipient.id,
+        }).expect(200).then(async resp => {
+            //send message
+            const response = await request(app).post(`/api/chat/${resp.body.conversation.id}`).set("authorization", `bearer ${session.jwt}`).set("Content-Type", "application/json").send({
+                recipient: session.recipient.id,
+                body: recievedMessage
+            }).expect(200)
+            expect(response.body.message).toBe(`message sent to ${session.recipient.id}`)
+        })
         let temp = session.sender;
         session.sender = session.recipient;
         session.recipient = temp;
 
         session.jwt = ""
-        const messageBody = "Hey! Thanks for the message"
+        const senderMessage = "Hey! Thanks for the message"
         session.jwt = await request(app).post('/auth/log-in').send({ username: "TestUser2", password: "TestUser2@" }).set("content-type", "application/json").expect(200).then(response => response.body)
         const chat = await request(app).get("/api/chat").set("content-type", "application/json").set("authorization", `bearer ${session.jwt}`).expect(200).then(response => response.body[0].id)
         const message = await request(app).get(`/api/chat/${chat}`).set("content-type", "application/json").set("authorization", `bearer ${session.jwt}`).expect(200).then(response => response.body[0])
         expect(message.read).toBe(true)
 
-        const reply = await request(app).post(`/api/chat/${chat}`).set("content-type", "application/json").set("authorization", `bearer ${session.jwt}`).send({ body: messageBody, recipient: session.recipient.id }).expect(200).then(response => response.body)
+        const reply = await request(app).post(`/api/chat/${chat}`).set("content-type", "application/json").set("authorization", `bearer ${session.jwt}`).send({ body: senderMessage, recipient: session.recipient.id }).expect(200).then(response => response.body)
         expect(reply.message).toBe(`message sent to ${session.recipient.id}`)
     })
 

@@ -2,7 +2,7 @@ const request = require("supertest")
 const express = require('express')
 const prisma = require("../prisma/client.js")
 const bcrypt = require("bcryptjs")
-const { expect, describe, afterAll, beforeEach, test, beforeAll } = require("@jest/globals")
+const { expect, describe, afterAll, beforeEach, test, beforeAll, afterEach } = require("@jest/globals")
 
 const app = express();
 app.use(express.json())
@@ -19,20 +19,22 @@ app.use(verifyToken);
 app.use('/api/user', userRouter)
 
 describe("User Router", () => {
-    beforeAll(async () => {
-        const delUsers = prisma.user.deleteMany();
-        const delPass = prisma.pW.deleteMany();
-        const delProfile = prisma.profile.deleteMany();
-        const delMessages = prisma.message.deleteMany();
-        const delChats = prisma.chat.deleteMany()
-        await prisma.$transaction([delMessages, delChats, delProfile, delPass, delUsers])
+    let jwt, user;
+    beforeEach(async () => {
+        await prisma.message.deleteMany()
+        await prisma.chat.deleteMany()
+        await prisma.profile.deleteMany();
+        await prisma.user.deleteMany();
+        await prisma.pW.deleteMany();
+        const curr = await prisma.user.findMany()
+        // console.log(curr)
         const user1 = await prisma.user.create({
             data:
             {
                 username: "TestUser",
                 password: {
                     create: {
-                        password: await bcrypt.hash("TestUser@1", 10)
+                        hash: await bcrypt.hash("TestUser@1", 10)
                     }
                 },
                 profile: {
@@ -45,31 +47,119 @@ describe("User Router", () => {
                 }
             },
         })
-    })
-    let jwt, user;
-    beforeEach(async () => {
+        // console.log(user1)
         jwt = await request(app).post("/auth/log-in").send({ username: "TestUser", password: "TestUser@1" }).expect(200).then(resp => resp.body)
         user = await request(app).get("/api/user/profile").set("authorization", `bearer ${jwt}`).set("Content-Type", "application/json").then(response => response.body)
+
+    })
+
+    afterAll(async () => {
+        await prisma.message.deleteMany()
+        await prisma.chat.deleteMany()
+        await prisma.profile.deleteMany();
+        await prisma.user.deleteMany();
+        await prisma.pW.deleteMany();
+        await prisma.$disconnect();
+    })
+    test("true", async () => {
+        expect(true).toBe(true)
     })
 
     test("user profile can be retrieved by user", async () => {
-        const profile = await request(app).get("/api/user/profile").set("authorization", `bearer ${jwt}`).set("Content-Type", "application/json").expect(200)
+        const profile = await request(app)
+            .get("/api/user/profile").set("authorization", `bearer ${jwt}`)
+            .set("Content-Type", "application/json")
+            .expect(200)
         expect(profile.body.username).toBe("TestUser")
         expect(profile.body.profile.firstname).toBe("Test")
         expect(profile.body.profile.lastname).toBe("User")
     })
+
     test("user can update username", async () => {
+        const newUsername = "TestUsererer"
         const updatedInfo = {
-            username: "TestUser3"
+            username: newUsername,
+            "password-current": "TestUser@1"
         }
-        updatedInfo["current-password"] = 'TestUser@1'
-        console.log(updatedInfo)
-        const update = await request(app)
+        const updateUsername = await request(app)
             .put(`/api/user/${user.id}`)
             .set("authorization", `bearer ${jwt}`)
             .set("Content-Type", "application/json")
             .send(updatedInfo)
             .expect(200)
-            .then(r => console.log(r.text))
+            .then(resp => resp.body)
+        const dbuser = await prisma.user.findUnique({
+            where: {
+                username: newUsername
+            },
+            include: {
+                password: true
+            }
+        })
+        expect(dbuser.username).toBe(newUsername)
+    })
+
+    test("user cannot update username if current password is inputted incorrectly", async () => {
+        const newUsername = "TestUser"
+        const updatedInfo = {
+            username: newUsername,
+            "password-current": "TestUser"
+        }
+        const updateUsername = await request(app)
+            .put(`/api/user/${user.id}`)
+            .set("authorization", `bearer ${jwt}`)
+            .set("Content-Type", "application/json")
+            .send(updatedInfo)
+            .expect(401)
+            .then(resp => resp.body)
+        expect(updateUsername.message).toBe("password incorrect")
+    })
+
+    test("password can be updated with correct password", async () => {
+        const newPass = "Password123#"
+        const updatedInfo = {
+            "password-current": "TestUser@1",
+            "password": newPass,
+            "password-confirm": newPass
+        }
+        const updatePassword = await request(app)
+            .put(`/api/user/${user.id}`)
+            .set("authorization", `bearer ${jwt}`)
+            .set("Content-Type", "application/json")
+            .send(updatedInfo)
+            .expect(200)
+            .then(resp => resp.body)
+        const data = await prisma.user.findUnique({
+            where: {
+                id: user.id
+            },
+            include: {
+                password: {
+                    where: {
+                        id: updatePassword["password_id"]
+                    }
+                }
+            }
+        })
+        expect(await bcrypt.compare("TestUser@1", newPass)).toBe(false) //old password != new password
+        expect(await bcrypt.compare(newPass, data.password.hash)).toBe(true) //new password == db password
+    })
+
+    test("password cannot be updated if password-confirm does not match new password", async () => {
+        const newPass = "Password123#"
+        const updatedInfo = {
+            "password-current": "TestUser@1",
+            "password": newPass,
+            "password-confirm": "asdfjasdf"
+        }
+        const data = await request(app)
+            .put(`/api/user/${user.id}`)
+            .set("authorization", `bearer ${jwt}`)
+            .set("Content-Type", "application/json")
+            .send(updatedInfo)
+            .expect(400)
+            .then(resp => resp.body)
+        expect(data.message).toBe("passwords must match")
+        expect(await bcrypt.compare("TestUser@1", newPass)).toBe(false) //old password != new password
     })
 })

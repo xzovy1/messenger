@@ -41,7 +41,7 @@ const Profile = ({ setUser }) => {
   return (
     <>
       <h2>Profile</h2>
-      
+
       {updating ? <UpdateProfileForm userInfo={data} setUpdating={setUpdating} /> : <ProfileInfo data={data} updateProfile={updateProfile} />}
     </>
   )
@@ -49,34 +49,34 @@ const Profile = ({ setUser }) => {
 
 const ProfileInfo = ({ data, updateProfile }) => {
   const { profile } = data;
-  if(profile){
-  return (
-    <div className={styles.body}>
-      <img srcSet={profile.image} alt="profile pic" className={styles.avatar} />
-      <div className={` ${styles.info}`}>
-        <p><strong>Username:</strong> </p>
-        <p> {data.username}</p>
+  if (profile) {
+    return (
+      <div className={styles.body}>
+        <img srcSet={profile.image} alt="profile pic" className={styles.avatar} />
+        <div className={` ${styles.info}`}>
+          <p><strong>Username:</strong> </p>
+          <p> {data.username}</p>
+        </div>
+        <div className={` ${styles.info}`}>
+          <p><strong>First Name: </strong></p>
+          <p> {profile.firstname}</p>
+        </div>
+        <div className={` ${styles.info}`}>
+          <p><strong>Last Name: </strong></p>
+          <p> {profile.lastname}</p>
+        </div>
+        <div className={` ${styles.info}`}>
+          <p><strong>Date of birth: </strong></p>
+          <p> {new Date(profile.dob).toDateString()}</p>
+        </div>
+        <div className={` ${styles.info}`}>
+          <p><strong>About: </strong></p>
+          <p>{profile.bio}</p>
+        </div>
+        <button onClick={updateProfile}>Update</button>
       </div>
-      <div className={` ${styles.info}`}>
-        <p><strong>First Name: </strong></p>
-        <p> {profile.firstname}</p>
-      </div>
-      <div className={` ${styles.info}`}>
-        <p><strong>Last Name: </strong></p>
-        <p> {profile.lastname}</p>
-      </div>
-      <div className={` ${styles.info}`}>
-        <p><strong>Date of birth: </strong></p>
-        <p> {new Date(profile.dob).toDateString()}</p>
-      </div>
-      <div className={` ${styles.info}`}>
-        <p><strong>About: </strong></p>
-        <p>{profile.bio}</p>
-      </div>
-      <button onClick={updateProfile}>Update</button>
-    </div>
-  );
-}
+    );
+  }
 }
 
 
@@ -181,11 +181,11 @@ const UpdateLoginForm = ({ setUpdateLoginInfo, userInfo }) => {
           <input type="password" name="password-current" id="password-current" />
         </div>
         <div className={` ${styles.info}`}>
-          <label htmlFor="password"><strong>Password: </strong></label >
+          <label htmlFor="password"><strong>New Password: </strong></label >
           <input type="password" name="password" id="password" />
         </div>
         <div className={` ${styles.info}`}>
-          <label htmlFor="password-confirm"><strong>Confirm Password: </strong></label >
+          <label htmlFor="password-confirm"><strong>Confirm New Password: </strong></label >
           <input type="password" name="password-confirm" id="password-confirm" />
         </div>
         <button>Submit</button>

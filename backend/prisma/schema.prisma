@@ -27,7 +27,7 @@ model User {
 
 model PW {
   id       String @id @unique @default(uuid()) @db.Uuid
-  password String
+  hash String
   User     User[]
 }
 
