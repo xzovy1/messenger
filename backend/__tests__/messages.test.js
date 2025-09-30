@@ -77,11 +77,6 @@ describe("Message Router", () => {
     })
 
     afterAll(async () => {
-        await prisma.message.deleteMany()
-        await prisma.chat.deleteMany()
-        await prisma.profile.deleteMany();
-        await prisma.user.deleteMany();
-        await prisma.pW.deleteMany();
         await prisma.$disconnect();
     })
     test("true", async () => {
