@@ -98,32 +98,36 @@ exports.updateUser = [
     }
   }];
 
-exports.uploadProfileImage = async (req, res) => {
+exports.uploadProfileImage = async (req, res, next) => {
   const { id } = req.params;
   const path =
     "http://localhost:8000/uploads/" + encodeURI(req.file.originalname);
-  await db.updateProfileImage(path, id);
-  res.json({ message: "image uploaded" });
+  try {
+    await db.updateProfileImage(path, id);
+    res.json({ message: "image uploaded" });
+  } catch (error) {
+    next(error)
+  }
 };
 
-exports.updateProfile = async (req, res) => {
+exports.updateProfile = async (req, res, next) => {
   const user = req.body;
   const { id } = req.params; //user id
   try {
     const updatedInfo = await db.updateProfile(user, id);
     res.json(updatedInfo);
   } catch (error) {
-    throw new Error(error);
+    next(error)
   }
 };
 
-exports.deleteUser = async (req, res) => {
+exports.deleteUser = async (req, res, next) => {
   try {
     const user = await prisma.user.delete({
       where: {},
     });
     res.json(user);
   } catch (error) {
-    res.json({ error: `user does not exist in the database` });
+    next(error)
   }
 };

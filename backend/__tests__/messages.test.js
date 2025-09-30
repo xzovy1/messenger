@@ -108,17 +108,6 @@ test("new conversation fails with incorrect recipient", async () => {
     expect(chat.message).toBe(`Recipient not found`)
 })
 
-// test("sender must be the user", async () => {
-
-//     const chat = await request(app)
-//         .post("/api/chat")
-//         .set("authorization", `bearer ${session.jwt}`)
-//         .set("Content-Type", 'application/json')
-//         .send({ recipientId: session.recipient.id })
-//         .expect(400)
-//         .then(r => r.body)
-// })
-
 test("user can create a conversation with another user and send a message", async () => {
     const messageBody = `Hi ${session.recipient.username}`
     //create convo

@@ -36,6 +36,24 @@ exports.getConversation = async (id) => {
     },
   });
 };
+
+exports.getNewestMessage = async (id) => {
+  const message = await prisma.message.findMany({
+    where: {
+      chat_id: id,
+    },
+    orderBy: {
+      sent_at: "asc",
+    },
+    include: {
+      sender: true,
+      recipient: true,
+    },
+    take: 1
+  });
+  return message[0]
+}
+
 exports.markMessageRead = async (id) => {
   return await prisma.message.update({
     where: {
