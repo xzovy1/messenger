@@ -37,7 +37,7 @@ const Contacts = ({ setRight, setLeft, setConversation }) => {
           authorization: `bearer ${localStorage.jwt}`,
           "content-type": "application/json",
         },
-        body: JSON.stringify({ to: recipientId }),
+        body: JSON.stringify({ recipientId }),
       })
         .then((response) => response.json())
         .then((data) => {

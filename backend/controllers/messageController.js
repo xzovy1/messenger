@@ -1,14 +1,22 @@
 const db = require("../db/chatQueries.js");
+const { getUser } = require("../db/userQueries.js")
 
 exports.newConversation = async (req, res) => {
-  const { to } = req.body;
+  const { recipientId } = req.body;
   const senderId = req.user.id;
-  const recipientId = to;
+
   if (!recipientId) {
     res.status(400).json({ message: "Recipient not found" });
     return;
   }
-  if (!senderId) {
+  try {
+    await getUser(recipientId);
+  } catch {
+    res.status(400).json({ message: "Recipient not found" });
+    return
+
+  }
+  if (!senderId || senderId != req.user.id) {
     res.status(400).json({ message: "User not found" });
     return;
   }
