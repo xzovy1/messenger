@@ -123,7 +123,7 @@ const UpdateProfileForm = ({ userInfo, setUpdating }) => {
           </div>
           <div className={` ${styles.info}`}>
             <label htmlFor="dob"><strong>Date of birth: </strong></label >
-            <input type="date" name="dob" id="dob" defaultValue={userInfo.profile.dob ? userInfo.profile.dob.split('T')[0] : "no date"} />
+            <input type="date" name="dob" id="dob" defaultValue={userInfo.profile.dob ? new Date(userInfo.profile.dob) : "no date"} />
           </div>
           <div className={` ${styles.info}`}>
             <label htmlFor="bio"><strong>About: </strong></label >
