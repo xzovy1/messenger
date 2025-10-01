@@ -6,7 +6,7 @@ const emptyErr = "field cannot be empty";
 const passwordErr =
   "must contain atleast 8 characters, 1 uppercase, 1 lowercase and 1 number";
 
-const validateUser = {
+const validate = {
   username: (inputName, errDescription) => {
     return body(inputName)
       .trim()
@@ -55,31 +55,32 @@ const validateUser = {
   },
 };
 //login
-const validateLoginUsername = body("username")
+const validateUsername = body("username")
   .trim()
   .notEmpty()
   .withMessage(emptyErr);
-const validateLoginPassword = body("password")
+const validatePassword = body("password")
   .trim()
   .notEmpty()
   .withMessage(emptyErr);
 
 //signup
-const validateSignup = {
-  username: validateUser.username("username", "Username"),
-  password: validateLoginPassword,
-  passwordConfirm: validateUser.password(
-    "password-confirm",
-    "Password Confirm",
-  ),
-  firstName: validateUser.name("firstname", "First name"),
-  lastName: validateUser.name("lastname", "Last name"),
-  dob: validateUser.dob("dob", "Birthday"),
-  bio: validateUser.bio("bio", "About"),
-};
+
+const validateUser = [
+  validate.username("username", "Username"),
+  validatePassword,
+  validate.password("password-confirm", "Password Confirm"),
+];
+const validateProfile = [
+  validate.name("firstname", "First name"),
+  validate.name("lastname", "Last name"),
+  validate.dob("dob", "Birthday"),
+  validate.bio("bio", "About"),
+];
 
 module.exports = {
-  validateLoginUsername,
-  validateLoginPassword,
-  validateSignup,
+  validateUsername,
+  validatePassword,
+  validateProfile,
+  validateUser,
 };

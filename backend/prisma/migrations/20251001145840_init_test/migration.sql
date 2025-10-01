@@ -2,6 +2,7 @@
 CREATE TABLE "public"."User" (
     "id" UUID NOT NULL,
     "username" TEXT NOT NULL,
+    "password_id" UUID,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -9,8 +10,7 @@ CREATE TABLE "public"."User" (
 -- CreateTable
 CREATE TABLE "public"."PW" (
     "id" UUID NOT NULL,
-    "user_id" UUID NOT NULL,
-    "password" TEXT NOT NULL,
+    "hash" TEXT NOT NULL,
 
     CONSTRAINT "PW_pkey" PRIMARY KEY ("id")
 );
@@ -61,10 +61,10 @@ CREATE UNIQUE INDEX "User_id_key" ON "public"."User"("id");
 CREATE UNIQUE INDEX "User_username_key" ON "public"."User"("username");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "PW_id_key" ON "public"."PW"("id");
+CREATE UNIQUE INDEX "User_password_id_key" ON "public"."User"("password_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "PW_user_id_key" ON "public"."PW"("user_id");
+CREATE UNIQUE INDEX "PW_id_key" ON "public"."PW"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Profile_id_key" ON "public"."Profile"("id");
@@ -82,7 +82,7 @@ CREATE UNIQUE INDEX "Chat_id_key" ON "public"."Chat"("id");
 CREATE INDEX "_ChatToUser_B_index" ON "public"."_ChatToUser"("B");
 
 -- AddForeignKey
-ALTER TABLE "public"."PW" ADD CONSTRAINT "PW_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."User" ADD CONSTRAINT "User_password_id_fkey" FOREIGN KEY ("password_id") REFERENCES "public"."PW"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "public"."Profile" ADD CONSTRAINT "Profile_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

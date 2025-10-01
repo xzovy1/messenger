@@ -7,10 +7,22 @@ exports.getUser = async (id) => {
     },
     include: {
       profile: true,
-      password: true
+      password: true,
     },
-
   });
+};
+
+exports.usernameTaken = async (username) => {
+  let taken = false;
+  const users = await prisma.user.findMany({
+    where: {
+      username: username,
+    },
+  });
+  if (users.length > 0) {
+    taken = true;
+  }
+  return taken;
 };
 
 exports.getUserPassword = async (id) => {

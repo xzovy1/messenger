@@ -3,13 +3,14 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 const {
-  validateLoginUsername,
-  validateLoginPassword,
+  validateUsername,
+  validatePassword,
 } = require("./validation/userValidation.js");
+const CustomUnauthorizedError = require("../errors/CustomUnauthorizedError.js");
 
 exports.login = [
-  validateLoginUsername,
-  validateLoginPassword,
+  validateUsername,
+  validatePassword,
   async (req, res, next) => {
     const { username, password } = req.body;
 
@@ -31,17 +32,13 @@ exports.login = [
       });
 
       if (!user) {
-        console.log("incorrect username");
-        res.status(401).json({ message: "Incorrect username or password" });
-        return;
+        throw new CustomUnauthorizedError("User not found");
       }
       const hashedPassword = user.password.hash;
       const matched = await bcrypt.compare(password, hashedPassword);
 
       if (!matched) {
-        console.log("incorrect password");
-        res.status(401).json({ message: "Incorrect username or password" });
-        return;
+        throw new CustomUnauthorizedError("Username or Password incorrect");
       }
       // console.log("authenticated");
       jwt.sign(

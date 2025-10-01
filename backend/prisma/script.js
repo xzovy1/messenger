@@ -7,17 +7,18 @@ const delPass = prisma.pW.deleteMany();
 const delProfile = prisma.profile.deleteMany();
 const getUser = prisma.user.findMany();
 async function main() {
-  const data = await prisma.user.create({
-    data: {
-      username: "admin",
-      password: {
-        create: {
-          password: await bcrypt.hash("admin", 10),
-        },
-      },
-    },
-  });
-  console.log(data);
+  // const data = await prisma.user.create({
+  //   data: {
+  //     username: "admin",
+  //     password: {
+  //       create: {
+  //         password: await bcrypt.hash("admin", 10),
+  //       },
+  //     },
+  //   },
+  // });
+  // console.log(data);
+  console.log(await prisma.user.findMany());
 }
 
 main()

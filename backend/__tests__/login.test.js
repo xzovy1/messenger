@@ -1,4 +1,3 @@
-const authRouter = require("../routes/authRouter.js");
 const request = require("supertest");
 const express = require("express");
 const prisma = require("../prisma/client.js");
@@ -8,11 +7,12 @@ const { expect } = require("@jest/globals");
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+const authRouter = require("../routes/authRouter.js");
 app.use("/auth", authRouter);
 
 beforeEach(async () => {
-  await prisma.message.deleteMany()
-  await prisma.chat.deleteMany()
+  await prisma.message.deleteMany();
+  await prisma.chat.deleteMany();
   await prisma.profile.deleteMany();
   await prisma.user.deleteMany();
   await prisma.pW.deleteMany();
@@ -37,7 +37,7 @@ test("should login with valid credentials", async () => {
   const response = await request(app)
     .post("/auth/log-in")
     .send({ username: "admin", password: "Adminadmin@1" })
-    .expect(200)
+    .expect(200);
 
   // Test that we get a JWT token back
   expect(typeof response.body).toBe("string");
@@ -46,9 +46,9 @@ test("should login with valid credentials", async () => {
 
 test("should not pass with invalid username", async () => {
   await request(app)
-    .post("/auth/login")
+    .post("/auth/log-in")
     .send({ username: "test", password: "Adminadmin@1" })
-    .expect(404);
+    .expect(401);
 });
 
 test("should reject invalid password credentials", async () => {

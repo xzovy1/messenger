@@ -1,13 +1,7 @@
 const request = require("supertest");
 const express = require("express");
 const prisma = require("../prisma/client.js");
-const {
-  expect,
-  describe,
-  afterAll,
-  beforeEach,
-  test,
-} = require("@jest/globals");
+const { expect, afterAll, beforeEach, test } = require("@jest/globals");
 
 const app = express();
 app.use(express.json());
@@ -16,14 +10,13 @@ const userController = require("../controllers/userController.js");
 app.post("/api/user", userController.createUser);
 
 beforeEach(async () => {
-  await prisma.message.deleteMany()
-  await prisma.chat.deleteMany()
+  await prisma.message.deleteMany();
+  await prisma.chat.deleteMany();
   await prisma.profile.deleteMany();
   await prisma.user.deleteMany();
   await prisma.pW.deleteMany();
 });
 afterAll(async () => {
-
   await prisma.$disconnect();
 });
 
