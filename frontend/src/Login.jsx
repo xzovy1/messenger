@@ -39,7 +39,10 @@ const Login = () => {
     <>
       {error ? <ErrorMessage error={error} /> : null}
       <div className={styles.form}>
-        <form action={login}>
+        <form onSubmit={e => {
+          e.preventDefault();
+          login(new FormData(e.target));
+        }} name="login-form">
           <div className={styles.info}>
             <h3>Welcome back!</h3>
             <div>We're glad you're here.</div>
@@ -52,7 +55,7 @@ const Login = () => {
             <label htmlFor="password">Password: </label>
             <input type="password" name="password" id="password" autoComplete="current-password" required />
           </div>
-          <button>Log in</button>
+          <button disabled={loading}>Log in</button>
         </form>
       </div>
       <div className={styles.footer}>Need an account? <a href="/auth/sign-up">Register</a></div>

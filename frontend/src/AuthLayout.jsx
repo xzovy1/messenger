@@ -6,11 +6,11 @@ const AuthLayout = () => {
   return (
     <>
       <AuthHeader />
-    <div>
-      <div className={styles.body}>
-        <Outlet />
+      <div>
+        <div className={styles.body}>
+          <Outlet />
+        </div>
       </div>
-    </div>
     </>
   );
 };

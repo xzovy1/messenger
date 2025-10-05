@@ -6,13 +6,48 @@ const Signup = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [passwordError, setPasswordError] = useState(null);
+
+  const validateDOB = (dob) => {
+    let birthdate = new Date(dob)
+    let currentDate = new Date()
+    let age = currentDate.getFullYear() - birthdate.getFullYear()
+    if (birthdate.getMonth() >= currentDate.getMonth()) {
+      if (birthdate.getDate() >= currentDate.getDate()) {
+        age--;
+      }
+    }
+    if (age > 110 || age < 12) {
+      console.log("invalid")
+      setError("Invalid date range")
+    }
+  }
+
+  const validateUsername = (username) => {
+    return !/[^a-zA-Z0-9]{4,20}/.test(username)
+
+  }
+
+  const validateName = (name) => {
+    return /[^A-Za-z]/.test(name) || /{3,20}/.test(name)
+  }
 
   async function signup(formData) {
     const password = formData.get("password");
     const passwordConfirm = formData.get("password-confirm");
+    const dob = formData.get("dob")
+
+    if (!validateName(formData.get("firstname"))) {
+      return setError("Firstname must only contain letters, being between 3 and 20 characters")
+    }
+    if (!validateName(formData.get("lastname"))) {
+      return setError("Last must only contain letters, being between 3 and 20 characters")
+    }
+    if (!validateUsername(formData.get("username"))) {
+      return setError("Username must only contain letters and numbers, being between 4 and 20 characters")
+    }
+    validateDOB(dob)
     if (password != passwordConfirm) {
-      return setPasswordError(true);
+      return setError("Passwords do not match");
     }
     const url = `${import.meta.env.VITE_BACKEND}/api/user`;
 
@@ -40,16 +75,18 @@ const Signup = () => {
   }
   return (
     <>
-      {passwordError ? (
-        <div className="error">Passwords do not match</div>
+      {error ? (
+        <div className="error">{error}</div>
       ) : null}
-      {error ? <p className="error">an error occurred: {error} </p> : null}
       <div className={styles.form}>
-        <form action={signup}>
+        <form onSubmit={e => {
+          e.preventDefault();
+          signup(new FormData(e.target))
+        }} name="signup-form">
           <h4>Create Account</h4>
           <div className={styles.input}>
             <label htmlFor="username">Username </label>
-            <input type="text" name="username" id="username" required />
+            <input type="text" name="username" id="username" required pattern="[a-zA-Z0-9]" />
           </div>
           <div className={styles.input}>
             <label htmlFor="password">Password </label>

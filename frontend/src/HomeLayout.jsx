@@ -7,7 +7,7 @@ import Navbar from "./Navbar";
 import styles from "./public/card.module.css"
 
 const HomeLayout = () => {
-  const [toggleLeft, setLeft] = useState(true);
+  const [toggleLeft, setLeft] = useState(false);
   const [toggleRight, setRight] = useState(false);
 
   const [user, setUser] = useState(null);
@@ -33,11 +33,9 @@ const HomeLayout = () => {
               setLeft(!toggleLeft);
             }}
           >
-            {toggleLeft ? "View Contacts" : "View Profile"}
+            {toggleLeft ? "View Profile" : "View Contacts"}
           </button>
           {toggleLeft ? (
-            <Profile setUser={setUser} />
-          ) : (
             <Contacts
               setRight={setRight}
               setLeft={setLeft}
@@ -45,7 +43,9 @@ const HomeLayout = () => {
               setConversation={setConversation}
 
             />
-          )}
+          ) :
+            <Profile setUser={setUser} />
+          }
         </div>
         <div id="rightTab" className={styles.card}>
           <button
