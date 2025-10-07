@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach, test } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, test, afterEach } from "vitest";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import Signup from "../src/Signup.jsx";
 import { BrowserRouter } from "react-router";
 import userEvent from "@testing-library/user-event";
@@ -90,21 +90,13 @@ describe("Signup Component", () => {
     test("date can't make age greater than 110 years", async () => {
 
         const user = userEvent.setup();
-        const userInfo = {
-            username: "TestUser",
-            firstname: "Test",
-            lastname: "User",
-            password,
-            "password-confirm": "password",
-            dob: "2000-01-01",
-            bio: "Hey, I'm Test User."
-        }
+
         const now = new Date().toISOString().split("T")[0].split("-")
-        const age = 110
+        const age = 111
         const dates = now.map(value => parseInt(value))
         const testDate = new Date(`${dates[0] - (age + 1)}-${dates[1]}-${dates[2]}`).toISOString().split("T")[0]
         render(<Signup />)
-
+        await act(async ()=>{
         await user.type(screen.getByLabelText(/birthday/i), testDate)
         await user.type(screen.getByLabelText(/username/i), userInfo.username)
         await user.type(screen.getByLabelText(/^password/i), userInfo.password)
@@ -113,8 +105,9 @@ describe("Signup Component", () => {
         await user.type(screen.getByLabelText(/last name/i), userInfo.lastname)
         await user.type(screen.getByLabelText(/about/i), userInfo.bio)
 
-        fetchDataPost.mockResolvedValue(testDate)
-        fireEvent.submit(screen.getByRole("form"))
+            await fetchDataPost.mockResolvedValue(testDate)
+            fireEvent.submit(screen.getByRole("form"))
+        })
         expect(screen.getByText(/invalid date range/i)).toBeVisible()
 
     })
@@ -123,23 +116,48 @@ describe("Signup Component", () => {
         const user = userEvent.setup();
         const now = new Date().toISOString().split("T")[0].split("-")
         const age = 12
-        const testDate = new Date(`${now[0] - age}-${now[1]}-${parseInt(now[2]) + 1}`).toISOString().split("T")[0]
+        const dates = now.map(value => parseInt(value))
+        const testDate = new Date(`${dates[0] - age}-${dates[1]}-${dates[2] + 1}`).toISOString().split("T")[0]
 
-        render(<Signup />)
-        await
+        act(()=>{
+            render(<Signup />)
+        })
+        
+        await act(async ()=>{
+            
+            await user.type(screen.getByLabelText(/first name/i), userInfo.firstname)
+            await user.type(screen.getByLabelText(/last name/i), userInfo.lastname)
+            await user.type(screen.getByLabelText(/username/i), userInfo.username)
             await user.type(screen.getByLabelText(/birthday/i), testDate)
-
-        fetchDataPost.mockResolvedValue({})
-        fireEvent.submit(screen.getByRole("form"))
+            await fetchDataPost.mockResolvedValue()
+            fireEvent.submit(screen.getByRole("form"))
+        })
         expect(screen.getByText(/invalid date range/i)).toBeVisible()
 
     })
-    test("username must not contain special characters like '!@#$%^&*()'/\;:'", async () => {
-        const user = userEvent.setup()
-        render(<Signup />)
+    describe("username must not contain special characters like '!@#$%^&*()'/\;:'", ()=>{
+        let user
+        const setup = async ()=>{
+            user = userEvent.setup()
+            render(<Signup />)
+            await user.type(screen.getByLabelText(/first name/i), userInfo.firstname)
+            await user.type(screen.getByLabelText(/last name/i), userInfo.lastname)
 
-        await user.type(screen.getByLabelText(/username/i), "U/\S3r")
-        fireEvent.submit(screen.getByRole("form"))
-        expect(screen.getByText(/username is not valid/i)).toBeVisible()
+        }
+        const teardown = async () => {
+            fireEvent.submit(screen.getByRole("form"))
+            expect(screen.getByText(/username must only contain letters, numbers and be between 4 and 20 characters/i)).toBeVisible()
+        }
+
+        const illegalChars = '!@#$%^&*()/\;:|?.,><'
+        for (const char of illegalChars){
+                test(`username has ${char}`, async () => {
+                await setup()
+                await user.type(screen.getByLabelText(/username/i), `U${char}S3r`)
+                await teardown()
+
+            })
+            }
+
     })
 })

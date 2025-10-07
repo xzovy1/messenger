@@ -16,25 +16,29 @@ const Signup = () => {
         age--;
       }
     }
+    
     if (age > 110 || age < 12) {
-      console.log("invalid")
-      setError("Invalid date range")
-    }
+      // console.log("invalid")
+      return false
+    }else {return true}
   }
 
   const validateUsername = (username) => {
-    return !/[^a-zA-Z0-9]{4,20}/.test(username)
+
+    //username has no special characters
+    console.log(username)
+    return !/[^a-zA-Z0-9]/.test(username) && /^\w{4,20}/.test(username)
 
   }
 
   const validateName = (name) => {
-    return /[^A-Za-z]/.test(name) || /{3,20}/.test(name)
+    // console.log(/{3,20}/.test(name))
+    return !/[^A-Za-z]/.test(name) && /^\w{3,20}/.test(name)
   }
 
   async function signup(formData) {
     const password = formData.get("password");
     const passwordConfirm = formData.get("password-confirm");
-    const dob = formData.get("dob")
 
     if (!validateName(formData.get("firstname"))) {
       return setError("Firstname must only contain letters, being between 3 and 20 characters")
@@ -43,9 +47,11 @@ const Signup = () => {
       return setError("Last must only contain letters, being between 3 and 20 characters")
     }
     if (!validateUsername(formData.get("username"))) {
-      return setError("Username must only contain letters and numbers, being between 4 and 20 characters")
+      return setError("Username must only contain letters, numbers and be between 4 and 20 characters")
     }
-    validateDOB(dob)
+    if(!validateDOB(formData.get("dob"))){
+      setError("Invalid date range")
+    }
     if (password != passwordConfirm) {
       return setError("Passwords do not match");
     }
@@ -57,7 +63,7 @@ const Signup = () => {
       JSON.stringify(Object.fromEntries(formData)),
     )
       .then((data) => {
-        console.log(data);
+        // console.log(data);
       })
       .catch((error) => {
         setError(error.message);

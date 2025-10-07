@@ -7,7 +7,7 @@ exports.getUser = async (id) => {
     },
     include: {
       profile: true,
-      password: true,
+      password: true, // tests fail if omitted
     },
   });
 };
