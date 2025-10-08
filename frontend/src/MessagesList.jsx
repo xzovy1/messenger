@@ -100,8 +100,9 @@ const MessagesList = ({
   );
 };
 
-const MessagePreview = ({ message, recipient }) => {
-  if (message) {
+export const MessagePreview = ({ message, recipient }) => {
+  console.log(message, recipient)
+  if (message ) {
     if (!message.read && recipient != message.recipient_id) {
       return (
         <div className={styles.messagePreview}>

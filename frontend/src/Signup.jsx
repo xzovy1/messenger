@@ -18,7 +18,6 @@ const Signup = () => {
     }
     
     if (age > 110 || age < 12) {
-      // console.log("invalid")
       return false
     }else {return true}
   }
@@ -32,7 +31,6 @@ const Signup = () => {
   }
 
   const validateName = (name) => {
-    // console.log(/{3,20}/.test(name))
     return !/[^A-Za-z]/.test(name) && /^\w{3,20}/.test(name)
   }
 
@@ -92,7 +90,7 @@ const Signup = () => {
           <h4>Create Account</h4>
           <div className={styles.input}>
             <label htmlFor="username">Username </label>
-            <input type="text" name="username" id="username" required pattern="[a-zA-Z0-9]" />
+            <input type="text" name="username" id="username" required minLength={4} maxLength={20}/>
           </div>
           <div className={styles.input}>
             <label htmlFor="password">Password </label>
@@ -104,11 +102,11 @@ const Signup = () => {
           </div>
           <div className={styles.input}>
             <label htmlFor="firstname">First Name </label>
-            <input type="text" id="firstname" name="firstname" required />
+            <input type="text" id="firstname" name="firstname" required  minLength={3} maxLength={20}/>
           </div>
           <div className={styles.input}>
             <label htmlFor="lastname">Last Name </label>
-            <input type="text" name="lastname" id="lastname" required />
+            <input type="text" name="lastname" id="lastname" required minLength={2} maxLength={20}/>
           </div>
           <div className={styles.input}>
             <label htmlFor="dob">Birthday </label>

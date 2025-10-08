@@ -2,7 +2,7 @@ import { fetchDataGet, fetchDataPost } from "./helpers/fetchData";
 import { useEffect, useState } from "react";
 import styles from './public/card.module.css'
 
-const Contacts = ({ setRight, setLeft, setConversation }) => {
+const Contacts = ({ setRight, setConversation }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,10 +16,8 @@ const Contacts = ({ setRight, setLeft, setConversation }) => {
         setData(contacts);
         setError(null);
       } catch (err) {
-        console.log(err)
         setError(err);
         setData(null);
-        throw new Error(err);
       } finally {
         setLoading(false);
       }
@@ -28,6 +26,7 @@ const Contacts = ({ setRight, setLeft, setConversation }) => {
   }, []);
 
   async function createChat(recipientId) {
+    setRight(true)
     let url = `${import.meta.env.VITE_BACKEND}/api/chat/`;
     try {
       const response = await fetch(url, {
@@ -62,8 +61,20 @@ const Contacts = ({ setRight, setLeft, setConversation }) => {
   return (
     <div>
       <h2>Contacts</h2>
+      <ContactsList contacts={data} createChat={createChat}/>
+    </div>
+  );
+};
+
+const ContactsList = ({contacts, createChat}) => {
+  if(contacts.length == 0 || !contacts){
+    return (
+      <div>No Contacts Found</div>
+    )
+  }
+  return (
       <div className={styles.scroll}>
-        {data.map((contact) => {
+        {contacts.map((contact) => {
           return (
             <div key={contact.id} className={styles.contact}>
               <img src={contact.profile.image} alt="profile image" />
@@ -77,7 +88,6 @@ const Contacts = ({ setRight, setLeft, setConversation }) => {
               <button
                 onClick={() => {
                   createChat(contact.id);
-                  setRight(true);
                 }}
               >
                 Message
@@ -86,8 +96,7 @@ const Contacts = ({ setRight, setLeft, setConversation }) => {
           );
         })}
       </div>
-    </div>
-  );
-};
+  )
+}
 
 export default Contacts;

@@ -1,8 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import App from "../src/App.jsx";
-import Login from "../src/Login.jsx";
-import { BrowserRouter, MemoryRouter, Routes, Route } from "react-router";
+import { BrowserRouter } from "react-router";
 import userEvent from "@testing-library/user-event";
 
 

@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach, test, afterEach } from "vitest";
 import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import Signup from "../src/Signup.jsx";
-import { BrowserRouter } from "react-router";
 import userEvent from "@testing-library/user-event";
 import { fetchDataPost } from "../src/helpers/fetchData.js";
 

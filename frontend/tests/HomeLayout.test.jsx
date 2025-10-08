@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
+import { render, screen} from "@testing-library/react";
 import { BrowserRouter } from "react-router";
 import userEvent from "@testing-library/user-event";
 import HomeLayout from "../src/HomeLayout";
