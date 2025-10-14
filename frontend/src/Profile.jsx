@@ -67,7 +67,7 @@ const ProfileInfo = ({ data, updateProfile }) => {
         </div>
         <div className={` ${styles.info}`}>
           <p><strong>Date of birth: </strong></p>
-          <p> {new Date(profile.dob).toDateString()}</p>
+          <p> {(profile.dob).split("T")[0]}</p>
         </div>
         <div className={` ${styles.info}`}>
           <p><strong>About: </strong></p>

@@ -4,6 +4,12 @@
 
 This web app allows users to send messages to each other similar to Discord or Whatsapp.
 
+[Home](screenshots/landingAnimation.mov)
+[Login](screenshots/login.png)
+[Sign up](screenshots/signup.png)
+[Messages](screenshots/messages.png)
+[Conversation](screenshots/conversation.png)
+
 ## Core Functionality
 
 - Authorization
@@ -129,6 +135,6 @@ logs in
 
 #### Lessons learned
 
-- You dont necessarily need passport js when using JWT's in fact implementing local strategy is kind of a pain when using jwt's as well. I intend to implement logging in with google though, so passport will be needed for that. (go back and review session-based authentication)
-- I'm using 'useEffect' heavily and frequently making requests to the db, fine for a few users, but useMemo use be implemented instead. no point making all these requests to the server just to load the same data that has already been loaded. (this is a case of not using react for a few months)
+- You don't necessarily need passport js when using JWT's in fact implementing local strategy is kind of a pain when using jwt's as well. I intend to implement logging in with google though, so passport will be needed for that. (go back and review session-based authentication)
+- I'm using 'useEffect' heavily and frequently making requests to the db, fine for a few users, but useMemo should be implemented instead. no point making all these requests to the server just to load the same data that has already been loaded. (this is a case of not using react for a few months)
 - got more familiar with how to use prisma for more "complicated" queries. while i see and can appreciate the use, sometimes just raw-dogging sql queries is more straight forward.

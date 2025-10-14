@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Conversation from "./Conversation";
-import MessagesList from "./MessagesList";
+import {MessagesList} from "./MessagesList";
 import Contacts from "./Contacts";
 import Profile from "./Profile";
 import Navbar from "./Navbar";

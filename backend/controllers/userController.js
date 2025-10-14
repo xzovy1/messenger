@@ -40,8 +40,8 @@ exports.createUser = [
   validateProfile,
   async (req, res) => {
     const { username, password, firstname, lastname, dob, bio } = req.body;
-    const imgPath = process.env.BACKEND_URL || "http://localhost:8000/uploads";
-    const image = `${process.env.BACKEND_URL}/uploads/default_image.jpg`;
+    const imgPath = process.env.BACKEND_URL || "http://localhost:8000";
+    const image = `${imgPath}/uploads/default_image.jpg`;
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
