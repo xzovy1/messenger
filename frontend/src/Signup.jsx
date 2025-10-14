@@ -23,9 +23,7 @@ const Signup = () => {
   }
 
   const validateUsername = (username) => {
-
     //username has no special characters
-    console.log(username)
     return !/[^a-zA-Z0-9]/.test(username) && /^\w{4,20}/.test(username)
 
   }

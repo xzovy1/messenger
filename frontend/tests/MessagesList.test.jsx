@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
-import MessagesList from "../src/MessagesList";
-import MessagePreview from "../src/MessagesList";
+import { MessagesList } from "../src/MessagesList.jsx";
+import { MessagePreview } from "../src/MessagesList.jsx";
 import {fetchDataGet, fetchDataPost} from "../src/helpers/fetchData";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
@@ -33,7 +33,6 @@ const mockMessages = [
 describe("MessagesList", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    // Set env for backend
   });
 
   it("renders loading state initially", async () => {
@@ -146,7 +145,7 @@ describe("MessagesList", () => {
   it("MessagePreview shows italic for unread message not sent by recipient", async() => {
     await act(async() => {
 
-        const { container } = render(
+        render(
             <MessagesList
             setConversation={mockSetConversation}
             setRight={mockSetRight}
@@ -154,7 +153,6 @@ describe("MessagesList", () => {
             setMessagesCount={mockSetMessagesCount}
             />
         );
-        // Directly test MessagePreview
          render(
             <MessagePreview
             message={{ body: "Test", read: false, recipient_id: 3 }}
@@ -165,23 +163,22 @@ describe("MessagesList", () => {
     expect(screen.getByText("Test").tagName).toBe("I");
   });
 
-//   it("MessagePreview shows plain text for read message", () => {
-//     const MessagePreview = require("../src/MessagesList.jsx").MessagePreview;
-//     const { getByText } = render(
-//       <MessagePreview
-//         message={{ body: "Read", read: true, recipient_id: 2 }}
-//         recipient={2}
-//       />
-//     );
-//     expect(getByText("Read").tagName).toBe("DIV");
-//   });
+  it("MessagePreview shows plain text for read message", () => {
+    const { getByText } = render(
+      <MessagePreview
+        message={{ body: "Read", read: true, recipient_id: 2 }}
+        recipient={2}
+      />
+    );
+    expect(getByText("Read").tagName).toBe("DIV");
+  });
 
-  it.only("MessagePreview shows 'No message' when message is null", async() => {
+  it("MessagePreview shows 'No message' when message is null", async() => {
+    render(
+        <MessagePreview message={null} recipient={2} />
+    );
     await act(async () => {
 
-        render(
-            <MessagePreview message={null} recipient={2} />
-        );
     })
     screen.debug();
     expect(screen.getByText("No message")).toBeInTheDocument();

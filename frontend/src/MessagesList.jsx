@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { fetchDataGet, fetchDataPost } from "./helpers/fetchData.js";
 import styles from './public/card.module.css'
 
-const MessagesList = ({
+export const MessagesList = ({
   setConversation,
   setRight,
   messagesCount,
@@ -121,4 +121,3 @@ export const MessagePreview = ({ message, recipient }) => {
   }
 };
 
-export default MessagesList;

@@ -4,7 +4,6 @@ import Signup from "../src/Signup.jsx";
 import userEvent from "@testing-library/user-event";
 import { fetchDataPost } from "../src/helpers/fetchData.js";
 
-// Mock useNavigate
 const mockNavigate = vi.fn();
 vi.mock("react-router", async () => {
     const actual = await vi.importActual("react-router");
@@ -14,7 +13,6 @@ vi.mock("react-router", async () => {
     };
 });
 
-// Mock fetchDataPost
 vi.mock("../src/helpers/fetchData", () => ({
     fetchDataPost: vi.fn(),
 }));
@@ -154,9 +152,7 @@ describe("Signup Component", () => {
                 await setup()
                 await user.type(screen.getByLabelText(/username/i), `U${char}S3r`)
                 await teardown()
-
             })
-            }
-
+        }
     })
 })
