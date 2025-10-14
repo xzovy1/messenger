@@ -8,6 +8,7 @@ const Conversation = ({ conversation, user, messagesCount }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   let url = `${import.meta.env.VITE_BACKEND}/api/chat/${conversation.id}`;
+
   useEffect(() => {
     const fetchConversation = async () => {
       try {
@@ -36,7 +37,7 @@ const Conversation = ({ conversation, user, messagesCount }) => {
     ); //new URLSearchParams(formData)
     setMessageTrigger(Math.random()); //used to trigger use effect
   }
-  if (!conversation.id || messagesCount == 0) {
+  if (!conversation.id) {
     return <p>No conversation selected</p>;
   }
   if (error) {
@@ -70,9 +71,7 @@ const Conversation = ({ conversation, user, messagesCount }) => {
                   );
                 }
               })
-            ) : (
-              <div>No messages yet. Start the conversation!</div>
-            )}
+            ) : null}
           </div>
           <form action={sendMessage}>
             <input
@@ -86,6 +85,10 @@ const Conversation = ({ conversation, user, messagesCount }) => {
         </div >
       </>
     );
+  }else{
+    return (
+      <div>No messages yet. Start the conversation!</div>
+    )
   }
 };
 
