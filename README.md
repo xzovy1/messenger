@@ -4,11 +4,11 @@
 
 This web app allows users to send messages to each other similar to Discord or Whatsapp.
 
-[Home](screenshots/landingAnimation.mov)
-[Login](screenshots/login.png)
-[Sign up](screenshots/signup.png)
-[Messages](screenshots/messages.png)
-[Conversation](screenshots/conversation.png)
+![Home](screenshots/landingAnimation.mov)
+![Login](screenshots/login.png)
+![Sign up](screenshots/signup.png)
+![Messages](screenshots/messages.png)
+![Conversation](screenshots/conversation.png)
 
 ## Core Functionality
 
