@@ -4,7 +4,8 @@
 
 This web app allows users to send messages to each other similar to Discord or Whatsapp.
 
-![Home](screenshots/landingAnimation.mov)
+
+<video src="https://github.com/user-attachments/assets/f1ff85b5-2d95-484b-8bba-8dc30edc7beb" style="max-width: 730px;" loop=true autoplay=true muted=true></video>
 ![Login](screenshots/login.png)
 ![Sign up](screenshots/signup.png)
 ![Messages](screenshots/messages.png)
